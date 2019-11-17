@@ -11,9 +11,12 @@ const path         = require('path');
 // cors package to allow cross-origin resource sharing (CORS) between front-end and back-end
 const cors         = require('cors');
 
+const localDB      = 'mongodb://localhost/nubiomed-api';
+const cloudDB      = process.env.DB;
+
 
 mongoose
-  .connect('mongodb://localhost/nubiomed-api', {useNewUrlParser: true, useUnifiedTopology: true})
+  .connect(localDB, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -60,8 +63,8 @@ app.locals.title = 'Nubiomed API by Mel';
 
 
 
-const index = require('./routes/index');
-app.use('/', index);
+const authRoutes = require('./routes/auth-routes');
+app.use('/api', authRoutes);
 
 
 module.exports = app;
