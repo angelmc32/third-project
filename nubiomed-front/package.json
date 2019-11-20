@@ -20,6 +20,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "_moduleAliases": {
+    "~src": "./src"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
