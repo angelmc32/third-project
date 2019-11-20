@@ -19,10 +19,12 @@ router.post('/signup', (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-
+  // Call mongoose create method, pass the request body (which includes the email, but we can send any other
+  // additional data from the front-end) and the hashed password as parameters, to be saved in the database
   User.create({ ...req.body, password: hashedPassword })
   .then( user => {
     
+    // Configure options variable to pass as parameter to our mailer send method
     const options = {
       filename: 'signup',
       email: user.email,
@@ -30,8 +32,11 @@ router.post('/signup', (req, res, next) => {
       subject: 'Please verify your email'
     };
 
+    // Call mailer send method with options variable as parameter for e-mail verification
     send(options);
 
+    // Create a token with jwt: first parameter is information to be serialized into the token, second
+    // parameter 
     jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
 
       delete user._doc.password;
