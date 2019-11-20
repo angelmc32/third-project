@@ -35,7 +35,8 @@ const userModel = new Schema(
     },
     gender: {
       type: String,
-      enum: ['F','M']
+      enum: ['F','M','U'],
+      default: 'U'
     },
     isActive: {
       type: Boolean,

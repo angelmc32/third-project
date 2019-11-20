@@ -2,29 +2,31 @@ const express = require('express');       // Import express for router functiona
 const router = express.Router();          // Execute express router and store it into router const
 const jwt = require('jsonwebtoken');      // Import jsonwebtoken for token creation and authentication
 const bcrypt = require('bcryptjs');       // Import bcryptjs for password hash creation and password validation
-const { send } = require('../helpers/mailer-helper');
 const User = require('../models/User');   // Require the User model to create and find users in database
 
-// POST route for user signup. We will check for password length, hash the password, create the user in the database,
-// if succesful, send an email for verification and create an auth token with jwt,
-// if unsuccesful, send a response with status 404 not found, the error and a message
+// Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
+const { send } = require('../helpers/mailer-helper');
+
+// POST route for user signup. Validate password length, hash the password, create the user in the database,
+// if successful, send email for verification and a response with status 200, the user, token and success message,
+// if unsuccessful, send a response with status 500 (Internal Server Error), the error and a message
 router.post('/signup', (req, res, next) => {
 
-  const { password } = req.body;  // Destructure the password as we must hash it before storing it in the database
+  const { password } = req.body;  // Destructure the password in order to hash it before storing it in the database
 
-  // Password length validation, min length 8, if not, respond with a 500 error and an explanation
+  // Password length validation, min length 8, if not, respond with a 500 status and error message
   if ( password.length < 8 ) return res.status(500).json({ error: "Password is too short" });
 
-  // Use bcryptjs methods to generate salt and hash password, to store it with an extra level of security
+  // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  // Call mongoose create method, pass the request body (which includes the email, but we can send any other
-  // additional data from the front-end) and the hashed password as parameters, to be saved in the database
+  // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
+  // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
   User.create({ ...req.body, password: hashedPassword })
   .then( user => {
     
-    // Configure options variable to pass as parameter to our mailer send method
+    // Configure options variable to pass as parameter to the mailer send method
     const options = {
       filename: 'signup',
       email: user.email,
@@ -35,27 +37,69 @@ router.post('/signup', (req, res, next) => {
     // Call mailer send method with options variable as parameter for e-mail verification
     send(options);
 
-    // Create a token with jwt: first parameter is information to be serialized into the token, second
-    // parameter 
+    // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+    // is app secret (used as key to create a token signature), third is a callback that passes the error or token
     jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
 
+      // Delete the password from the user document (returned by mongoose) before sending to front-end
       delete user._doc.password;
 
-      if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' })
+      // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+      if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
 
-      res.status(200).json({ user, token, msg: 'User and token created correctly' })
+      // Respond to the request with a 200 status, the user data and a success message
+      res.status(200).json({ user, token, msg: 'Signed up and logged in: User and token created successfully' });
 
     });
     
   })
-  .catch( error => res.status(404).json({ error, msg: 'Error while creating user' }) )
+  .catch( error => {
+    
+    // Respond with 500 status, the error and a message
+    res.status(500).json({ error, msg: 'Error while creating user' });
+  
+  })
 
 
 });
 
+// POST route for user login. Validate password length, hash the password, create the user in the database,
+// if successful, validate password, and send a response with 200 status, the user, token and success message,
+// if unsuccessful, send a response with status 404 (Not found), the error and a message
 router.post('/login', (req, res, next) => {
 
-  res.status(200).json({ msg: 'signup route OK' });
+  const { email, password } = req.body; // Destructure email and password from request body
+
+  // Call mongoose findOne method, pass the email as query, if email exists, validate password and create token
+  User.findOne({ email })
+  .then( user => {
+
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+    if (!isPasswordValid) return res.status(401).json({ error: 'Invalid password' });
+
+    // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+    // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+    jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+
+      // Delete the password from the user document (returned by mongoose) before sending to front-end
+      delete user._doc.password;
+
+      // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+      if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+
+      // Respond to the request with a 200 status, the user data and a success message
+      res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
+
+    });
+
+  })
+  .catch( error => {
+
+    // Respond with 404 status, the error and a message
+    res.status(404).json({ error, msg: 'Email not found in database' });
+
+  });
 
 });
 
