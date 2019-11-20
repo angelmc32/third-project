@@ -9,7 +9,7 @@ const AppProvider = ({ children }) => {
   // Obtain user data from the localStorage, or set it as an empty object in case there is no user stored
   const initialUserState = JSON.parse( localStorage.getItem('user') ) || {};
 
-  // Create a user state variable using useState hook to keep the values, and setUser method to modify state
+  // Declare user state variable and setUser function to update the user state variable
   const [user, setUser] = useState(initialUserState);
   
   // Declare resetUserContext function that will allow us to reset the user context

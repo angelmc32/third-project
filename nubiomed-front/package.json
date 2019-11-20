@@ -12,6 +12,7 @@
     "uikit": "^3.2.3"
   },
   "scripts": {
+    "postinstall": "link-module-alias",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -21,7 +22,10 @@
     "extends": "react-app"
   },
   "_moduleAliases": {
-    "~src": "./src"
+    "~components": "./src/components",
+    "~hooks": "./src/hooks",
+    "~src": "./src",
+    "~services": "./src/services"
   },
   "browserslist": {
     "production": [

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'heroku.com' : 'http://localhost.com:3000/api';
+const base_url = isProduction ? 'heroku.com' : 'http://localhost:3000/api';
 
 // Export signup function, which receives data as parameters to enable signup
 export const signup = (data) => {
