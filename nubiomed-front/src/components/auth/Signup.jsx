@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { signup } from '~services/auth-services';
-import AuthForm from './AuthForm';
-import useForm from '../../hooks/useForm';
-import { AppContext } from '~src/AppContext';
-import UIkit from 'uikit';
+import React, { useContext } from 'react';          // Import React and useContext hook
+import { useHistory } from 'react-router-dom';      // Import useHistory for "redirection"
+import { AppContext } from '~src/AppContext';       // Import AppContext to use created context
+import { signup } from '~services/auth-services';   // Import signup service for API call
+import AuthForm from './AuthForm';                  // Import AuthForm react component
+import useForm from '../../hooks/useForm';          // Import useForm custom hook
+import UIkit from 'uikit';                          // Import UIkit for notifications
 
 // Declare Signup functional component
 const Signup = () => {
@@ -15,11 +15,10 @@ const Signup = () => {
 
   // Declare function for form submit event
   const handleSubmit = (event) => {
-    console.log('Submitting')
-    console.log(form);
+
     event.preventDefault();                     // Prevent page reloading after submit action
 
-    // Call signup service with form state as parameter, which includes form data for e-mail and password
+    // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     signup(form)
     .then( res => {
       
@@ -32,7 +31,7 @@ const Signup = () => {
       setUser(user);    // Modify user state variable, setting the user data in the state
       push('/home');    // "Redirect" user to home
 
-      // Send success notification
+      // Send UIkit success notification
       UIkit.notification({
         message: `<span uk-icon='check'></span> We sent you an e-mail, please verify it to complete the account creation`,
         pos: 'bottom-center',
@@ -42,7 +41,7 @@ const Signup = () => {
     })
     .catch( error => {
 
-      // Send error notification
+      // Send UIkit error notification
       UIkit.notification({
         message: `<span uk-icon='close'></span> ${error}`,
         pos: 'bottom-center',

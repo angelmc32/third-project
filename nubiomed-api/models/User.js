@@ -38,6 +38,10 @@ const userModel = new Schema(
       enum: ['F','M','U'],
       default: 'U'
     },
+    profile_picture: {
+      type: String,
+      default: '../public/images/user-avatar.png'
+    },
     isActive: {
       type: Boolean,
       default: false

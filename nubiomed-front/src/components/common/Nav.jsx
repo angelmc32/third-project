@@ -36,7 +36,7 @@ const Nav = () => {
                 Como funciona
               </NavLink>
             </li>
-            <li className="uk-active">
+            <li className="uk-active uk-margin-right">
               <NavLink to="/services">
                 Servicios
               </NavLink>
@@ -48,30 +48,31 @@ const Nav = () => {
                 </ul>
               </div>
             </li>
-            <li>
+            
               {!user._id ? (
+                <li>
                 <NavLink to="/login">
                   <Button type="danger uk-border-pill" text="Entrar" />
                 </NavLink>
+                </li>
               ) : (
-                <div className="uk-grid-small uk-flex-middle" uk-grid="true">
+                <li className="uk-active">
+                <NavLink to="/profile">
                   <div className="uk-width-auto">
-                    <img className="uk-border-circle" width={40} height={40} src="https://getuikit.com/docs/images/avatar.jpg" />
+                    <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} />
                   </div>
-                  <div className="uk-width-expand">
-                    <h4>User</h4>
-                  </div>
-                  <div className="uk-navbar-dropdown uk-margin-remove">
-                    <ul className="uk-nav uk-navbar-dropdown-nav">
-                      <li className="uk-active">
-                        <button className="uk-button uk-button-danger uk-border-pill" onClick={handleLogout}>Logout</button>
-                        <Button type="danger uk-border-pill" text="Logout" onClick={handleLogout}/>
-                      </li>
-                    </ul>
-                  </div>
+                  <p>Mi Cuenta</p>
+                </NavLink>
+                <div className="uk-navbar-dropdown uk-margin-remove">
+                  <ul className="uk-nav uk-navbar-dropdown-nav">
+                    <li className="uk-active">
+                      <button className="uk-button uk-button-danger uk-border-pill uk-button-small" onClick={handleLogout}>Cerrar sesión</button>
+                    </li>
+                  </ul>
                 </div>
+                </li>
               )}
-            </li>
+            
           </ul>
         </div>
       </nav>
