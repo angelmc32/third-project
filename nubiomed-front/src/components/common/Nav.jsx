@@ -58,8 +58,8 @@ const Nav = () => {
               ) : (
                 <li className="uk-active">
                 <NavLink to="/profile">
-                  <div className="uk-width-auto">
-                    <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} />
+                  <div className="uk-width-auto uk-margin-small-right">
+                    <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} alt="User profile" />
                   </div>
                   <p>Mi Cuenta</p>
                 </NavLink>

@@ -5,3 +5,4 @@ const User = require('../models/User');   // Require the User model to create an
 // Import helpers for token verification (jwt) and cloudinary uploader (multer+cloudinary)
 const { verifyToken } = require('../helpers/auth-helper');
 const uploader = require('../helpers/multer-helper');
+

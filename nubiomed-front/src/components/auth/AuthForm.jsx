@@ -5,21 +5,21 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 // email, password and confpassword variables from form state variable, and submit and handleChange functions
 const AuthForm = ( { submit, action, email = '', password = '', confpassword = '', handleChange } ) => (
 
-  <div className="section">
+  <div className="uk-container">
 
-    <div className="container">
+    <div className="uk-container uk-margin-bottom">
 
       <h2>{action === "signup" ? "Registro" : "Inicia Sesión"}</h2>
       
       {action === "signup" ? (
         <h5>¿Ya tienes cuenta? 
-          <NavLink to="/login" className="uk-margin-left">
+          <NavLink to="/login" className="uk-margin-small-left">
              Accede aquí
           </NavLink>
         </h5>
         ) : (
         <h5>¿Primera vez? 
-          <NavLink to="/signup" className="uk-margin-left">
+          <NavLink to="/signup" className="uk-margin-small-left">
             Regístrate aquí
           </NavLink>
         </h5>
@@ -27,7 +27,7 @@ const AuthForm = ( { submit, action, email = '', password = '', confpassword = '
 
     </div>
 
-    <div className="container uk-margin-top">
+    <div className="uk-container uk-margin-top">
 
       <form className="uk-form-stacked uk-margin" onSubmit={submit}>
         
