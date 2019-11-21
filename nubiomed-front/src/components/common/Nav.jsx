@@ -56,7 +56,7 @@ const Nav = () => {
               {!user._id ? (
                 <li>
                 <NavLink to="/login">
-                  <Button type="danger uk-border-pill" text="Entrar" />
+                  <button className="uk-button uk-button-primary uk-border-pill" >Entrar</button>
                 </NavLink>
                 </li>
               ) : (
