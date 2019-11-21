@@ -15,7 +15,7 @@ router.post('/signup', (req, res, next) => {
   const { password } = req.body;  // Destructure the password in order to hash it before storing it in the database
 
   // Password length validation, min length 8, if not, respond with a 500 status and error message
-  if ( password.length < 8 ) return res.status(500).json({ error: "Password is too short" });
+  if ( password.length < 8 ) return res.status(500).json({ error, msg: "Password is too short" });
 
   // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
   const salt = bcrypt.genSaltSync(10);
@@ -74,9 +74,10 @@ router.post('/login', (req, res, next) => {
   User.findOne({ email })
   .then( user => {
 
+    // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
     const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-    if (!isPasswordValid) return res.status(401).json({ error: 'Invalid password' });
+    if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
 
     // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
     // is app secret (used as key to create a token signature), third is a callback that passes the error or token

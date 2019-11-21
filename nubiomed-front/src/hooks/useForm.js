@@ -11,7 +11,6 @@ const useForm = () => {
     
     // Destructure input name and value (data that is being changed by user)
     const { name, value } = event.target;
-    console.log(name, value)
 
     // Update the form state without erasing previos values (with prevState)
     setForm( prevState => ({...prevState, [name]: value}) );

@@ -40,7 +40,7 @@ const userModel = new Schema(
     },
     profile_picture: {
       type: String,
-      default: '../public/images/user-avatar.png'
+      default: 'https://cdn2.iconfinder.com/data/icons/social-media-flat-line/70/user-512.png'
     },
     isActive: {
       type: Boolean,

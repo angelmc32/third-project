@@ -1,16 +1,17 @@
-import React, { useEffect, useContext } from 'react';   // Import React and useContext hook
-import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
-import { AppContext } from '~src/AppContext';           // Import AppContext to use created context
-import { edit } from '~services/profile-services';
-import useForm from '../../hooks/useForm';                   // Import useForm custom hook
-import UIkit from 'uikit';                              // Import UIkit for notifications
+import React, { useEffect, useContext } from 'react';         // Import React and useContext hook
+import { useHistory } from 'react-router-dom';                // Import useHistory for "redirection"
+import { AppContext } from '~src/AppContext';                 // Import AppContext to use created context
+import { editProfile } from '~services/profile-services';     // Import edit API call
+import useForm from '../../hooks/useForm';                    // Import useForm custom hook
+import UIkit from 'uikit';                                    // Import UIkit for notifications
 
 
 const Profile = () => {
 
-  const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
-  const { user } = useContext(AppContext);      // Destructure user state variable
-  const { push } = useHistory();                // Destructure push method from useHistory to "redirect" user
+  // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
+  const { form, handleInput, handleFileInput } = useForm();
+  const { user, setUser } = useContext(AppContext); // Destructure user state variable
+  const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
 
 
   useEffect( () => {
@@ -28,18 +29,30 @@ const Profile = () => {
 
     };
 
-  }, [] );
+  }, [user] );
 
   // Declare function for form submit event
   const handleSubmit = (event) => {
 
-    event.preventDefault();                     // Prevent page reloading after submit action
+    event.preventDefault();          // Prevent page reloading after submit action
 
+    const formData = new FormData();
+    const { profile_picture } = form;
+
+    for (let key in form) {
+
+      if ( key === 'profile_picture' ) formData.append(key, profile_picture[0]);
+      else formData.append(key, form[key]);
+      
+    }
+    
     // Call edit service with form state variable as parameter, which includes form data for e-mail and password
-    edit(form)
+    editProfile(formData)
     .then( res => {
 
-      console.log(res);
+      const { user } = res.data
+      console.log(user);
+      setUser(user);
 
     })
     .catch( error => {
@@ -52,7 +65,8 @@ const Profile = () => {
       });
 
     });
-
+    
+   console.log(form);
   };
 
   return (
@@ -106,7 +120,12 @@ const Profile = () => {
           <div className="uk-width-1-3">
 
             <div className="uk-width-auto uk-margin-remove">
-              <img className="uk-border-circle" width={160} height={160} src={user.profile_picture} alt="User profile" />
+              <img className="uk-border-circle" width={140} height={140} src={user.profile_picture} alt="User profile" />
+            </div>
+
+            <div className="js-upload" uk-form-custom="true">
+              <input onChange={handleFileInput} name="profile_picture" type="file" multiple />
+              <button className="uk-button uk-button-default uk-button-small" type="button">Cambiar foto de perfil</button>
             </div>
             
             <div className="uk-margin">
@@ -116,7 +135,7 @@ const Profile = () => {
                 <input onChange={handleInput} name="email" defaultValue={user.email} className="uk-input" type="email" />
               </div>
             </div>
-
+{/*
             <div className="uk-margin">
               <label className="uk-form-label">Contraseña:</label>
               <div className="uk-inline">
@@ -125,6 +144,7 @@ const Profile = () => {
                 />
               </div>
             </div>
+*/}
 
             <button className="uk-button uk-button-primary uk-border-pill" type="submit">
               Actualizar

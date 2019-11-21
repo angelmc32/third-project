@@ -64,7 +64,10 @@ app.locals.title = 'Nubiomed API by Mel';
 
 
 const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profile-routes');
+
 app.use('/api', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 
 module.exports = app;
