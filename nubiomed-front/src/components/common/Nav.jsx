@@ -1,20 +1,24 @@
-import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { AppContext }  from '~src/AppContext.js';
-import { logout } from '~services/auth-services.js';
-import Button from '~components/common/Button';
+import React, { useContext } from 'react';              // Import React and useContext hook
+import { NavLink } from 'react-router-dom';             // Import NavLink for "navigation"
+import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
+import { AppContext }  from '~src/AppContext.js';       // Import AppContext to use created context
+import { logout } from '~services/auth-services.js';    // Import logout service for logout functionality
+import Button from '~components/common/Button';         // Import custom Button component
 
+// Declare Nav functional component (Navigation Bar)
 const Nav = () => {
   
+  // Destructure user state variable and resetUserContext function from context
   const { user, resetUserContext } = useContext(AppContext);
+  // Destructure push method from useHistory to "redirect" user
   const { push } = useHistory();
 
+  // Declare function for handling logout button
   const handleLogout = () => {
 
-    logout();
-    push('/login');
-    resetUserContext();
+    logout();                   // Execute logout function (clear localStorage)
+    push('/login');             // Redirect user to login
+    resetUserContext();         // delete user data from context to an empty object
 
   };
 

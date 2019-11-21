@@ -29,7 +29,7 @@ const Login = () => {
       localStorage.setItem('token', token);
 
       setUser(user);    // Modify user state variable, setting the user data in the state
-      push('/home');    // "Redirect" user to home
+      push('/');    // "Redirect" user to home
 
     })
     .catch( error => {

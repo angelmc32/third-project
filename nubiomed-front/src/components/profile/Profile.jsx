@@ -5,7 +5,7 @@ import { editProfile } from '~services/profile-services';     // Import edit API
 import useForm from '../../hooks/useForm';                    // Import useForm custom hook
 import UIkit from 'uikit';                                    // Import UIkit for notifications
 
-
+// Declare Profile functional component
 const Profile = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
@@ -13,10 +13,10 @@ const Profile = () => {
   const { user, setUser } = useContext(AppContext); // Destructure user state variable
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
 
-
+  // Update component when user state variable is modified
   useEffect( () => {
 
-    if ( !user._id ) {
+    if ( !user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({
@@ -34,14 +34,17 @@ const Profile = () => {
   // Declare function for form submit event
   const handleSubmit = (event) => {
 
-    event.preventDefault();          // Prevent page reloading after submit action
+    event.preventDefault();               // Prevent page reloading after submit action
 
-    const formData = new FormData();
-    const { profile_picture } = form;
+    const formData = new FormData();      // Declare formData as new instance of FormData class
+    const { profile_picture } = form;     // Destructure profile_picture from form
 
+    // Loop through every key in form object and append name:value to formData
     for (let key in form) {
 
+      // If profile_pictura, append as first item in array (currently 1 file allowed, index 0)
       if ( key === 'profile_picture' ) formData.append(key, profile_picture[0]);
+
       else formData.append(key, form[key]);
       
     }
@@ -50,9 +53,9 @@ const Profile = () => {
     editProfile(formData)
     .then( res => {
 
-      const { user } = res.data
-      console.log(user);
-      setUser(user);
+      const { user } = res.data   // Destructure updated user document from response
+      
+      setUser(user);              // Modify user state variable with updated information
 
     })
     .catch( error => {
@@ -66,7 +69,6 @@ const Profile = () => {
 
     });
     
-   console.log(form);
   };
 
   return (
@@ -110,8 +112,10 @@ const Profile = () => {
 
             <div className="uk-margin">
               <label className="uk-form-label">Genero:</label>
-              <div className="uk-inline">
-                <input onChange={handleInput} name="gender" defaultValue={user.gender} className="uk-input" type="text" />
+              <div className="uk-margin uk-flex uk-flex-around">
+                <label><input className="uk-radio" type="radio" name="gender" value="F" />Mujer</label>
+                <label><input className="uk-radio" type="radio" name="gender" value="H" />Hombre</label>
+                <label><input className="uk-radio" type="radio" name="gender" value="U" defaultChecked="true"/>No binario</label>
               </div>
             </div>
             
@@ -119,11 +123,11 @@ const Profile = () => {
 
           <div className="uk-width-1-3">
 
-            <div className="uk-width-auto uk-margin-remove">
-              <img className="uk-border-circle" width={140} height={140} src={user.profile_picture} alt="User profile" />
+            <div className="uk-width-auto uk-margin-bottom">
+              <img className="uk-border-circle" width={160} height={160} src={user.profile_picture} alt="User profile" />
             </div>
 
-            <div className="js-upload" uk-form-custom="true">
+            <div className="js-upload uk-margin" uk-form-custom="true">
               <input onChange={handleFileInput} name="profile_picture" type="file" multiple />
               <button className="uk-button uk-button-default uk-button-small" type="button">Cambiar foto de perfil</button>
             </div>

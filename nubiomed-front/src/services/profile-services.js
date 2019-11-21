@@ -5,16 +5,16 @@ import axios from 'axios';
 const isProduction = process.env.NODE_ENV === 'production';
 const base_url = isProduction ? 'heroku.com' : 'http://localhost:3000/api/profile';
 
-// Export edit function, which receives data as parameters to enable edit
+// Export edit function, which receives data as parameters to enable profile edition
 export const editProfile = (data) => {
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');  // Get token from localStorage
 
   // Return a call to our /edit route, while sending the parameters obtained from the form/front-end
   return axios.patch(`${base_url}/edit`, data, {
     headers: {
-      Authorization: token,
-      "Content-Type": "multipart/form-data"
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+      "Content-Type": "multipart/form-data"     // Set content as multipart/form-data for files and text
     }
   });
 
