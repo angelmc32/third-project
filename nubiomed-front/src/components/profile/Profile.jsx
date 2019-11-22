@@ -120,11 +120,11 @@ const Profile = () => {
             </div>
 
             <div className="uk-margin">
-              <label className="uk-form-label">Genero:</label>
+              <label className="uk-form-label">Genero: {user.gender === 'F' ? "Mujer" : user.gender === 'M' ? "Hombre" : "No binario"}</label>
               <div className="uk-margin uk-flex uk-flex-around">
-                <label><input className="uk-radio" type="radio" name="gender" value="F" />Mujer</label>
-                <label><input className="uk-radio" type="radio" name="gender" value="H" />Hombre</label>
-                <label><input className="uk-radio" type="radio" name="gender" value="U" defaultChecked="true"/>No binario</label>
+                <label><input onChange={handleInput} className="uk-radio" type="radio" name="gender" value="F" />Mujer</label>
+                <label><input onChange={handleInput} className="uk-radio" type="radio" name="gender" value="M" />Hombre</label>
+                <label><input onChange={handleInput} className="uk-radio" type="radio" name="gender" value="U" />No binario</label>
               </div>
             </div>
             
