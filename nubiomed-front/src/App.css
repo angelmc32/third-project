@@ -2,6 +2,14 @@
   text-align: center;
 }
 
-.uk-button.uk-button-primary {
+.uk-button.uk-button-primary, .uk-button.uk-button-primary:active, .uk-button.uk-button-primary:visited {
+  background-color: #292659;
+}
+
+.uk-button.uk-button-primary:hover {
+  background-color: #22197F;
+}
+
+::selection {
   background-color: #292659;
 }

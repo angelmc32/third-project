@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';              // Import React and useContext hook
-import { NavLink } from 'react-router-dom';             // Import NavLink for "navigation"
-import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
-import { AppContext }  from '~src/AppContext.js';       // Import AppContext to use created context
-import { logout } from '~services/auth-services.js';    // Import logout service for logout functionality
-import Button from '~components/common/Button';         // Import custom Button component
+import React, { useContext } from 'react';                // Import React and useContext hook
+import { NavLink } from 'react-router-dom';               // Import NavLink for "navigation"
+import { useHistory } from 'react-router-dom';            // Import useHistory for "redirection"
+import { AppContext }  from '../../AppContext';           // Import AppContext to use created context
+import { logout } from '../../services/auth-services';    // Import logout service for logout functionality
 
 // Declare Nav functional component (Navigation Bar)
 const Nav = () => {
@@ -28,7 +27,12 @@ const Nav = () => {
           <ul className="uk-navbar-nav">
             <li className="uk-active">
               <NavLink to="/">
-                Nubiomed
+                <div className="uk-flex uk-flex-middle">
+                  <div className="uk-width-auto uk-margin-small-right">
+                    <img className="uk-border-circle" width={64} height={64} src="https://res.cloudinary.com/angelmc32/image/upload/v1574445487/nubiomed-api/nubiomed-logo.png" alt="logo" />
+                  </div>
+                  Nubiomed
+                </div>
               </NavLink>
             </li>
           </ul>

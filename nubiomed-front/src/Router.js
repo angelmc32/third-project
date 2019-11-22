@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Signup from '~components/auth/Signup';
-import Login from '~components/auth/Login';
-import Profile from '~components/profile/Profile';
+import Signup from './components/auth/Signup';
+import Login from './components/auth/Login';
+import Profile from './components/profile/Profile';
 // Import Components for navigation
 
 const Router = () => (

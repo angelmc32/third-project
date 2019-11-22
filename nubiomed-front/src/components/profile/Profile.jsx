@@ -1,9 +1,10 @@
-import React, { useEffect, useContext } from 'react';         // Import React and useContext hook
-import { useHistory } from 'react-router-dom';                // Import useHistory for "redirection"
-import { AppContext } from '~src/AppContext';                 // Import AppContext to use created context
-import { editProfile } from '~services/profile-services';     // Import edit API call
-import useForm from '../../hooks/useForm';                    // Import useForm custom hook
-import UIkit from 'uikit';                                    // Import UIkit for notifications
+import React, { useEffect, useContext } from 'react';           // Import React and useContext hook
+import { useHistory } from 'react-router-dom';                  // Import useHistory for "redirection"
+import { AppContext } from '../../AppContext';                  // Import AppContext to use created context
+import { editProfile } from '../../services/profile-services';  // Import edit API call
+import useForm from '../../hooks/useForm';                      // Import useForm custom hook
+import UIkit from 'uikit';                                      // Import UIkit for notifications
+import moment from 'moment';
 
 // Declare Profile functional component
 const Profile = () => {
@@ -57,9 +58,9 @@ const Profile = () => {
       
       setUser(user);              // Modify user state variable with updated information
 
-      // Send UIkit error notification
+      // Send UIkit success notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> 'Profile updated successfully!'`,
+        message: `<span uk-icon='close'></span> '¡Tu perfil fue actualizado exitosamente!'`,
         pos: 'bottom-center',
         status: 'success'
       });
@@ -113,9 +114,9 @@ const Profile = () => {
             </div>
 
             <div className="uk-margin">
-              <label className="uk-form-label">CURP:</label>
+              <label className="uk-form-label">Fecha de nacimiento: {moment.utc(user.date_of_birth).format('LL')}</label>
               <div className="uk-inline">
-                <input onChange={handleInput} name="curp" defaultValue={user.curp} className="uk-input" type="text" />
+                <input onChange={handleInput} name="date_of_birth" className="uk-input" type="date" />
               </div>
             </div>
 
@@ -132,13 +133,20 @@ const Profile = () => {
 
           <div className="uk-width-1-3">
 
-            <div className="uk-width-auto uk-margin-bottom">
+            <div className="uk-width-auto">
               <img className="uk-border-circle" width={160} height={160} src={user.profile_picture} alt="User profile" />
             </div>
 
             <div className="js-upload uk-margin" uk-form-custom="true">
               <input onChange={handleFileInput} name="profile_picture" type="file" multiple />
               <button className="uk-button uk-button-default uk-button-small" type="button">Cambiar foto de perfil</button>
+            </div>
+
+            <div>
+              <label className="uk-form-label">CURP:</label>
+              <div className="uk-inline">
+                <input onChange={handleInput} name="curp" defaultValue={user.curp} className="uk-input" type="text" />
+              </div>
             </div>
             
             <div className="uk-margin">

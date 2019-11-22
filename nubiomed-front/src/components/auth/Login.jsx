@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';          // Import React and useContext hook
-import { useHistory } from 'react-router-dom';      // Import useHistory for "redirection"
-import { AppContext } from '~src/AppContext';       // Import AppContext to use created context
-import { login } from '~services/auth-services';    // Import login service for API call
-import AuthForm from './AuthForm';                  // Import AuthForm react component
-import useForm from '../../hooks/useForm';          // Import useForm custom hook
-import UIkit from 'uikit';                          // Import UIkit for notifications
+import React, { useContext } from 'react';              // Import React and useContext hook
+import { useHistory } from 'react-router-dom';          // Import useHistory for "redirection"
+import { AppContext } from '../../AppContext';          // Import AppContext to use created context
+import { login } from '../../services/auth-services';   // Import login service for API call
+import AuthForm from './AuthForm';                      // Import AuthForm react component
+import useForm from '../../hooks/useForm';              // Import useForm custom hook
+import UIkit from 'uikit';                              // Import UIkit for notifications
 
 // Declare Login functional component
 const Login = () => {
