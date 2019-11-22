@@ -12,16 +12,16 @@ const uploader = require('../helpers/multer-helper');
 router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res, next) => {
 
   const { id } = req.user;    // Destructure the user id from the request
-
-  let secure_url = ''         // Declare a secure_url variable for the profile picture
+  const body  = req.body;     // Extract body from request
 
   // If a file is being uploaded, set the secure_url property in the secure_url variable
   if ( req.file ) {
-    secure_url = req.file.secure_url;
+    const secure_url = req.file.secure_url;
+    body['profile_picture'] = secure_url;
   }
 
   // Find user by id and update fields sent by the front-end in the request body and from multer helper
-  User.findByIdAndUpdate( id, {$set: {...req.body, profile_picture: secure_url}}, { new: true } )
+  User.findByIdAndUpdate( id, {$set: {...body}}, { new: true } )
   .then( user => {
 
     delete user._doc.password;        // Delete password from user document before sending it
@@ -31,7 +31,7 @@ router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res
   })
   .catch( error => {
 
-    res.status(500).json({ error, msg: "Unable to update profile" }); // Respond 500 status, error and message
+    res.status(500).json({ error, msg: 'Unable to update profile' }); // Respond 500 status, error and message
 
   });
 

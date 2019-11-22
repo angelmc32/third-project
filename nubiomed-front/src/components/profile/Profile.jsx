@@ -57,8 +57,17 @@ const Profile = () => {
       
       setUser(user);              // Modify user state variable with updated information
 
+      // Send UIkit error notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> 'Profile updated successfully!'`,
+        pos: 'bottom-center',
+        status: 'success'
+      });
+
     })
     .catch( error => {
+
+      console.log(error);
 
       // Send UIkit error notification
       UIkit.notification({
