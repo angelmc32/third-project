@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';                // Import React and useContext hook
-import { NavLink } from 'react-router-dom';               // Import NavLink for "navigation"
+import { Link, NavLink } from 'react-router-dom';         // Import NavLink for "navigation"
 import { useHistory } from 'react-router-dom';            // Import useHistory for "redirection"
 import { AppContext }  from '../../AppContext';           // Import AppContext to use created context
 import { logout } from '../../services/auth-services';    // Import logout service for logout functionality
@@ -59,9 +59,9 @@ const Nav = () => {
             
               {!user._id ? (
                 <li>
-                <NavLink to="/login">
-                  <button className="uk-button uk-button-primary uk-border-pill" >Entrar</button>
-                </NavLink>
+                  <Link to="/login">
+                    <button className="uk-button uk-button-primary uk-border-pill" >Entrar</button>
+                  </Link>
                 </li>
               ) : (
                 <li className="uk-active">

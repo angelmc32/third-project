@@ -10,6 +10,6 @@
   background-color: #22197F;
 }
 
-::selection {
+.uk-button.uk-button-primary::selection {
   background-color: #292659;
 }

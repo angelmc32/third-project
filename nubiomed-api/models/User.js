@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const userModel = new Schema(
+const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -42,7 +42,15 @@ const userModel = new Schema(
       type: String,
       default: 'https://cdn2.iconfinder.com/data/icons/social-media-flat-line/70/user-512.png'
     },
+    rating: {
+      type: Number,
+      default: 0,
+    },
     isActive: {
+      type: Boolean,
+      default: false
+    },
+    isVerified: {
       type: Boolean,
       default: false
     }
@@ -50,4 +58,4 @@ const userModel = new Schema(
   { timestamps: true }
 );
 
-module.exports = model('User', userModel);
+module.exports = model('User', userSchema);
