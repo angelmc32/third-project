@@ -18,6 +18,11 @@ const consultationSchema = new Schema (
       default: Date.now,
       required: true
     },
+    medical_facility: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'MedicalFacility'
+    },
     chief_complaint: {
       type: String,
       required: true
@@ -53,5 +58,8 @@ const consultationSchema = new Schema (
       required: true,
       ref: 'Prescription'
     }
-  }
-)
+  },
+  { timestamps: true }
+);
+
+module.exports = model('Consultation', consultationSchema);
