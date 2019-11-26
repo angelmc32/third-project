@@ -1,8 +1,9 @@
-const express = require('express');       // Import express for router functionality through its Router method
-const router = express.Router();          // Execute express router and store it into router const
-const jwt = require('jsonwebtoken');      // Import jsonwebtoken for token creation and authentication
-const bcrypt = require('bcryptjs');       // Import bcryptjs for password hash creation and password validation
-const User = require('../models/User');   // Require the User model to create and find users in database
+const express = require('express');         // Import express for router functionality through its Router method
+const router = express.Router();            // Execute express router and store it into router const
+const jwt = require('jsonwebtoken');        // Import jsonwebtoken for token creation and authentication
+const bcrypt = require('bcryptjs');         // Import bcryptjs for password hash creation and password validation
+const User = require('../models/User');     // Require the User model to create and find users in database
+const Doctor = require('../models/Doctor')  // Require the Doctor model to create and find users in database
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send } = require('../helpers/mailer-helper');
@@ -12,8 +13,9 @@ const { send } = require('../helpers/mailer-helper');
 // if unsuccessful, send a response with status 500 (Internal Server Error), the error and a message
 router.post('/signup', (req, res, next) => {
 
-  const { password } = req.body;  // Destructure the password in order to hash it before storing it in the database
-
+  // Destructure the password in order to hash it before storing it in the database, and the usertype for model verification
+  const { password, usertype } = req.body;
+  
   // Password length validation, min length 8, if not, respond with a 500 status and error message
   if ( password.length < 8 ) return res.status(500).json({ error, msg: "Password is too short" });
 
@@ -21,46 +23,90 @@ router.post('/signup', (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
-  // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
-  User.create({ ...req.body, password: hashedPassword })
-  .then( user => {
+  // Validate if user will sign up as a doctor or as a regular user/patient
+  if ( usertype !== 'doctor' ) {
     
-    // Configure options variable to pass as parameter to the mailer send method
-    const options = {
-      filename: 'signup',
-      email: user.email,
-      message: 'Please verify your email',
-      subject: 'Please verify your email'
-    };
+    // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
+    // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
+    User.create({ ...req.body, password: hashedPassword })
+    .then( user => {
+      
+      // Configure options variable to pass as parameter to the mailer send method
+      const options = {
+        filename: 'signup',
+        email: user.email,
+        message: 'Please verify your email',
+        subject: 'Please verify your email'
+      };
 
-    // Call mailer send method with options variable as parameter for e-mail verification
-    send(options);
+      // Call mailer send method with options variable as parameter for e-mail verification
+      send(options);
 
-    // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
-    // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-    jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+      // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+      // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+      jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
 
-      // Delete the password from the user document (returned by mongoose) before sending to front-end
-      delete user._doc.password;
+        // Delete the password from the user document (returned by mongoose) before sending to front-end
+        delete user._doc.password;
 
-      // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-      if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+        // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
 
-      // Respond to the request with a 200 status, the user data and a success message
-      res.status(200).json({ user, token, msg: 'Signed up and logged in: User and token created successfully' });
+        // Respond to the request with a 200 status, the user data and a success message
+        res.status(200).json({ user, token, msg: 'Signed up and logged in: User and token created successfully' });
 
+      });
+      
+    })
+    .catch( error => {
+      
+      // Respond with 500 status, the error and a message
+      res.status(500).json({ error, msg: 'Error while creating user' });
+    
     });
+  }
+  else {
+
+    // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
+    // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
+    Doctor.create({ ...req.body, password: hashedPassword })
+    .then( user => {
+      
+      // Configure options variable to pass as parameter to the mailer send method
+      const options = {
+        filename: 'signup',
+        email: user.email,
+        message: 'Please verify your email',
+        subject: 'Please verify your email'
+      };
+
+      // Call mailer send method with options variable as parameter for e-mail verification
+      send(options);
+
+      // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+      // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+      jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+
+        // Delete the password from the user document (returned by mongoose) before sending to front-end
+        delete user._doc.password;
+
+        // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+
+        // Respond to the request with a 200 status, the user data and a success message
+        return res.status(200).json({ user, token, msg: 'Signed up and logged in: Doctor and token created successfully' });
+
+      });
+      
+    })
+    .catch( error => {
+      
+      // Respond with 500 status, the error and a message
+      res.status(500).json({ error, msg: 'Error while creating doctor' });
     
-  })
-  .catch( error => {
-    
-    // Respond with 500 status, the error and a message
-    res.status(500).json({ error, msg: 'Error while creating user' });
+    });
+  }
   
-  })
-
-
 });
 
 // POST route for user login. Validate password length, hash the password, create the user in the database,

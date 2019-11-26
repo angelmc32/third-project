@@ -7,7 +7,7 @@ import useForm from '../../hooks/useForm';                // Import useForm cust
 import UIkit from 'uikit';                                // Import UIkit for notifications
 
 // Declare Signup functional component
-const Signup = () => {
+const Signup = ( { usertype } ) => {
 
   const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
   const { setUser } = useContext(AppContext);   // Destructure setUser function for user state manipulation
@@ -17,7 +17,7 @@ const Signup = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();                     // Prevent page reloading after submit action
-
+    console.log(form)
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     signup(form)
     .then( res => {
@@ -41,6 +41,8 @@ const Signup = () => {
     })
     .catch( error => {
 
+      console.log(error);
+
       // Send UIkit error notification
       UIkit.notification({
         message: `<span uk-icon='close'></span> ${error}`,
@@ -49,7 +51,7 @@ const Signup = () => {
       });
 
     });
-
+    
   };
 
   return (
@@ -58,6 +60,7 @@ const Signup = () => {
         <AuthForm
           submit={handleSubmit}
           action="signup"
+          usertype={usertype}
           handleChange={handleInput}
           {...form}
         />

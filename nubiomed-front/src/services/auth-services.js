@@ -7,7 +7,7 @@ const base_url = isProduction ? 'heroku.com' : 'http://localhost:3000/api';
 
 // Export signup function, which receives data as parameters to enable signup
 export const signup = (data) => {
-
+  
   // Return a call to our /signup route, while sending the parameters obtained from the form/front-end
   return axios.post(`${base_url}/signup`, data);
 

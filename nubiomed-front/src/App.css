@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  background-color: #F9F9F9;
+}
+
+.uk-navbar-container {
+  height: 10vh
 }
 
 .uk-button.uk-button-primary, .uk-button.uk-button-primary:active, .uk-button.uk-button-primary:visited {
@@ -12,4 +17,17 @@
 
 .uk-button.uk-button-primary::selection {
   background-color: #292659;
+}
+
+.uk-button.uk-button-danger {
+  background-color: #EB3E43;
+}
+
+.uk-button.uk-button-default.uk-button-small {
+  border: #22197F 1.5px solid;
+  border-radius: 10px;
+}
+
+.uk-section {
+  height: 90vh
 }

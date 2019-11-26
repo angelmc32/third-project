@@ -12,6 +12,10 @@ const doctorSchema = new Schema(
       type: String,
       required: true
     },
+    usertype: {
+      type: String,
+      default: 'doctor'
+    },
     first_name: {
       type: String,
       default: ''

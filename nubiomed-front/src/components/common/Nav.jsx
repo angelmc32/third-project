@@ -56,6 +56,11 @@ const Nav = () => {
                 </ul>
               </div>
             </li>
+            <li className="uk-active">
+              <NavLink to="/doctors">
+                <button className="uk-button uk-button-default uk-button-small">¿Es usted doctor?</button>
+              </NavLink>
+            </li>
             
               {!user._id ? (
                 <li>

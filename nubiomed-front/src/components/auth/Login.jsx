@@ -7,7 +7,7 @@ import useForm from '../../hooks/useForm';              // Import useForm custom
 import UIkit from 'uikit';                              // Import UIkit for notifications
 
 // Declare Login functional component
-const Login = () => {
+const Login = ( { usertype } ) => {
 
   const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
   const { setUser } = useContext(AppContext);   // Destructure setUser function for user state manipulation
@@ -17,7 +17,7 @@ const Login = () => {
   const handleSubmit = (event) => {
 
     event.preventDefault();                     // Prevent page reloading after submit action
-
+    
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     login(form)
     .then( res => {
@@ -42,7 +42,7 @@ const Login = () => {
       });
 
     });
-
+    
   };
 
   return (
@@ -51,6 +51,7 @@ const Login = () => {
         <AuthForm
           submit={handleSubmit}
           action="login"
+          usertype={usertype}
           handleChange={handleInput}
           {...form}
         />
