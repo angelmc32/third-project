@@ -21,6 +21,10 @@ const Nav = () => {
 
   };
 
+  const printUserContext = () => {
+    console.log(user);
+  }
+
   return (
     <nav className="uk-navbar-container" uk-navbar="true">
         <div className="uk-navbar-left uk-margin-left">
@@ -34,6 +38,9 @@ const Nav = () => {
                   Nubiomed
                 </div>
               </NavLink>
+            </li>
+            <li>
+              <button className="uk-button uk-button-small" onClick={printUserContext}>print user context</button>
             </li>
           </ul>
         </div>
@@ -56,13 +63,31 @@ const Nav = () => {
                 </ul>
               </div>
             </li>
-            <li className="uk-active">
-              <NavLink to="/doctors">
-                <button className="uk-button uk-button-default uk-button-small">¿Es usted doctor?</button>
-              </NavLink>
-            </li>
+
+            { !user._id ? (
+                <li className="uk-active">
+                  <NavLink to="/doctors">
+                    <button className="uk-button uk-button-default uk-button-small">¿Es usted doctor?</button>
+                  </NavLink>
+                </li>
+              ) : (
+                user.usertype === 'doctor' ? (
+                  <li>
+                    <Link to="/login">
+                      <button className="uk-button uk-button-primary uk-border-pill" >Nueva Consulta</button>
+                    </Link>
+                  </li>
+                ) : (
+                  <li>
+                    <Link to="/login">
+                      <button className="uk-button uk-button-primary uk-border-pill" >BUscar doctor</button>
+                    </Link>
+                  </li>
+                )
+              )
+            }
             
-              {!user._id ? (
+            { !user._id ? (
                 <li>
                   <Link to="/login">
                     <button className="uk-button uk-button-primary uk-border-pill" >Entrar</button>
@@ -74,7 +99,7 @@ const Nav = () => {
                   <div className="uk-width-auto uk-margin-small-right">
                     <img className="uk-border-circle" width={40} height={40} src={user.profile_picture} alt="User profile" />
                   </div>
-                  <p>Mi Cuenta</p>
+                  <p>Mi Perfil</p>
                 </NavLink>
                 <div className="uk-navbar-dropdown uk-margin-remove">
                   <ul className="uk-nav uk-navbar-dropdown-nav">

@@ -11,6 +11,7 @@ const Profile = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput, handleFileInput } = useForm();
+  
   const { user, setUser } = useContext(AppContext); // Destructure user state variable
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
 
@@ -82,7 +83,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="uk-container">
+    <div className="uk-section">
 
       <div className="uk-container uk-margin-top">
 

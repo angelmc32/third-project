@@ -5,27 +5,27 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 // email, password and confpassword variables from form state variable, and submit and handleChange functions
 const AuthForm = ( { submit, action, usertype, email = '', password = '', confpassword = '', handleChange } ) => (
 
-  
-
   usertype === "patient" ? (
     <div className="uk-container">
-    <div className="uk-container uk-margin-bottom">
-
-    <h2>{action === "signup" ? "Registro" : "Inicia Sesión"}</h2>
     
-    {action === "signup" ? (
-      <h5>¿Ya tienes cuenta? 
-        <NavLink to="/login" className="uk-margin-small-left">
-          Accede aquí
-        </NavLink>
-      </h5>
-      ) : (
-      <h5>¿Primera vez? 
-        <NavLink to="/signup" className="uk-margin-small-left">
-          Regístrate aquí
-        </NavLink>
-      </h5>
-      )}
+      <div className="uk-container uk-margin-bottom">
+
+        <h2>{action === "signup" ? "Registro" : "Inicia Sesión"}</h2>
+    
+        { action === "signup" ? (
+          <h5>¿Ya tienes cuenta? 
+            <NavLink to="/login" className="uk-margin-small-left">
+              Accede aquí
+            </NavLink>
+          </h5>
+          ) : (
+          <h5>¿Primera vez? 
+            <NavLink to="/signup" className="uk-margin-small-left">
+              Regístrate aquí
+            </NavLink>
+          </h5>
+          )
+        }
 
       </div>
 
@@ -55,7 +55,7 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
             </div>
           </div>
 
-          {action === "signup" ? (
+          { action === "signup" ? (
             <div className="uk-margin">
               <label className="uk-form-label">Confirma tu contraseña:</label>
               <div className="uk-inline">
@@ -69,7 +69,13 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
                 />
               </div>
             </div>
-          ) : null}
+            ) : null }
+
+          <div className="uk-margin">
+            <label className="uk-form-label uk-margin">
+              <input onChange={handleChange} className="uk-checkbox" type="checkbox" name="usertype" value={usertype}/> Soy paciente
+            </label>
+          </div>
 
           <button className="uk-button uk-button-primary uk-border-pill" type="submit">
             {action === "signup" ? "Registrar" : "Entrar"}
@@ -141,13 +147,14 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
                   type="password"
                 />
               </div>
-              <label className="uk-form-label uk-margin">
-                <input onChange={handleChange} className="uk-checkbox" type="checkbox" name="usertype" value={usertype}/> Registrarme como {usertype}
-              </label>
-              
             </div>
           ) : null}
-
+          <div className="uk-margin">
+            <label className="uk-form-label uk-margin">
+              <input onChange={handleChange} className="uk-checkbox" type="checkbox" name="usertype" value={usertype}/> Soy {usertype}
+            </label>
+          </div>
+              
           <button className="uk-button uk-button-primary uk-border-pill" type="submit">
             {action === "signup" ? "Registrar" : "Entrar"}
           </button>

@@ -44,7 +44,7 @@ router.post('/signup', (req, res, next) => {
 
       // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
       // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-      jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+      jwt.sign({ id: user._id, usertype: 'patient' }, process.env.SECRET, (error, token) => {
 
         // Delete the password from the user document (returned by mongoose) before sending to front-end
         delete user._doc.password;
@@ -85,7 +85,7 @@ router.post('/signup', (req, res, next) => {
 
       // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
       // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-      jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+      jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
 
         // Delete the password from the user document (returned by mongoose) before sending to front-end
         delete user._doc.password;
@@ -114,40 +114,75 @@ router.post('/signup', (req, res, next) => {
 // if unsuccessful, send a response with status 404 (Not found), the error and a message
 router.post('/login', (req, res, next) => {
 
-  const { email, password } = req.body; // Destructure email and password from request body
+  const { email, password, usertype } = req.body; // Destructure email, password and usertype from request body
 
-  // Call mongoose findOne method, pass the email as query, if email exists, validate password and create token
-  User.findOne({ email })
-  .then( user => {
+  if ( usertype !== 'doctor') {
 
-    // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
-    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    // Call mongoose findOne method, pass the email as query, if email exists, validate password and create token
+    User.findOne({ email })
+    .then( user => {
 
-    if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
+      // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
+      const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-    // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
-    // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-    jwt.sign({ id: user._id }, process.env.SECRET, (error, token) => {
+      if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
 
-      // Delete the password from the user document (returned by mongoose) before sending to front-end
-      delete user._doc.password;
+      // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+      // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+      jwt.sign({ id: user._id, usertype: 'patient' }, process.env.SECRET, (error, token) => {
 
-      // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-      if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+        // Delete the password from the user document (returned by mongoose) before sending to front-end
+        delete user._doc.password;
 
-      // Respond to the request with a 200 status, the user data and a success message
-      res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
+        // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+
+        // Respond to the request with a 200 status, the user data and a success message
+        res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
+
+      });
+
+    })
+    .catch( error => {
+
+      // Respond with 404 status, the error and a message
+      res.status(404).json({ error, msg: 'Email not found in database' });
 
     });
+  } else {
 
-  })
-  .catch( error => {
+    // Call mongoose findOne method, pass the email as query, if email exists, validate password and create token
+    Doctor.findOne({ email })
+    .then( user => {
 
-    // Respond with 404 status, the error and a message
-    res.status(404).json({ error, msg: 'Email not found in database' });
+      // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
+      const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-  });
+      if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
 
+      // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+      // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+      jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
+
+        // Delete the password from the user document (returned by mongoose) before sending to front-end
+        delete user._doc.password;
+
+        // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+
+        // Respond to the request with a 200 status, the user data and a success message
+        res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
+
+      });
+
+    })
+    .catch( error => {
+
+      // Respond with 404 status, the error and a message
+      res.status(404).json({ error, msg: 'Email not found in database' });
+
+    });
+  }
 });
 
 module.exports = router;
