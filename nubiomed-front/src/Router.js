@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { AppContext } from './AppContext';
 
 // Import Components for navigation
-import Landing from './components/common/Searchbar';
+import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
