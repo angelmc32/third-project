@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { AppContext } from './AppContext';
+
+// Import Components for navigation
+import Landing from './components/common/Searchbar';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
 import DoctorLanding from './components/doctors/DoctorLanding';
 import DoctorHome from './components/doctors/DoctorHome';
 import PatientHome from './components/patients/PatientHome';
-// Import Components for navigation
 
 const Router = () => {
 
@@ -16,7 +18,7 @@ const Router = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <h1>Landing</h1>
+        <Landing />
       </Route>
       <Route exact path="/home">
         { user.usertype === 'doctor' ? 

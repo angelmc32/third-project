@@ -85,7 +85,7 @@ const Profile = () => {
   return (
     <div className="uk-section">
 
-      <div className="uk-container uk-margin-top">
+      <div className="uk-container">
 
         <h2>Actualiza tu perfil</h2>
 

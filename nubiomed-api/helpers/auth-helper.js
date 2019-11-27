@@ -1,8 +1,9 @@
-const jwt = require('jsonwebtoken');      // Require jwt for verify method (token verification)
-const User = require('../models/User');   // Require User model to obtain user data if authentication is successful
+const jwt = require('jsonwebtoken');        // Require jwt for verify method (token verification)
+const User = require('../models/User');     // Require User model to obtain user data if authentication is successful
+const Doctor = require('../models/Doctor')  // Require Doctor model to obtain user data if authentication is successful
 
 exports.verifyToken = require = (req, res, next) => {
-  
+
   // Destructure authorization from headers and rename it as token
   const { authorization: token } = req.headers;
 
@@ -14,7 +15,7 @@ exports.verifyToken = require = (req, res, next) => {
     // Respond with 401 status and failed authentication message in case of an error detected by jwt.verify method
     if ( error ) return res.status(401).json({ error, msg: 'Token authentication failed'});
 
-    if ( usertype !== 'doctor') {
+    if ( decoded.usertype !== 'doctor') {
       // Search for user in database using decoded data (in our app, saved as id for user._id when creating token)
       User.findById(decoded.id)
       .then( user => {

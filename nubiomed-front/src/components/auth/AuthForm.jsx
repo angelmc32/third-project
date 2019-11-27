@@ -6,9 +6,9 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 const AuthForm = ( { submit, action, usertype, email = '', password = '', confpassword = '', handleChange } ) => (
 
   usertype === "patient" ? (
-    <div className="uk-container">
+    <div>
     
-      <div className="uk-container uk-margin-bottom">
+      <div className="uk-margin-bottom">
 
         <h2>{action === "signup" ? "Registro" : "Inicia Sesión"}</h2>
     
@@ -29,7 +29,7 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
 
       </div>
 
-      <div className="uk-container uk-margin-top">
+      <div className="uk-margin-top">
 
         <form className="uk-form-stacked uk-margin" onSubmit={submit}>
           
@@ -86,9 +86,9 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
       </div>
     </div>
   ) : (
-    <div className="uk-container">
+    <div>
 
-      <div className="uk-container uk-margin-bottom">
+      <div className="uk-margin-bottom">
 
         <h2>{action === "signup" ? "Registro Doctores" : "Inicio de Sesión Doctores"}</h2>
         
@@ -108,7 +108,7 @@ const AuthForm = ( { submit, action, usertype, email = '', password = '', confpa
 
       </div>
 
-      <div className="uk-container uk-margin-top">
+      <div className="uk-margin-top">
 
         <form className="uk-form-stacked uk-margin" onSubmit={submit}>
           

@@ -73,14 +73,14 @@ const Nav = () => {
               ) : (
                 user.usertype === 'doctor' ? (
                   <li>
-                    <Link to="/login">
+                    <Link to="/consultations/new">
                       <button className="uk-button uk-button-primary uk-border-pill" >Nueva Consulta</button>
                     </Link>
                   </li>
                 ) : (
                   <li>
-                    <Link to="/login">
-                      <button className="uk-button uk-button-primary uk-border-pill" >BUscar doctor</button>
+                    <Link to="/search">
+                      <button className="uk-button uk-button-primary uk-border-pill" >Buscar doctor</button>
                     </Link>
                   </li>
                 )

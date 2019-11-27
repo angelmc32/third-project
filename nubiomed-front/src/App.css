@@ -29,5 +29,17 @@
 }
 
 .uk-section {
+  width: 100%;
+  height: 90vh;
+  text-align: center;
+}
+
+.sidebar {
+  width: 15vw;
   height: 90vh
+}
+
+ul.uk-nav-default.uk-nav-parent-icon>li {
+  font-size: 16px;
+  margin: 10% 0;
 }
