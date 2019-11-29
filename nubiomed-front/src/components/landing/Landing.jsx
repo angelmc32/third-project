@@ -12,25 +12,28 @@ import img_hospital from '../../assets/images/hospital.svg'
 const Landing = () => {
 
   return (
-    <div className="uk-section">
-      <div className="uk-container uk-height-small uk-flex uk-flex-middle uk-flex-center">
+    <div className="uk-section uk-padding-remove-top">
+      <div className="uk-container uk-height-medium uk-flex uk-flex-middle uk-flex-center">
         <Searchbar />
       </div>
-      <div className="uk-container uk-flex uk-flex-middle uk-width-2-3">
+      <div className="uk-container uk-flex uk-flex-middle uk-width-2-3 uk-height-small" uk-height-match="target: > .uk-card">
         <LandingCard 
           image={img_doctor} 
-          title="Busca por especialista"
-          text="" 
+          image_width={96}
+          image_height={96}
+          text="Busca por especialista"
         />
         <LandingCard 
           image={img_home}
-          title="Busca por zona o a domicilio"
-          text="" 
+          image_width={96}
+          image_height={96}
+          text="Busca por zona o a domicilio"
         />
         <LandingCard 
           image={img_hospital}
-          title="Busca por consultorio"
-          text="" 
+          image_width={88}
+          image_height={88}
+          text="Busca por consultorio"
         />
       </div>
     </div>

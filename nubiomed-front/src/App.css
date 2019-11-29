@@ -28,6 +28,10 @@
   border-radius: 10px;
 }
 
+span.uk-badge {
+  background-color: #292659;
+}
+
 .uk-section {
   width: 100%;
   height: 90vh;
@@ -36,7 +40,8 @@
 
 .sidebar {
   width: 15vw;
-  height: 90vh
+  height: 90vh;
+  border-right: #C9C9C9 solid 1px;
 }
 
 ul.uk-nav-default.uk-nav-parent-icon>li {

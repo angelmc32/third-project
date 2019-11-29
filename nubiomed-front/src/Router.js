@@ -7,9 +7,10 @@ import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
-import DoctorLanding from './components/doctors/DoctorLanding';
-import DoctorHome from './components/doctors/DoctorHome';
-import PatientHome from './components/patients/PatientHome';
+import DoctorLanding from './components/doctor/DoctorLanding';
+import DoctorHome from './components/doctor/DoctorHome';
+import PatientHome from './components/patient/PatientHome';
+import Facility from './components/facility/Facility';
 
 const Router = () => {
 
@@ -21,7 +22,7 @@ const Router = () => {
         <Landing />
       </Route>
       <Route exact path="/home">
-        { user.usertype === 'doctor' ? 
+        { user.usertype === 'Doctor' ? 
           <DoctorHome /> :
           <PatientHome />
         }
@@ -30,19 +31,22 @@ const Router = () => {
         <DoctorLanding />
       </Route>
       <Route path="/signup">
-        <Signup usertype="patient"/>
+        <Signup usertype="Patient"/>
       </Route>
       <Route path="/doctor-signup">
-        <Signup usertype="doctor"/>
+        <Signup usertype="Doctor"/>
       </Route>
       <Route path="/login">
-        <Login usertype="patient"/>
+        <Login usertype="Patient"/>
       </Route>
       <Route path="/doctor-login">
-        <Login usertype="doctor"/>
+        <Login usertype="Doctor"/>
       </Route>
       <Route path="/profile">
         <Profile />
+      </Route>
+      <Route path="/facility">
+        <Facility />
       </Route>
     </Switch>
   )

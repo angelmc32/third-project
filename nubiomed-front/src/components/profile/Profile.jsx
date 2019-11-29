@@ -4,7 +4,7 @@ import { AppContext } from '../../AppContext';                  // Import AppCon
 import { editProfile } from '../../services/profile-services';  // Import edit API call
 import useForm from '../../hooks/useForm';                      // Import useForm custom hook
 import UIkit from 'uikit';                                      // Import UIkit for notifications
-import moment from 'moment';
+import moment from 'moment';                                    // Import momentjs for date formatting
 
 // Declare Profile functional component
 const Profile = () => {

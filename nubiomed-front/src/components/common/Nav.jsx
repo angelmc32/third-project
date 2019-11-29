@@ -71,7 +71,7 @@ const Nav = () => {
                   </NavLink>
                 </li>
               ) : (
-                user.usertype === 'doctor' ? (
+                user.usertype === 'Doctor' ? (
                   <li>
                     <Link to="/consultations/new">
                       <button className="uk-button uk-button-primary uk-border-pill" >Nueva Consulta</button>

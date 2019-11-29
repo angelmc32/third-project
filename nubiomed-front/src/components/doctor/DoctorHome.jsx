@@ -12,7 +12,7 @@ const DoctorHome = () => {
   useEffect( () => {
 
     // If user is not a doctor and not logged in, send a notification and "redirect" to login
-    if ( user.usertype !== 'doctor' ) {
+    if ( user.usertype !== 'Doctor' ) {
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({

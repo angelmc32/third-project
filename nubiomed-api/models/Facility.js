@@ -3,18 +3,15 @@ const { Schema, model } = mongoose;
 
 const facilitySchema = new Schema(
   {
-    owner_type: {
-      type: String,
-      enum: ['user', 'doctor'],
+    ref_model_id: {
+      type: Schema.Types.ObjectId,
       required: true,
+      refPath: 'ref_model_name'
     },
-    owner_doctor: {
-      type: Schema.Types.ObjectId,
-      ref: 'Doctor'
-    },
-    owner_user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+    ref_model_name: {
+      type: String,
+      required: true,
+      enum: ['Patient', 'Doctor']
     },
     title: {
       type: String,
@@ -30,6 +27,14 @@ const facilitySchema = new Schema(
     },
     description: {
       type: String,
+      required: true
+    },
+    images: {
+      type: [String],
+      minlength: 1
+    },
+    price: {
+      type: Number,
       required: true
     },
     is_med_facility: {

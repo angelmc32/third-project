@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';       // Import NavLink for "navigat
 // email, password and confpassword variables from form state variable, and submit and handleChange functions
 const AuthForm = ( { submit, action, usertype, email = '', password = '', confpassword = '', handleChange } ) => (
 
-  usertype === "patient" ? (
+  usertype === "Patient" ? (
     <div>
     
       <div className="uk-margin-bottom">

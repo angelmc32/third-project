@@ -1,5 +1,4 @@
-// Import axios to enable API calls to our back-end
-import axios from 'axios';
+import axios from 'axios';                      // Import axios to enable API calls to our back-end
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';

@@ -1,9 +1,9 @@
-const express = require('express');         // Import express for router functionality through its Router method
-const router = express.Router();            // Execute express router and store it into router const
-const jwt = require('jsonwebtoken');        // Import jsonwebtoken for token creation and authentication
-const bcrypt = require('bcryptjs');         // Import bcryptjs for password hash creation and password validation
-const User = require('../models/User');     // Require the User model to create and find users in database
-const Doctor = require('../models/Doctor')  // Require the Doctor model to create and find users in database
+const express = require('express');             // Import express for router functionality through its Router method
+const router = express.Router();                // Execute express router and store it into router const
+const jwt = require('jsonwebtoken');            // Import jsonwebtoken for token creation and authentication
+const bcrypt = require('bcryptjs');             // Import bcryptjs for password hash creation and password validation
+const Patient = require('../models/Patient');   // Require the Patient model to create and find users in database
+const Doctor = require('../models/Doctor')      // Require the Doctor model to create and find users in database
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send } = require('../helpers/mailer-helper');
@@ -23,13 +23,13 @@ router.post('/signup', (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  // Validate if user will sign up as a doctor or as a regular user/patient
-  if ( usertype !== 'doctor' ) {
+  // Validate if user will sign up as a doctor or as a patient
+  if ( usertype !== 'Doctor' ) {
     
     // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
     // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
-    User.create({ ...req.body, password: hashedPassword })
-    .then( user => {
+    Patient.create({ ...req.body, password: hashedPassword })
+    .then( user => {          // Rename the found patient document as "user"
       
       // Configure options variable to pass as parameter to the mailer send method
       const options = {
@@ -44,7 +44,7 @@ router.post('/signup', (req, res, next) => {
 
       // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
       // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-      jwt.sign({ id: user._id, usertype: 'patient' }, process.env.SECRET, (error, token) => {
+      jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
 
         // Delete the password from the user document (returned by mongoose) before sending to front-end
         delete user._doc.password;
@@ -53,7 +53,7 @@ router.post('/signup', (req, res, next) => {
         if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
 
         // Respond to the request with a 200 status, the user data and a success message
-        res.status(200).json({ user, token, msg: 'Signed up and logged in: User and token created successfully' });
+        res.status(200).json({ user, token, msg: 'Signed up and logged in: Patient and token created successfully' });
 
       });
       
@@ -61,7 +61,7 @@ router.post('/signup', (req, res, next) => {
     .catch( error => {
       
       // Respond with 500 status, the error and a message
-      res.status(500).json({ error, msg: 'Error while creating user' });
+      res.status(500).json({ error, msg: 'Error while creating Patient user' });
     
     });
   }
@@ -70,7 +70,7 @@ router.post('/signup', (req, res, next) => {
     // Call mongoose create method, pass the request body (which includes the email, but it's possible to send any
     // other additional data from the front-end) and the hashed password as parameters, to be saved in the database
     Doctor.create({ ...req.body, password: hashedPassword })
-    .then( user => {
+    .then( user => {          // Rename the found doctor document as "user"
       
       // Configure options variable to pass as parameter to the mailer send method
       const options = {
@@ -116,11 +116,11 @@ router.post('/login', (req, res, next) => {
 
   const { email, password, usertype } = req.body; // Destructure email, password and usertype from request body
 
-  if ( usertype !== 'doctor') {
+  if ( usertype !== 'Doctor') {
 
     // Call mongoose findOne method, pass the email as query, if email exists, validate password and create token
-    User.findOne({ email })
-    .then( user => {
+    Patient.findOne({ email })
+    .then( user => {      
 
       // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
       const isPasswordValid = bcrypt.compareSync(password, user.password);

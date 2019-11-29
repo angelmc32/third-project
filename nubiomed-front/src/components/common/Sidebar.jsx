@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';                // Import React and useContext hook
-import { NavLink } from 'react-router-dom';         // Import NavLink for "navigation"
+import { NavLink } from 'react-router-dom';               // Import NavLink for "navigation"
 //import { useHistory } from 'react-router-dom';            // Import useHistory for "redirection"
 import { AppContext }  from '../../AppContext';           // Import AppContext to use created context
 
@@ -12,7 +12,7 @@ const Sidebar = () => {
   //const { push } = useHistory();
 
   return (
-     user.usertype === 'doctor' ? (
+     user.usertype === 'Doctor' ? (
       <div className="sidebar uk-flex uk-flex-column uk-flex-center uk-flex-top">
           <ul className="uk-nav-default uk-nav-parent-icon uk-height-large uk-width-4-5 uk-text-left uk-margin-left" uk-nav="true">
             <li className="uk-active">
@@ -31,7 +31,7 @@ const Sidebar = () => {
               <NavLink to="/consultations">Consultas</NavLink>
               <ul className="uk-nav-sub">
                 <li>
-                  <NavLink to="/consultations/new">Nueva Consulta</NavLink>
+                  <NavLink to="/consultations">Nueva Consulta</NavLink>
                 </li>
                 <li>
                   <NavLink to="/consultations">Consultas Anteriores</NavLink>
@@ -59,7 +59,7 @@ const Sidebar = () => {
                   <NavLink to="/facilities/favorites">Mis Favoritos</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/facilities/new">Publicar en renta</NavLink>
+                  <NavLink to="/facility">Mis Consultorios</NavLink>
                 </li>
               </ul>
             </li>
@@ -96,7 +96,7 @@ const Sidebar = () => {
                 <NavLink to="/facilities">Buscar</NavLink>
               </li>
               <li>
-                <NavLink to="/facilities/new">Publicar en renta</NavLink>
+                <NavLink to="/facility">Mis Consultorios</NavLink>
               </li>
             </ul>
           </li>

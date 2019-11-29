@@ -11,8 +11,8 @@ const PatientHome = () => {
   // Update component when user state variable is modified
   useEffect( () => {
 
-    // If user is not a doctor and not logged in, send a notification and "redirect" to login
-    if ( user.usertype === 'doctor' ) {
+    // If user is not a patient and not logged in, send a notification and "redirect" to login
+    if ( user.usertype !== 'Patient' ) {
 
       // Send UIkit warning notification: User must log in
       UIkit.notification({

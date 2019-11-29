@@ -1,6 +1,6 @@
 const express = require('express');         // Import express for router functionality through its Router method
 const router = express.Router();            // Execute express router and store it into router const
-const User = require('../models/User');     // Require the User model to create and find users in database
+const Patient = require('../models/Patient');     // Require the User model to create and find users in database
 const Doctor = require('../models/Doctor'); // Require the Doctor model to create and find users in database
 
 // Import helpers for token verification (jwt) and cloudinary uploader (multer+cloudinary)
@@ -21,11 +21,11 @@ router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res
     body['profile_picture'] = secure_url;
   }
 
-  if ( usertype !== 'doctor' ) {
+  if ( usertype !== 'Doctor' ) {
 
-    // Find user by id and update fields sent by the front-end in the request body and from multer helper
-    User.findByIdAndUpdate( id, {$set: {...body}}, { new: true } )
-    .then( user => {
+    // Find patient by id and update fields sent by the front-end in the request body and from multer helper
+    Patient.findByIdAndUpdate( id, {$set: {...body}}, { new: true } )
+    .then( user => {                    // Rename the found patient document as "user"
 
       delete user._doc.password;        // Delete password from user document before sending it
 
@@ -42,7 +42,7 @@ router.patch('/edit', verifyToken, uploader.single('profile_picture'), (req, res
 
     // Find user by id and update fields sent by the front-end in the request body and from multer helper
     Doctor.findByIdAndUpdate( id, {$set: {...body}}, { new: true } )
-    .then( user => {
+    .then( user => {                    // Rename the found doctor document as "user"
 
       delete user._doc.password;        // Delete password from user document before sending it
 
