@@ -6,12 +6,20 @@ import * as serviceWorker from './serviceWorker';
 
 // Import BrowserRouter to allow the user to navigate within the app by setting defined routes. See ./Router.js for more information
 import { BrowserRouter } from 'react-router-dom';
+
 // Import the Provider which will allow to pass down the state variables and methods to its descendants
 import AppProvider from './AppContext';
+
 // Import UIkit for styles
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 import 'uikit/dist/css/uikit.min.css';
+
+// Import Mapbox for map rendering using Mapbox API
+//import mapboxgl from 'mapbox-gl';
+//mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+
+
 
 UIkit.use(Icons);   // Execute to allow icon use
 

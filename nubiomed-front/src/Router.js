@@ -11,6 +11,7 @@ import DoctorLanding from './components/doctor/DoctorLanding';
 import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
 import Facility from './components/facility/Facility';
+import Map from './components/common/Map';
 
 const Router = () => {
 
@@ -47,6 +48,9 @@ const Router = () => {
       </Route>
       <Route path="/facility">
         <Facility />
+      </Route>
+      <Route path="/map">
+        <Map />
       </Route>
     </Switch>
   )
