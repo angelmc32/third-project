@@ -41,17 +41,17 @@ const Profile = () => {
     const formData = new FormData();      // Declare formData as new instance of FormData class
     const { profile_picture } = form;     // Destructure profile_picture from form
 
-    // Loop through every key in form object and append name:value to formData
+    // Iterate through every key in form object and append name:value to formData
     for (let key in form) {
 
-      // If profile_pictura, append as first item in array (currently 1 file allowed, index 0)
+      // If profile_picture, append as first item in array (currently 1 file allowed, index 0)
       if ( key === 'profile_picture' ) formData.append(key, profile_picture[0]);
 
       else formData.append(key, form[key]);
       
     }
     
-    // Call edit service with form state variable as parameter, which includes form data for e-mail and password
+    // Call edit service with formData as parameter, which includes form data for user profile information
     editProfile(formData)
     .then( res => {
 

@@ -11,7 +11,7 @@ import DoctorLanding from './components/doctor/DoctorLanding';
 import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
 import Facility from './components/facility/Facility';
-import Map from './components/common/Map';
+import Map from './components/common/Mapbox';
 
 const Router = () => {
 

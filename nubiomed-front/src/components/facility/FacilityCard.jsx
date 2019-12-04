@@ -5,10 +5,35 @@ const Card = ({ title, images = [], description, price, owner }) => {
   return (
     <div className="uk-card uk-card-default uk-padding-remove uk-width-medium">
       <div className="uk-card-media-top uk-padding-remove">
-        <img src="http://getuikit.com/docs/images/light.jpg" alt="" width={320} />
+        <div
+          className="uk-position-relative uk-visible-toggle uk-light"
+          tabIndex="-1"
+          uk-slideshow="true"
+        >
+          <ul className="uk-slideshow-items">
+            {images.map((image, index) => (
+              <li key={index}>
+                <img src={image} alt="" uk-cover="true" />
+              </li>
+            ))}
+          </ul>
+
+          <a
+            className="uk-position-center-left uk-position-small uk-hidden-hover"
+            href="#"
+            uk-slidenav-previous="true"
+            uk-slideshow-item="previous"
+          ></a>
+          <a
+            className="uk-position-center-right uk-position-small uk-hidden-hover"
+            href="#"
+            uk-slidenav-next="true"
+            uk-slideshow-item="next"
+          ></a>
+        </div>
       </div>
       <div className="uk-card-body uk-padding-small">
-        <p>Excelente consultorio en el Hospital Angeles Pedregal</p>
+        <p>{title}</p>
         <hr />
         <div className="uk-flex uk-flex-column uk-padding-remove uk-flex-middle">
           <span className="uk-badge uk-width-1-2 uk-text-center">

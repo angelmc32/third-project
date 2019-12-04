@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/new', verifyToken, uploader.array('images'), (req, res, next) => {
 
-  const { /*files,*/ user } = req;
+  const { files, user } = req;
   const images = files.map( file => file.secure_url );
 
   Facility.create({ ...req.body, ref_model_id: user._id, ref_model_name: user.usertype, images })
@@ -37,6 +37,8 @@ router.post('/new', verifyToken, uploader.array('images'), (req, res, next) => {
 
   })
   .catch( error => {
+
+    console.log(error)
 
     res.status(500).json({ error, msg: 'Unable to create the facility' });
 

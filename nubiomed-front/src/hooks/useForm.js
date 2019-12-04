@@ -9,11 +9,25 @@ const useForm = () => {
   // Declare handleInput function for input data manipulation
   const handleInput = (event) => {
     
+    if ( event.target.id === 'toggle-map') {
+
+      form['showMap'] = !form['showMap'];
+
+      console.log(form.showMap);
+
+    } else {
+
+      //form['isChangingAddress'] = false;
+      console.log('Estas cambiando otra madre')
+    }
+    
     // Destructure input name and value (data that is being changed by user)
     const { name, value } = event.target;
 
     // Update the form state without erasing previos values (with prevState)
     setForm( prevState => ({...prevState, [name]: value}) );
+
+    //console.log(form);
 
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';     // Import React and useContext hook
+import React, { useEffect, useState, useContext } from 'react';     // Import React, useEffect, useState and useContext hooks
 import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
@@ -8,59 +8,58 @@ import moment from 'moment';                                        // Import mo
 import { createFacility } from '../../services/facility-services';  // Import new consultation API service
 import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
 
-const Facility = ({ isCreating }) => {
+const Facility = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput, handleFileInput } = useForm();
-  // Declare formatted images state variable and set formatted images function to update the images state variable
-  const [ formattedImages, setFormattedImages ] = useState([]);
-
+  
   const { user } = useContext(AppContext);    // Destructure user state variable
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
-  // Update component when user state variable is modified
-  useEffect( () => {
+  // Function to handle submit button click, sending form data to back-end for storage
+  const handleSubmit = (event) => {
 
-    const { images } = form;
+    event.preventDefault();             // Prevent page reloading after submit action
+    delete form.showMap;                // Delete showMap key from form object
 
-    getDataUrl(images);
+    const formData = new FormData();    // Declare formData as new instance of FormData class
 
-    if ( !user._id ) {    // If there is no user logged in, send a notification and "redirect" to login
+    // Iterate through every key in form object and append name:value to formData
+    for (let key in form) {
+      if (key === "images") {           // Obtain images from array, append to FormData instance
+        for (let file of Array.from(form[key])) {
+          formData.append(key, file);
+        }
+      } if (key === "coordinates") {    // Obtain coordinates from array, append to FormData instance
+        for (let coord of form[key]) {
+          formData.append(key, coord);
+        }
+      } else {                          // Append the other keys:values as is
+        formData.append(key, form[key]);
+      }
+    }
 
-      // Send UIkit warning notification: User must log in
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> Por favor inicia sesión.`,
-        pos: 'bottom-center',
-        status: 'warning'
-      });
+    // Call create service with formData as parameter, which includes form data for Facility creation
+    createFacility(formData).then(res => {
+
+      const { facility } = res.data;    // Destructure recently created facility object from response
       
-      return push('/login');         // If not logged in, "redirect" user to login
+      // Send UIkit success notification
+      UIkit.notification({
+        message: `<span uk-icon='close'></span> '¡Tu consultorio fue guardado exitosamente!'`,
+        pos: 'bottom-center',
+        status: 'success'
+      });
 
-    };
-
-  }, [form.images] );
-
-  const getDataUrl = files => {
-
-    if (!files) return;
-    const dataUrls = Array.from(files).map(file => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setFormattedImages(prevState => [...prevState, reader.result]);
-      };
     });
-
-    return dataUrls;
-
-  };
+  }
 
   return (
     <div className="uk-section uk-padding-small-top">
 
       <div className="uk-container">
 
-        <FacilityForm />
+        <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} />
 
       </div>
 

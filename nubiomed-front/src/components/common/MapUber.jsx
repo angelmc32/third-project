@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MapGL, { GeolocateControl } from 'react-map-gl';
-import DeckGL, { GeoJsonLayer } from "deck.gl";
+import DeckGL, { GeoJsonLayer } from 'deck.gl';
 import Geocoder from "react-map-gl-geocoder";
 import mapboxgl from 'mapbox-gl';
 import MapboxDirections from 'mapbox-gl';

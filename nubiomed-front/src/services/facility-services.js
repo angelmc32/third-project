@@ -5,7 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const base_url = isProduction ? 'heroku.com' : 'http://localhost:3000/api/facilities';
 
 // Export edit function, which receives data as parameters to enable profile edition
-export const newFacility = (data) => {
+export const createFacility = (data) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
