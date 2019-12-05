@@ -1,7 +1,7 @@
 import React from "react";
 import currencyFormatter from "currency-formatter";
 
-const Card = ({ title, images = [], description, price, owner }) => {
+const FacilityCard = ({ title, images = [], description, price, owner }) => {
   return (
     <div className="uk-card uk-card-default uk-padding-remove uk-width-medium">
       <div className="uk-card-media-top uk-padding-remove">
@@ -45,4 +45,4 @@ const Card = ({ title, images = [], description, price, owner }) => {
   );
 };
 
-export default Card;
+export default FacilityCard;

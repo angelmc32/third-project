@@ -15,11 +15,11 @@ const AppProvider = ({ children }) => {
   // Declare resetUserContext function that will allow us to reset the user context
   const resetUserContext = () => {
 
-    setUser({});    // Sets user context to an empty object, 
+    setUser({});    // Sets user context to an empty object 
 
   };
 
-  // Create the userContext object to be passed as prop in the Provider, with our created state and functions
+  // Create the context objects to be passed as props in the Provider, with our created state and functions
   const userContext = { user, setUser, resetUserContext };
 
   // Return a context Provider component, sending the userContext as value prop

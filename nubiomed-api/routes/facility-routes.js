@@ -8,6 +8,25 @@ const uploader = require('../helpers/multer-helper');
 
 router.get('/', (req, res, next) => {
 
+  const { user } = req;
+
+  Facility.find(/*{ ref_model_id: user._id }*/)
+  .populate('ref_model_id', 'first_name profile_picture')
+  .then( facilities => {
+
+    res.status(200).json({ facilities });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+router.get('/all', (req, res, next) => {
+
   Facility.find()
   .populate('ref_model_id', 'first_name profile_picture')
   .then( facilities => {
