@@ -6,8 +6,17 @@ import { AppContext }  from '../../AppContext';           // Import AppContext t
 // Declare Sidebar functional component
 const Sidebar = () => {
   
-  // Destructure user state variable from context
-  const { user } = useContext(AppContext);
+  // Destructure user and route state variables from context and setRoute function to change route
+  const { user, route, setRoute } = useContext(AppContext); // Destructure user state variable
+
+  // Declare function to update the route state variable according to the selected link for inner component nav
+  const handleRoute = (event, newRoute) => {
+    
+    event.preventDefault();               // Prevent page reloading after submit action
+    setRoute(newRoute);                   // Update route state variable with route sent as parameter
+  
+  }
+
   // Destructure push method from useHistory to "redirect" user
   //const { push } = useHistory();
 
@@ -52,14 +61,14 @@ const Sidebar = () => {
             <li className="uk-parent uk-active">
               <a href="#">Consultorios</a>
               <ul className="uk-nav-sub">
-                <li>
+                <li onClick={event => handleRoute(event, "search")}>
                   <NavLink to="/facilities">Buscar</NavLink>
                 </li>
-                <li>
-                  <NavLink to="/facilities/favorites">Mis Favoritos</NavLink>
+                <li onClick={event => handleRoute(event, "favorites")}>
+                  <NavLink to="/facilities">Mis Favoritos</NavLink>
                 </li>
-                <li>
-                  <NavLink to="/facility">Mis Consultorios</NavLink>
+                <li onClick={event => handleRoute(event, "myFacilities")}>
+                  <NavLink to="/facilities">Mis Consultorios</NavLink>
                 </li>
               </ul>
             </li>
@@ -93,10 +102,10 @@ const Sidebar = () => {
             <a href="#">Consultorios</a>
             <ul className="uk-nav-sub">
               <li>
-                <NavLink to="/facilities">Buscar</NavLink>
+                <NavLink to="/facilities" route="search">Buscar</NavLink>
               </li>
               <li>
-                <NavLink to="/facility">Mis Consultorios</NavLink>
+                <NavLink to="/facilities" route="myFacilities">Mis Consultorios</NavLink>
               </li>
             </ul>
           </li>

@@ -10,12 +10,15 @@ import Profile from './components/profile/Profile';
 import DoctorLanding from './components/doctor/DoctorLanding';
 import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
+import Patients from './components/doctor/myPatients/Patients'
 import Facility from './components/facility/Facility';
 import Map from './components/common/Mapbox';
 
 const Router = () => {
 
-  const { user } = useContext(AppContext); // Destructure user state variable
+  const { user, route, setRoute } = useContext(AppContext); // Destructure user state variable
+
+  const handleRoute = (newRoute) => setRoute(newRoute);
 
   return (
     <Switch>
@@ -46,7 +49,10 @@ const Router = () => {
       <Route path="/profile">
         <Profile />
       </Route>
-      <Route path="/facility">
+      <Route path="/patients">
+        <Patients />
+      </Route>
+      <Route path="/facilities">
         <Facility />
       </Route>
       <Route path="/map">

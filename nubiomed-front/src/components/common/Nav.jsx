@@ -8,7 +8,7 @@ import { logout } from '../../services/auth-services';    // Import logout servi
 const Nav = () => {
   
   // Destructure user state variable and resetUserContext function from context
-  const { user, resetUserContext } = useContext(AppContext);
+  const { user, route, resetUserContext } = useContext(AppContext);
   // Destructure push method from useHistory to "redirect" user
   const { push } = useHistory();
 
@@ -23,6 +23,7 @@ const Nav = () => {
 
   const printUserContext = () => {
     console.log(user);
+    console.log(route);
   }
 
   return (

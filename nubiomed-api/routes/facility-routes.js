@@ -6,11 +6,12 @@ const Facility = require('../models/Facility');   // Require the User model to c
 const { verifyToken } = require('../helpers/auth-helper');
 const uploader = require('../helpers/multer-helper');
 
-router.get('/', (req, res, next) => {
+router.get('/', verifyToken, (req, res, next) => {
 
-  const { user } = req;
+  const { id, usertype } = req.user;    // Destructure the user id from the request
+  console.log(req.user);
 
-  Facility.find(/*{ ref_model_id: user._id }*/)
+  Facility.find({ ref_model_id: id })
   .populate('ref_model_id', 'first_name profile_picture')
   .then( facilities => {
 
@@ -28,7 +29,7 @@ router.get('/', (req, res, next) => {
 router.get('/all', (req, res, next) => {
 
   Facility.find()
-  .populate('ref_model_id', 'first_name profile_picture')
+  .populate()
   .then( facilities => {
 
     res.status(200).json({ facilities });

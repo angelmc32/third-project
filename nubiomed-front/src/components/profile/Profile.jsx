@@ -15,7 +15,7 @@ const Profile = () => {
   const { user, setUser } = useContext(AppContext); // Destructure user state variable
   const { push } = useHistory();                    // Destructure push method from useHistory to "redirect" user
 
-  // Update component when user state variable is modified
+  // Hook to update component when user state variable is modified
   useEffect( () => {
 
     if ( !user._id ) {    // If there is no user logged in, send a notification and "redirect" to login

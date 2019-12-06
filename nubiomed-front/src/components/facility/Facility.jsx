@@ -6,33 +6,49 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 
 // Import API services (CRUD operations) from services file
-import { getFacilities, createFacility } from '../../services/facility-services';
-import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
-import FacilityCard from './FacilityCard';
+import { getUserFacilities, getAllFacilities, createFacility } from '../../services/facility-services';
 
+import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
+import FacilityCard from './FacilityCard';                          // Import FacilityCard react component
+
+// Declare Facility functional component
 const Facility = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput, handleFileInput } = useForm();
   
   // Destructure user state variable
-  const { user } = useContext(AppContext);
+  const { user, route, setRoute } = useContext(AppContext);
   // Declare facilities state variable and setFacilities function to update the facilities state variable
   const [facilities, setFacilities] = useState([]);
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
+  // Hook to update component when route state variable is modified (in sidebar or by buttons)
   useEffect( () => {
 
-    getFacilities()
-    .then( res => {
+    if ( route === 'myFacilities' ) {       // Route corresponding to user's facilities
 
-      const { facilities } = res.data;
-      setFacilities(facilities);
+      getUserFacilities()                   // Fetch facilities belonging to user
+      .then( res => {
 
-    })
+        const { facilities } = res.data;    // Destructure user facilities from response
+        setFacilities(facilities);          // Update facilities state variable
 
+      });
 
-  }, []);
+    } else {                                // Corresponds to route 'search' for all facilities
+
+      getAllFacilities()                    // Fetch all facilities in database (no restrictions)
+      .then( res => {
+
+        const { facilities } = res.data;    // Destructure facilities from response
+        setFacilities(facilities);          // Update facilities state variable
+
+      });
+
+    }
+
+  }, [route]);
 
   // Function to handle submit button click, sending form data to back-end for storage
   const handleSubmit = (event) => {
@@ -70,26 +86,42 @@ const Facility = () => {
       });
 
     });
+  };
+
+  // Declare function to toggle form display when "Add facility" button is clicked, changes route
+  const toggleForm = () => {
+    route === 'myFacilities' ? setRoute('createFacility') : setRoute('myFacilities');
   }
 
   return (
-    <div className="uk-section uk-padding-small-top">
+    <div className="uk-section">
 
       <div className="uk-container">
 
-        <div className="uk-grid uk-child-width-1-3 uk-grid-match uk-grid-small">
-
-          { facilities.map((facility, index) => {
-            
-            console.log('lol')
-            return <FacilityCard key={index} {...facility} />
-
-            })
-          }
-
-        </div>
-
-        {/* <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} /> */}
+        { route === 'myFacilities' ? (
+            <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
+              <h3>Mis Consultorios</h3>
+              <button onClick={toggleForm} className="uk-button uk-button-danger uk-border-pill">Agregar un nuevo consultorio</button>              
+              <div uk-grid="true" className="uk-margin uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
+                { facilities.map( (facility, index) => ( <FacilityCard key={index} {...facility} /> ) ) }
+              </div>
+            </div>
+          ) : ( route === 'createFacility' ? (
+              <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} />
+              ) : ( 
+                route === 'favorites' ? (
+                  <h3>Your favorite facilities</h3>
+                ) : (
+                  <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
+                    <h3>Busca consultorios</h3>
+                    <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
+                      { facilities.map( (facility, index) => ( <FacilityCard key={index} {...facility} /> ) ) }
+                    </div>
+                  </div>
+                )
+              )
+          )
+        }
 
       </div>
 

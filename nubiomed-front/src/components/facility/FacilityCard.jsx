@@ -1,9 +1,9 @@
-import React from "react";
-import currencyFormatter from "currency-formatter";
+import React from "react";                              // Import React
+import currencyFormatter from "currency-formatter";     // Import currency formatter for price display
 
 const FacilityCard = ({ title, images = [], description, price, owner }) => {
   return (
-    <div className="uk-card uk-card-default uk-padding-remove uk-width-medium">
+    <div className="uk-card uk-card-default uk-padding-remove">
       <div className="uk-card-media-top uk-padding-remove">
         <div
           className="uk-position-relative uk-visible-toggle uk-light"
