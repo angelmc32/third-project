@@ -85,6 +85,9 @@ const Facility = () => {
         status: 'success'
       });
 
+      setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
+      push('/facilities');          // "Redirect" user to myFacilities
+
     });
   };
 
