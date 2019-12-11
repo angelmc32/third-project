@@ -13,6 +13,7 @@ import PatientHome from './components/patient/PatientHome';
 import Patients from './components/doctor/myPatients/Patients'
 import Facility from './components/facility/Facility';
 import Map from './components/common/Mapbox';
+import FacilityInfo from './components/facility/FacilityInfo';
 
 const Router = () => {
 

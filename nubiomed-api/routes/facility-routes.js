@@ -51,7 +51,7 @@ router.post('/new', verifyToken, uploader.array('images'), (req, res, next) => {
   Facility.create({ ...req.body, ref_model_id: user._id, ref_model_name: user.usertype, images })
   .then( facility => {
 
-    Facility.populate(facility, { path: 'ref_model_id', select: 'first_name profile_picture' });
+    Facility.populate(facility, { path: 'ref_model_id', select: 'first_name profile_picture _id' });
 
     res.status(200).json({ facility });
 
@@ -85,14 +85,22 @@ router.get('/:facilityID', (req, res, next) => {
 
 });
 
-router.patch('/:facilityID', verifyToken, (req, res, next) => {
+router.patch('/:facilityID', verifyToken, uploader.array('images'), (req, res, next) => {
 
   const { facilityID } = req.params;
+  const body  = req.body;               // Extract body from request
 
-  Facility.findByIdAndUpdate( facilityID, { $set: { ...req.body } }, { new: true } )
+  // If a file is being uploaded, set the secure_url property in the secure_url variable
+  if ( req.files ) {
+    const images = req.files.map(file => file.secure_url);
+    body[images] = images;
+  }
+
+  Facility.findByIdAndUpdate( facilityID, { $set: { ...body } }, { new: true } )
   .populate('ref_model_id', 'first_name profile_picture')
   .then( facility => {
 
+    console.log(facility);
     res.status(200).json({ facility });
 
   })

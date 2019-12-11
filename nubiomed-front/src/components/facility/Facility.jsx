@@ -6,10 +6,11 @@ import UIkit from 'uikit';                                          // Import UI
 import moment from 'moment';                                        // Import momentjs for date formatting
 
 // Import API services (CRUD operations) from services file
-import { getUserFacilities, getAllFacilities, createFacility } from '../../services/facility-services';
+import { getUserFacilities, getAllFacilities, getFacilityInfo, createFacility, updateFacility, deleteFacility } from '../../services/facility-services';
 
 import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
 import FacilityCard from './FacilityCard';                          // Import FacilityCard react component
+import FacilityInfo from './FacilityInfo';
 
 // Declare Facility functional component
 const Facility = () => {
@@ -21,6 +22,7 @@ const Facility = () => {
   const { user, route, setRoute } = useContext(AppContext);
   // Declare facilities state variable and setFacilities function to update the facilities state variable
   const [facilities, setFacilities] = useState([]);
+  const [facility, setFacility] = useState([]);
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
   // Hook to update component when route state variable is modified (in sidebar or by buttons)
@@ -33,6 +35,29 @@ const Facility = () => {
 
         const { facilities } = res.data;    // Destructure user facilities from response
         setFacilities(facilities);          // Update facilities state variable
+
+      });
+
+    } if ( route === 'showFacility' || route === 'editFacility' ) {
+
+      console.log(`This is the id youre looking for ${facility}`);
+      getFacilityInfo(facility)                     // Fetch all facilities in database (no restrictions)
+      .then( res => {
+
+        const { facility } = res.data;      // Destructure facilities from response
+        setFacility(facility);            // Update facilities state variable
+
+      });
+
+    } if ( route === 'delete' ) {
+
+      console.log(`Deleting ${facility._id}`);
+      deleteFacility(facility._id)                     // Fetch all facilities in database (no restrictions)
+      .then( res => {
+
+        const { facility } = res.data;      // Destructure facilities from response
+        setFacility(null);                  // Update facilities state variable
+        setRoute('myFacilities');
 
       });
 
@@ -51,7 +76,7 @@ const Facility = () => {
   }, [route]);
 
   // Function to handle submit button click, sending form data to back-end for storage
-  const handleSubmit = (event) => {
+  const handleSubmit = (event, edit = false, id = null) => {
 
     event.preventDefault();             // Prevent page reloading after submit action
     delete form.showMap;                // Delete showMap key from form object
@@ -73,27 +98,61 @@ const Facility = () => {
       }
     }
 
-    // Call create service with formData as parameter, which includes form data for Facility creation
-    createFacility(formData).then(res => {
+    if ( !edit ) {
 
-      const { facility } = res.data;    // Destructure recently created facility object from response
-      
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡Tu consultorio fue guardado exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
+      // Call create service with formData as parameter, which includes form data for Facility creation
+      createFacility(formData).then(res => {
+
+        const { facility } = res.data;    // Destructure recently created facility object from response
+        
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> '¡Tu consultorio fue guardado exitosamente!'`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+
+        setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
+        push('/facilities');          // "Redirect" user to myFacilities
+
       });
 
-      setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
-      push('/facilities');          // "Redirect" user to myFacilities
+    } else {
 
-    });
+      // Call create service with formData as parameter, which includes form data for Facility creation
+      updateFacility(formData, id).then(res => {
+
+        const { facility } = res.data;    // Destructure recently created facility object from response
+        
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> '¡Tu consultorio fue actualizado exitosamente!'`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+
+        setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
+        push('/facilities');          // "Redirect" user to myFacilities
+
+      });
+
+    };
+
   };
 
   // Declare function to toggle form display when "Add facility" button is clicked, changes route
   const toggleForm = () => {
     route === 'myFacilities' ? setRoute('createFacility') : setRoute('myFacilities');
+  }
+
+  const showFacility = (event, id, edit) => {
+    
+    event.preventDefault();
+    setFacility(id);
+
+    if (edit) route !== 'editFacility' ? setRoute('editFacility') : setRoute('myFacilities');
+    else route !== 'showFacility' ? setRoute('showFacility') : setRoute('search');
+
   }
 
   return (
@@ -106,7 +165,7 @@ const Facility = () => {
               <h3>Mis Consultorios</h3>
               <button onClick={toggleForm} className="uk-button uk-button-danger uk-border-pill">Agregar un nuevo consultorio</button>              
               <div uk-grid="true" className="uk-margin uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
-                { facilities.map( (facility, index) => ( <FacilityCard key={index} {...facility} /> ) ) }
+                { facilities.map( (facility, index) => ( <FacilityCard key={index} preview={false} showFacility={showFacility} edit={true} {...facility} /> ) ) }
               </div>
             </div>
           ) : ( route === 'createFacility' ? (
@@ -114,16 +173,22 @@ const Facility = () => {
               ) : ( 
                 route === 'favorites' ? (
                   <h3>Your favorite facilities</h3>
-                ) : (
-                  <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
-                    <h3>Busca consultorios</h3>
-                    <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
-                      { facilities.map( (facility, index) => ( <FacilityCard key={index} {...facility} /> ) ) }
+                ) : route === 'showFacility' ? (
+                  <FacilityInfo facility={facility} edit={false} showMap={false} />
+                ) : route === 'editFacility' ? (
+                  <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} edit={true} facility={facility} preview={true} />
+                  // <FacilityInfo facility={facility} edit={true} handle/>
+                  ) : (
+                    <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
+                      <h3>Busca consultorios</h3>
+                      <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
+                        { facilities.map( (facility, index) => ( <FacilityCard key={index} preview={false} showFacility={showFacility} edit={false} {...facility} show /> ) ) }
+                      </div>
                     </div>
-                  </div>
                 )
               )
-          )
+            )
+          
         }
 
       </div>

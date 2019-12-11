@@ -8,13 +8,13 @@ import UIkit from 'uikit';                                          // Import UI
 
 // Declare FacilityForm functional component, receives action variable for conditional rendering,
 // email, password and confpassword variables from form state variable, and submit and handleChange functions
-const FacilityForm = ( { submit, action, usertype, handleChange, handleFileInput, form, displayMap } ) => {
+const FacilityForm = ( { submit, handleChange, handleFileInput, form, facility = {}, edit = false, preview = false } ) => {
 
   
   // Declare formatted images state variable and set formatted images function to update the images state variable
   const [ formattedImages, setFormattedImages ] = useState([]);
 
-  const { user } = useContext(AppContext);    // Destructure user state variable
+  const { user, setRoute } = useContext(AppContext);    // Destructure user state variable
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
   // Update component when form state variable is modified
@@ -59,40 +59,44 @@ const FacilityForm = ( { submit, action, usertype, handleChange, handleFileInput
 
   };
 
+  const deleteFacility = () => setRoute('delete');
+
   return (
 
-    <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-center uk-flex-middle" onSubmit={submit}>
+    <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-center uk-flex-middle" onSubmit={ !edit ? submit : (event) => submit(event, edit, facility._id )}>
 
       <div className="uk-width-2-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
 
-        <h3>Publica un consultorio en renta</h3>
+        { edit ? <h3>Edita tu consultorio</h3> : <h3>Publica un consultorio en renta</h3> }
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Titulo:</label>
           <div className="uk-form-controls">
-            <input onChange={handleChange} name="title" defaultValue="" className="uk-input" type="text" />
+            <input onChange={handleChange} name="title" defaultValue={facility.title} className="uk-input" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Descripcion:</label>
           <div className="uk-form-controls">
-            <textarea onChange={handleChange} name="description" defaultValue="" className="uk-textarea" rows="5" />
+            <textarea onChange={handleChange} name="description" defaultValue={facility.description} className="uk-textarea" rows="5" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Direccion:</label>
           <div id="geocoder-container" className="uk-form-controls">
-            <input onChange={handleChange} name="address" value={form.address ? form.address : ''} className="uk-input" type="text" />
-            <button onClick={handleChange} id="toggle-map" className="uk-button uk-button-default uk-button-small" type="button">Mostrar mapa</button>
+            <input onChange={handleChange} name="address" defaultValue={facility.address} value={form.address ? form.address : ''} className="uk-input" type="text" />
+            <button onClick={handleChange} id="toggle-map" className="uk-button uk-button-default uk-button-small" type="button">
+              { !form.showMap ? "Mostrar mapa" : "Guardar direccion" }
+            </button>
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Precio:</label>
           <div className="uk-form-controls">
-            <input onChange={handleChange} name="price" defaultValue="" className="uk-input" type="number" />
+            <input onChange={handleChange} name="price" defaultValue={facility.price} className="uk-input" type="number" />
           </div>
         </div>
 
@@ -108,8 +112,8 @@ const FacilityForm = ( { submit, action, usertype, handleChange, handleFileInput
           <Map form={form} width={'35%'} height={'60%'}/> 
         </div> : 
         <div className="uk-width-3-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
-          <div className="uk-margin-small">
-            <FacilityCard {...form} images={formattedImages} />
+          <div className={ preview ? "uk-margin-small uk-width-2-3 uk-flex uk-flex-center" : "uk-margin-small"}>
+            <FacilityCard {...form} {...facility} images={formattedImages.length > 0 ? formattedImages : facility.images} preview={preview} />
           </div>
 
           <div className="uk-margin-small">
@@ -119,9 +123,21 @@ const FacilityForm = ( { submit, action, usertype, handleChange, handleFileInput
             </label>
           </div>
 
-          <button className="uk-button uk-button-danger uk-border-pill" type="submit">
-            Publicar
-          </button>
+          { edit ? (
+            <div className="uk-margin-small uk-flex uk-flex-column uk-flex-middle uk-flex-center">
+              <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                Actualizar <span className="uk-margin-small-left" uk-icon="refresh"></span>
+              </button>
+              <button onClick={(event) => deleteFacility(event, facility._id)} className="uk-button uk-button-default uk-button-small uk-margin-small">
+                Eliminar <span className="uk-margin-small-left" uk-icon="trash"></span>
+              </button>
+            </div>
+            ) : (
+              <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                Publicar
+              </button>
+            )}
+          
         </div>
       }
     

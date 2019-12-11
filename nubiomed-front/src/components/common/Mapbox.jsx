@@ -10,7 +10,7 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const mapboxTOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
-const Map = ({ width = '60vw', height = '60vh', form }) => {
+const Map = ({ width = '60vw', height = '60vh', form, facility = null }) => {
 
   const [map, setMap] = useState(null);
 
@@ -71,9 +71,7 @@ const Map = ({ width = '60vw', height = '60vh', form }) => {
   geocoder.on("result", res => {
     console.log(res.result)
     const { geometry: { coordinates }, place_name } = res.result
-
-    //form.lng = coordinates[0]
-    //form.lat = coordinates[1]
+    
     form.coordinates = coordinates
     form.address = place_name
 
