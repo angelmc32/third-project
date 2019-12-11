@@ -10,7 +10,7 @@ import { getUserFacilities, getAllFacilities, getFacilityInfo, createFacility, u
 
 import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
 import FacilityCard from './FacilityCard';                          // Import FacilityCard react component
-import FacilityInfo from './FacilityInfo';
+import FacilityInfo from './FacilityInfo';                          // Import FacilityInfo react component
 
 // Declare Facility functional component
 const Facility = () => {
@@ -18,10 +18,11 @@ const Facility = () => {
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput, handleFileInput } = useForm();
   
-  // Destructure user state variable
+  // Destructure user and route state variables, as well as setRoute to update route state variable
   const { user, route, setRoute } = useContext(AppContext);
   // Declare facilities state variable and setFacilities function to update the facilities state variable
   const [facilities, setFacilities] = useState([]);
+  // Declare single facility state variable and setFacility function to update the single facility state variable
   const [facility, setFacility] = useState([]);
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
@@ -40,24 +41,22 @@ const Facility = () => {
 
     } if ( route === 'showFacility' || route === 'editFacility' ) {
 
-      console.log(`This is the id youre looking for ${facility}`);
-      getFacilityInfo(facility)                     // Fetch all facilities in database (no restrictions)
+      getFacilityInfo(facility)             // Fetch facility from database
       .then( res => {
 
-        const { facility } = res.data;      // Destructure facilities from response
-        setFacility(facility);            // Update facilities state variable
+        const { facility } = res.data;      // Destructure facility from response
+        setFacility(facility);              // Update single facility state variable
 
       });
 
     } if ( route === 'delete' ) {
 
-      console.log(`Deleting ${facility._id}`);
-      deleteFacility(facility._id)                     // Fetch all facilities in database (no restrictions)
+      deleteFacility(facility._id)          // Call delete service with facility id info
       .then( res => {
 
-        const { facility } = res.data;      // Destructure facilities from response
-        setFacility(null);                  // Update facilities state variable
-        setRoute('myFacilities');
+        const { facility } = res.data;      // Destructure facility from response
+        setFacility(null);                  // Update facility to null to avoid bugs
+        setRoute('myFacilities');           // Redirect to user facilities
 
       });
 
@@ -76,6 +75,7 @@ const Facility = () => {
   }, [route]);
 
   // Function to handle submit button click, sending form data to back-end for storage
+  // edit and id paramaters optional for Update operation
   const handleSubmit = (event, edit = false, id = null) => {
 
     event.preventDefault();             // Prevent page reloading after submit action
@@ -98,12 +98,12 @@ const Facility = () => {
       }
     }
 
-    if ( !edit ) {
+    if ( !edit ) {                      // If user is not editing, user is creating
 
       // Call create service with formData as parameter, which includes form data for Facility creation
       createFacility(formData).then(res => {
 
-        const { facility } = res.data;    // Destructure recently created facility object from response
+        const { facility } = res.data;  // Destructure recently created facility object from response
         
         // Send UIkit success notification
         UIkit.notification({
@@ -112,17 +112,17 @@ const Facility = () => {
           status: 'success'
         });
 
-        setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
-        push('/facilities');          // "Redirect" user to myFacilities
+        setRoute('myFacilities');       // Modify route state variable to myFacilities for correct redirection
+        push('/facilities');            // "Redirect" user to myFacilities
 
       });
 
     } else {
 
-      // Call create service with formData as parameter, which includes form data for Facility creation
+      // Call update service with formData and facility ID as parameter, to Update facility info
       updateFacility(formData, id).then(res => {
 
-        const { facility } = res.data;    // Destructure recently created facility object from response
+        const { facility } = res.data;  // Destructure recently created facility object from response
         
         // Send UIkit success notification
         UIkit.notification({
@@ -131,8 +131,8 @@ const Facility = () => {
           status: 'success'
         });
 
-        setRoute('myFacilities');     // Modify route state variable to myFacilities for correct redirection
-        push('/facilities');          // "Redirect" user to myFacilities
+        setRoute('myFacilities');       // Modify route state variable to myFacilities for correct redirection
+        push('/facilities');            // "Redirect" user to myFacilities
 
       });
 
@@ -145,6 +145,7 @@ const Facility = () => {
     route === 'myFacilities' ? setRoute('createFacility') : setRoute('myFacilities');
   }
 
+  // Declare function to set route to facility edit or facility info
   const showFacility = (event, id, edit) => {
     
     event.preventDefault();
@@ -177,7 +178,6 @@ const Facility = () => {
                   <FacilityInfo facility={facility} edit={false} showMap={false} />
                 ) : route === 'editFacility' ? (
                   <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} edit={true} facility={facility} preview={true} />
-                  // <FacilityInfo facility={facility} edit={true} handle/>
                   ) : (
                     <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
                       <h3>Busca consultorios</h3>

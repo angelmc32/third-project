@@ -59,7 +59,7 @@ const FacilityForm = ( { submit, handleChange, handleFileInput, form, facility =
 
   };
 
-  const deleteFacility = () => setRoute('delete');
+  const deleteFacility = () => setRoute('delete');  // Declare function tu set route to delete
 
   return (
 
