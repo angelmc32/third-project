@@ -7,6 +7,7 @@ import Landing from './components/landing/Landing';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
+import Preferences from './components/profile/Preferences';
 import DoctorLanding from './components/doctor/DoctorLanding';
 import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
@@ -58,6 +59,9 @@ const Router = () => {
       </Route>
       <Route path="/map">
         <Map />
+      </Route>
+      <Route path="/preferences">
+        <Preferences />
       </Route>
     </Switch>
   )

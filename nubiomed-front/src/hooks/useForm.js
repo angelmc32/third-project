@@ -5,27 +5,32 @@ const useForm = () => {
   
   // Declare form state variable and setForm function to update the form state variable
   const [form, setForm] = useState({});
+  const [array, setArray] = useState([]);
 
   // Declare handleInput function for input data manipulation
   const handleInput = (event) => {
     
-    if ( event.target.id === 'toggle-map') {
-
-      form['showMap'] = !form['showMap'];
-
-      console.log(form.showMap);
-
-    } else {
-
-      //form['isChangingAddress'] = false;
-      console.log('Estas cambiando otra madre')
-    }
+    // Validation for map toggling in facility form
+    if ( event.target.id === 'toggle-map') form['showMap'] = !form['showMap'];
     
     // Destructure input name and value (data that is being changed by user)
     const { name, value } = event.target;
 
-    // Update the form state without erasing previos values (with prevState)
-    setForm( prevState => ({...prevState, [name]: value}) );
+    // When using checkboxes, store the values in an array
+    if ( event.target.type === 'checkbox' ) {
+      
+      array.push(value);
+      setArray(array);
+      setForm( prevState => ({...prevState, [name]: array}) );
+
+    } else {
+
+      // Update the form state without erasing previos values (with prevState)
+      setForm( prevState => ({...prevState, [name]: value}) );
+
+    }
+
+    
 
     //console.log(form);
 

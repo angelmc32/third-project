@@ -73,7 +73,7 @@ const Sidebar = () => {
               </ul>
             </li>
             <li className="uk-active">
-              <NavLink to="/profile">Mi Perfil</NavLink>
+              <NavLink to="/preferences">Preferencias</NavLink>
             </li>
           </ul>
         </div>

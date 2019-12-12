@@ -7,6 +7,8 @@ import moment from 'moment';                                        // Import mo
 
 // Import API services (CRUD operations) from services file
 import { getUserFacilities, getAllFacilities, getFacilityInfo, createFacility, updateFacility, deleteFacility } from '../../services/facility-services';
+// Import API services for reading and updating preferences (adding favorite facilities)
+import { getPreferences, editPreferences } from '../../services/profile-services.js';
 
 import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
 import FacilityCard from './FacilityCard';                          // Import FacilityCard react component
@@ -24,6 +26,8 @@ const Facility = () => {
   const [facilities, setFacilities] = useState([]);
   // Declare single facility state variable and setFacility function to update the single facility state variable
   const [facility, setFacility] = useState([]);
+
+  const [favorites, setFavorites] = useState([]);
   const { push } = useHistory();              // Destructure push method from useHistory to "redirect" user
 
   // Hook to update component when route state variable is modified (in sidebar or by buttons)
@@ -46,6 +50,16 @@ const Facility = () => {
 
         const { facility } = res.data;      // Destructure facility from response
         setFacility(facility);              // Update single facility state variable
+
+      });
+
+      getPreferences()
+      .then( res => {
+
+        const { preferences } = res.data;
+        console.log(preferences);
+        const { facilities } = preferences;
+        setFavorites(facilities);
 
       });
 
@@ -156,6 +170,24 @@ const Facility = () => {
 
   }
 
+  const toggleFavorite = (event, facilityID) => {
+
+    editPreferences({'facilityID': facilityID, key: 'facilities'})
+    .then( res => {
+
+      const { preferences } = res.data;
+      const { facilities } = preferences;
+      
+      setFavorites(facilities);
+
+    })
+    .catch( error => {
+
+      console.log(error);
+
+    })
+  }
+
   return (
     <div className="uk-section">
 
@@ -175,7 +207,7 @@ const Facility = () => {
                 route === 'favorites' ? (
                   <h3>Your favorite facilities</h3>
                 ) : route === 'showFacility' ? (
-                  <FacilityInfo facility={facility} edit={false} showMap={false} />
+                  <FacilityInfo facility={facility} edit={false} showMap={false} toggleFavorite={toggleFavorite} favorites={favorites} />
                 ) : route === 'editFacility' ? (
                   <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} edit={true} facility={facility} preview={true} />
                   ) : (

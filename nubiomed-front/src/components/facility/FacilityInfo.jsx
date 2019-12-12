@@ -8,7 +8,7 @@ import Map from '../common/Mapbox';                                 // Import Ma
 
 import { getFacilityInfo } from '../../services/facility-services';
 
-const FacilityInfo = ({ facility, edit, showMap }) => {
+const FacilityInfo = ({ facility, edit, showMap, toggleFavorite, favorites = [], isFavorite = false }) => {
 
   const history = useHistory();              // Destructure push method from useHistory to "redirect" user
 
@@ -19,6 +19,17 @@ const FacilityInfo = ({ facility, edit, showMap }) => {
 
   const goBack = () => {
     edit ? setRoute('myFacilities') : setRoute('search');
+  }
+
+  for (let i = 0; i < favorites.length; i++ ) {
+
+    if ( favorites[i] === facility._id ) {
+      
+      isFavorite = true;
+      i = favorites.length;
+
+     } else isFavorite = false;
+
   }
 
   return (
@@ -81,9 +92,18 @@ const FacilityInfo = ({ facility, edit, showMap }) => {
             </label>
           </div>
 
-          <button className="uk-button uk-button-danger uk-border-pill">
-            Agregar a favoritos
-          </button>
+          { isFavorite ? (
+              <button onClick={(event) => toggleFavorite(event, facility._id)} className="uk-button uk-button-danger uk-border-pill">
+                Eliminar de favoritos
+              </button>
+            ) : (
+              <button onClick={(event) => toggleFavorite(event, facility._id)} className="uk-button uk-button-danger uk-border-pill">
+                Agregar a favoritos
+              </button>
+            )
+        }
+
+          
           
         </div>
       }

@@ -157,16 +157,6 @@ const Profile = () => {
                 <input onChange={handleInput} name="email" defaultValue={user.email} className="uk-input" type="email" />
               </div>
             </div>
-{/*
-            <div className="uk-margin">
-              <label className="uk-form-label">Contraseña:</label>
-              <div className="uk-inline">
-                <span className="uk-form-icon" uk-icon="icon: lock"></span>
-                <input onChange={handleInput} name="password" value={user.password} className="uk-input" type="password"
-                />
-              </div>
-            </div>
-*/}
 
             <button className="uk-button uk-button-primary uk-border-pill" type="submit">
               Actualizar
