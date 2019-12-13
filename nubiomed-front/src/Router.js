@@ -8,17 +8,17 @@ import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Profile from './components/profile/Profile';
 import Preferences from './components/profile/Preferences';
+import Doctors from './components/doctor/Doctors';
 import DoctorLanding from './components/doctor/DoctorLanding';
 import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
 import Patients from './components/doctor/myPatients/Patients'
 import Facility from './components/facility/Facility';
 import Map from './components/common/Mapbox';
-import FacilityInfo from './components/facility/FacilityInfo';
 
 const Router = () => {
 
-  const { user, route, setRoute } = useContext(AppContext); // Destructure user state variable
+  const { user, setRoute } = useContext(AppContext); // Destructure user state variable
 
   const handleRoute = (newRoute) => setRoute(newRoute);
 
@@ -33,7 +33,7 @@ const Router = () => {
           <PatientHome />
         }
       </Route>
-      <Route exact path="/doctors">
+      <Route exact path="/doctor-landing">
         <DoctorLanding />
       </Route>
       <Route path="/signup">
@@ -47,6 +47,9 @@ const Router = () => {
       </Route>
       <Route path="/doctor-login">
         <Login usertype="Doctor"/>
+      </Route>
+      <Route path="/doctors">
+        <Doctors />
       </Route>
       <Route path="/profile">
         <Profile />

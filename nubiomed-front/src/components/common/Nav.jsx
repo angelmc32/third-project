@@ -8,7 +8,7 @@ import { logout } from '../../services/auth-services';    // Import logout servi
 const Nav = () => {
   
   // Destructure user state variable and resetUserContext function from context
-  const { user, route, resetUserContext } = useContext(AppContext);
+  const { user, route, setRoute, resetUserContext } = useContext(AppContext);
   // Destructure push method from useHistory to "redirect" user
   const { push } = useHistory();
 
@@ -67,7 +67,7 @@ const Nav = () => {
 
             { !user._id ? (
                 <li className="uk-active">
-                  <NavLink to="/doctors">
+                  <NavLink to="/doctor-landing">
                     <button className="uk-button uk-button-default uk-button-small">¿Es usted doctor?</button>
                   </NavLink>
                 </li>
@@ -80,8 +80,8 @@ const Nav = () => {
                   </li>
                 ) : (
                   <li>
-                    <Link to="/search">
-                      <button className="uk-button uk-button-primary uk-border-pill" >Buscar doctor</button>
+                    <Link to="/doctors">
+                      <button className="uk-button uk-button-primary uk-border-pill" onClick={event => setRoute("doctors")} >Buscar doctor</button>
                     </Link>
                   </li>
                 )

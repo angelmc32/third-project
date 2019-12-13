@@ -17,7 +17,7 @@ const useForm = () => {
     const { name, value } = event.target;
 
     // When using checkboxes, store the values in an array
-    if ( event.target.type === 'checkbox' && event.target.id === 'multiple' ) {
+    if ( event.target.type === 'checkbox' && event.target.name === 'zones' ) {
       
       array.push(value);
       setArray(array);
@@ -29,10 +29,6 @@ const useForm = () => {
       setForm( prevState => ({...prevState, [name]: value}) );
 
     }
-
-    
-
-    //console.log(form);
 
   };
 

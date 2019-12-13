@@ -7,7 +7,7 @@ import { AppContext }  from '../../AppContext';           // Import AppContext t
 const Sidebar = () => {
   
   // Destructure user and route state variables from context and setRoute function to change route
-  const { user, route, setRoute } = useContext(AppContext); // Destructure user state variable
+  const { user, setRoute } = useContext(AppContext); // Destructure user state variable
 
   // Declare function to update the route state variable according to the selected link for inner component nav
   const handleRoute = (event, newRoute) => {
@@ -86,6 +86,9 @@ const Sidebar = () => {
           <li className="uk-active">
             <NavLink to="/journal">Mi Diario</NavLink>
           </li>
+          <li className="uk-active" onClick={event => handleRoute(event, "doctors")}>
+            <NavLink to="/doctors">Doctores</NavLink>
+          </li>
           <li className="uk-active">
             <NavLink to="/reminders">Recordatorios</NavLink>
           </li>
@@ -101,16 +104,13 @@ const Sidebar = () => {
           <li className="uk-parent uk-active">
             <a href="#">Consultorios</a>
             <ul className="uk-nav-sub">
-              <li>
-                <NavLink to="/facilities" route="search">Buscar</NavLink>
+              <li onClick={event => handleRoute(event, "search")}>
+                <NavLink to="/facilities">Buscar</NavLink>
               </li>
-              <li>
-                <NavLink to="/facilities" route="myFacilities">Mis Consultorios</NavLink>
+              <li onClick={event => handleRoute(event, "myFacilities")}>
+                <NavLink to="/facilities">Mis Consultorios</NavLink>
               </li>
             </ul>
-          </li>
-          <li className="uk-active">
-            <NavLink to="/profile">Mi Perfil</NavLink>
           </li>
         </ul>
       </div>

@@ -1,9 +1,10 @@
-const express = require('express');             // Import express for router functionality through its Router method
-const router = express.Router();                // Execute express router and store it into router const
-const jwt = require('jsonwebtoken');            // Import jsonwebtoken for token creation and authentication
-const bcrypt = require('bcryptjs');             // Import bcryptjs for password hash creation and password validation
-const Patient = require('../models/Patient');   // Require the Patient model to create and find users in database
-const Doctor = require('../models/Doctor')      // Require the Doctor model to create and find users in database
+const express = require('express');                 // Import express for router functionality through its Router method
+const router = express.Router();                    // Execute express router and store it into router const
+const jwt = require('jsonwebtoken');                // Import jsonwebtoken for token creation and authentication
+const bcrypt = require('bcryptjs');                 // Import bcryptjs for password hash creation and password validation
+const Patient = require('../models/Patient');       // Require the Patient model to create and find users in database
+const Doctor = require('../models/Doctor')          // Require the Doctor model to create and find users in database
+const Preference = require('../models/Preference')  // Require Preference model to create doctor preference when signing up
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send } = require('../helpers/mailer-helper');
@@ -83,20 +84,29 @@ router.post('/signup', (req, res, next) => {
       // Call mailer send method with options variable as parameter for e-mail verification
       send(options);
 
-      // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
-      // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-      jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
+      Preference.create({doctor: user._id})
+      .then(
 
-        // Delete the password from the user document (returned by mongoose) before sending to front-end
-        delete user._doc.password;
+        // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+        // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+        jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
 
-        // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+          // Delete the password from the user document (returned by mongoose) before sending to front-end
+          delete user._doc.password;
 
-        // Respond to the request with a 200 status, the user data and a success message
-        return res.status(200).json({ user, token, msg: 'Signed up and logged in: Doctor and token created successfully' });
+          // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+          if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
 
-      });
+          // Respond to the request with a 200 status, the user data and a success message
+          return res.status(200).json({ user, token, msg: 'Signed up and logged in: Doctor and token created successfully' });
+
+        })
+        
+      )
+      .catch( error => {
+        // Respond with 500 status, the error and a message
+        res.status(500).json({ error, msg: 'Error while creating doctor preferences' });
+      })
       
     })
     .catch( error => {
@@ -105,7 +115,8 @@ router.post('/signup', (req, res, next) => {
       res.status(500).json({ error, msg: 'Error while creating doctor' });
     
     });
-  }
+
+  };
   
 });
 
