@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';     // Import React, useEffect, useState and useContext hooks
+import React, { useContext } from 'react';     // Import React, useEffect, useState and useContext hooks
 import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import currencyFormatter from "currency-formatter";                 // Import currency formatter for price display

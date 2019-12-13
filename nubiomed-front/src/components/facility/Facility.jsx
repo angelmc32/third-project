@@ -53,15 +53,21 @@ const Facility = () => {
 
       });
 
-      getPreferences()
-      .then( res => {
+      if (user.usertype === 'Doctor') {
 
-        const { preferences } = res.data;
-        console.log(preferences);
-        const { facilities } = preferences;
-        setFavorites(facilities);
+        getPreferences()
+        .then( res => {
 
-      });
+          console.log(res.data);
+          const { preferences } = res.data;
+          console.log(`Tus preferencias son: ${preferences}`);
+          console.log(preferences);
+          const { facilities } = preferences;
+          setFavorites(facilities);
+
+        });
+
+      }
 
     } if ( route === 'delete' ) {
 
@@ -176,6 +182,7 @@ const Facility = () => {
     .then( res => {
 
       const { preferences } = res.data;
+      console.log(res.data);
       const { facilities } = preferences;
       
       setFavorites(facilities);

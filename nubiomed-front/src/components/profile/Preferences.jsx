@@ -14,7 +14,7 @@ const Preferences = () => {
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   const { form, handleInput } = useForm();
   
-  const { user, setUser } = useContext(AppContext);     // Destructure user state variable
+  const { user } = useContext(AppContext);     // Destructure user state variable
   const [ preferences, setPreferences ] = useState();   // Declare preferences state variable and setPreferences method to update preferences
   const { push } = useHistory();                        // Destructure push method from useHistory to "redirect" user
 

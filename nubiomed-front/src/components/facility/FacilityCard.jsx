@@ -1,7 +1,5 @@
 import React from 'react';     // Import React, useEffect, useState and useContext hooks
 import currencyFormatter from "currency-formatter";     // Import currency formatter for price display
-import FacilityInfo from './FacilityInfo';              // Import FacilityInfo react component
-import { NavLink } from 'react-router-dom';
 
 const FacilityCard = ({ _id, title, images = [], description, price, owner, preview, showFacility, edit }) => {
 
