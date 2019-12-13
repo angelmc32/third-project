@@ -17,7 +17,7 @@ const useForm = () => {
     const { name, value } = event.target;
 
     // When using checkboxes, store the values in an array
-    if ( event.target.type === 'checkbox' ) {
+    if ( event.target.type === 'checkbox' && event.target.id === 'multiple' ) {
       
       array.push(value);
       setArray(array);

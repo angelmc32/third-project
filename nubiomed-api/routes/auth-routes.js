@@ -62,6 +62,7 @@ router.post('/signup', (req, res, next) => {
       
       // Respond with 500 status, the error and a message
       res.status(500).json({ error, msg: 'Error while creating Patient user' });
+      console.log(error);
     
     });
   }
@@ -104,6 +105,7 @@ router.post('/signup', (req, res, next) => {
       // Respond with 500 status, the error and a message
       res.status(500).json({ error, msg: 'Error while creating doctor' });
     
+      console.log(error);
     });
   }
   
