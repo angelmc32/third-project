@@ -56,7 +56,9 @@ const Facility = () => {
       getPreferences()
       .then( res => {
 
+        console.log(res.data);
         const { preferences } = res.data;
+        console.log(`Tus preferencias son: ${preferences}`);
         console.log(preferences);
         const { facilities } = preferences;
         setFavorites(facilities);
@@ -176,6 +178,7 @@ const Facility = () => {
     .then( res => {
 
       const { preferences } = res.data;
+      console.log(res.data);
       const { facilities } = preferences;
       
       setFavorites(facilities);
