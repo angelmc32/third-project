@@ -1,7 +1,8 @@
 const express = require('express');                 // Import express for router functionality through its Router method
 const router = express.Router();                    // Execute express router and store it into router const
 const Preference =require('../models/Preference')   // Require the Preference model to perform CRUD operations
-const Doctor = require('../models/Doctor');         // Require the Doctor model to create and find users in database
+const Doctor = require('../models/Doctor');         // Require the Doctor model to find users references in database
+const Curriculum = require('../models/Curriculum'); // Require the Curriculum model to perform CRUD operations
 
 // Import helper for token verification (jwt)
 const { verifyToken } = require('../helpers/auth-helper');
@@ -82,6 +83,46 @@ router.patch('/', verifyToken, (req, res, next) => {
 
     });
   };
+
+});
+
+router.get('/cv', verifyToken, (req, res, next) => {
+
+  const { id, usertype } = req.user;    // Destructure the user id from the request
+  const { doctorID } = req.body;
+
+  if ( usertype === 'Doctor' ) doctorID = id;
+
+  Curriculum.findOne({ doctorID })
+  .then( curriculum => {
+
+    res.status(200).json({ curriculum });
+    console.log(curriculum);
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+  
+});
+
+router.post('/cv', verifyToken, (req, res, next) => {
+
+  const { id } = req.user;    // Destructure the user id from the request
+
+  Curriculum.create({ ...req.body, doctor: id })
+  .then( preferences => {
+
+    res.status(200).json({ preferences });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to create curriculum' }); // Respond 500 status, error and message
+
+  });
 
 });
 

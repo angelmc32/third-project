@@ -9,6 +9,7 @@ import moment from 'moment';                                        // Import mo
 import { getDoctors } from '../../services/doctor-services';
 
 import DoctorCard from './DoctorCard';
+import DoctorInfo from './DoctorInfo';
 
 const Doctors = () => {
 
@@ -17,10 +18,9 @@ const Doctors = () => {
   // Declare doctors state variable and setDoctors function to update the doctors state variable
   const [doctors, setDoctors] = useState([]);
   const [doctor, setDoctor] = useState({});
+  const [preference, setPreference] = useState({});
 
   useEffect( () => {
-
-    console.log(route);
 
     if ( route === 'doctors' ) {
       
@@ -30,8 +30,6 @@ const Doctors = () => {
         const { doctors } = res.data;
 
         setDoctors(doctors);
-
-        console.log(doctors);
 
       });
 
@@ -43,8 +41,7 @@ const Doctors = () => {
         const { doctor } = res.data;
 
         setDoctor(doctor);
-
-        console.log(doctor);
+        setPreference(doctor.preference);
 
       })
 
@@ -58,7 +55,7 @@ const Doctors = () => {
     event.preventDefault();
     setDoctor(id);
 
-    route !== 'showDoctor' ? setRoute('showDoctor') : setRoute('doctors');
+    if ( route === 'doctors' ) setRoute('showDoctor');
 
   }
 
@@ -68,12 +65,18 @@ const Doctors = () => {
 
       <div className="uk-container">
 
-        <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
-          <h3>Busca doctores</h3>
-          <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
-            { doctors.map( (doctor, index) => ( <DoctorCard key={index} {...doctor} showDoctor={showDoctor} /> ) ) }
-          </div>
-        </div>
+        { route === 'doctors' ? (
+            <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
+              <h3>Busca doctores</h3>
+              <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
+                { doctors.map( (doctor, index) => ( <DoctorCard key={index} {...doctor} showDoctor={showDoctor} /> ) ) }
+              </div>
+            </div>
+          ) : (
+            <DoctorInfo doctor={doctor} preference={preference} />
+          ) }
+
+        
       </div>
 
     </div>

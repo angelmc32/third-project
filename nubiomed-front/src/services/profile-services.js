@@ -46,3 +46,45 @@ export const editPreferences = (data) => {
   });
 
 };
+
+// Export get function, which retrieves preferences data from database
+export const getCurriculum = (doctorID = null) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  // Return a get call to our /preferences route
+  return axios.get(`${base_url}/preferences/cv`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};
+
+// Export edit function, which receives data as parameters to enable profile edition
+export const createCurriculum = (data) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  // Return a patch call to our /preferences route, while sending the parameters obtained from the form/front-end
+  return axios.post(`${base_url}/preferences/cv`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};
+
+// Export edit function, which receives data as parameters to enable profile edition
+export const editCurriculum = (data) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  // Return a patch call to our /preferences route, while sending the parameters obtained from the form/front-end
+  return axios.patch(`${base_url}/preferences/cv`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};

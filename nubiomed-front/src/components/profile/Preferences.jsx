@@ -5,17 +5,18 @@ import useForm from '../../hooks/useForm';                          // Import us
 
 
 // Import API calls for Read and Update
-import { getPreferences, editPreferences } from '../../services/profile-services';
+import { getPreferences, editPreferences, editCurriculum, getCurriculum } from '../../services/profile-services';
 import UIkit from 'uikit';               ;                          // Import UIkit for notifications
 
 // Declare Preferences functional component
 const Preferences = () => {
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, handleInput } = useForm();
+  const { form, setForm, handleInput } = useForm();
   
-  const { user } = useContext(AppContext);     // Destructure user state variable
-  const [ preferences, setPreferences ] = useState();   // Declare preferences state variable and setPreferences method to update preferences
+  const { user, route, setRoute } = useContext(AppContext);     // Destructure user state variable
+  const [ preferences, setPreferences ] = useState({});   // Declare preferences state variable and setPreferences method to update preferences
+  const [ curriculum, setCurriculum ] = useState({});   // Declare preferences state variable and setPreferences method to update preferences
   const { push } = useHistory();                        // Destructure push method from useHistory to "redirect" user
 
   // Hook to update component when user or preferences state variable is modified
@@ -34,28 +35,60 @@ const Preferences = () => {
 
     }
 
-    getPreferences()
-    .then( res => {
+    if ( route === 'preferences') {
 
-      const { preferences } = res.data;
-      const { zones } = preferences;
-      setPreferences(preferences);
+      setForm({});
 
-    })
-    .catch( error => {
+      getPreferences()
+      .then( res => {
 
-      console.log(error);
+        const { preferences } = res.data;
+        const { zones } = preferences;
+        setPreferences(preferences);
 
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
-        pos: 'bottom-center',
-        status: 'danger'
+      })
+      .catch( error => {
+
+        console.log(error);
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> ${error}`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
       });
 
-    });
+    } else if ( route === 'curriculum') {
 
-  }, [user] );
+      setForm({});
+
+      getCurriculum()
+      .then( res => {
+
+        const { curriculum } = res.data;
+        setCurriculum(curriculum);
+
+      })
+      .catch( error => {
+
+        console.log(error);
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> ${error}`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
+      });
+
+    }
+
+    
+
+  }, [user, route] );
 
   // Declare function for form submit event
   const handleSubmit = (event) => {
@@ -64,35 +97,71 @@ const Preferences = () => {
 
     console.log(form);
     
-    // Call edit service with formData as parameter, which includes form data for user profile information
-    editPreferences(form)
-    .then( res => {
+    if ( route === 'preferences' ) {
 
-      const { preferences } = res.data    // Destructure updated preferences document from response
-      
-      setPreferences(preferences);        // Modify preferences state variable with updated information
+      // Call edit service with formData as parameter, which includes form data for user profile information
+      editPreferences(form)
+      .then( res => {
 
-      // Send UIkit success notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> '¡Tus preferencias fueron actualizadas exitosamente!'`,
-        pos: 'bottom-center',
-        status: 'success'
+        const { preferences } = res.data    // Destructure updated preferences document from response
+        
+        setPreferences(preferences);        // Modify preferences state variable with updated information
+
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> '¡Tus preferencias fueron actualizadas exitosamente!'`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+
+      })
+      .catch( error => {
+
+        console.log(error);
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> ${error}`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
       });
 
-    })
-    .catch( error => {
+    } else if ( route === 'curriculum' ) {
 
-      console.log(error);
+      console.log('working on curriculum')
+      // Call edit service with formData as parameter, which includes form data for user profile information
+      editCurriculum(form)
+      .then( res => {
 
-      // Send UIkit error notification
-      UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
-        pos: 'bottom-center',
-        status: 'danger'
+        const { curriculum } = res.data    // Destructure updated preferences document from response
+        
+        setCurriculum(curriculum);        // Modify preferences state variable with updated information
+
+        // Send UIkit success notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> '¡Tu curriculum fue actualizado exitosamente!'`,
+          pos: 'bottom-center',
+          status: 'success'
+        });
+
+      })
+      .catch( error => {
+
+        console.log(error);
+
+        // Send UIkit error notification
+        UIkit.notification({
+          message: `<span uk-icon='close'></span> ${error}`,
+          pos: 'bottom-center',
+          status: 'danger'
+        });
+
       });
 
-    });
-    
+    };
+
   };
 
   return (
@@ -100,20 +169,127 @@ const Preferences = () => {
     <div className="uk-section">
 
       <div className="uk-container">
-        <h3>Here are your preferences</h3>
-          <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
-            <label >Zonas para dar consulta:</label>
-            <div className="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-              <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Polanco" /> Polanco</label>
-              <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Roma" /> Roma</label>
-              <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Condesa" /> Condesa</label>
-              <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Reforma" /> Reforma</label>
-              <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Col. del Valle" /> Col. del Valle</label>
-            </div>
-            <button className="uk-button uk-button-danger uk-border-pill" type="submit">
-                Actualizar
+
+        { route === 'preferences' ? <h3>Actualiza tus preferencias</h3> : <h3>Actualiza tu Curriculum</h3>}
+
+        <div className="uk-width-1-1 uk-flex uk-flex-center uk-margin">
+          <div className="uk-width-2-5 uk-flex uk-flex-center">
+            <button className="uk-button uk-button-default uk-button-small uk-border-pill uk-margin-small-right" onClick={(event) => setRoute('preferences')}>
+              Preferencias de consulta
             </button>
-          </form>
+          </div>
+          <div className="uk-width-2-5 uk-flex uk-flex-center">  
+            <button className="uk-button uk-button-default uk-button-small uk-border-pill uk-margin-small-right" onClick={(event) => setRoute('curriculum')}>
+              Curriculum y Trayectoria
+            </button>
+          </div>
+        </div>
+
+        <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-margin-large">
+
+            { route === 'preferences' ? (
+                <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
+                  <div className="uk-margin-small uk-flex uk-flex-column">
+                    <label className="uk-form-label">Zonas para dar consulta:</label>
+                    <div className="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex-column uk-flex-top">
+                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Polanco" /> Polanco</label>
+                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Roma" /> Roma</label>
+                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Condesa" /> Condesa</label>
+                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Reforma" /> Reforma</label>
+                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Col. del Valle" /> Col. del Valle</label>
+                    </div>
+                  </div>
+      
+                  <div className="uk-margin-small uk-flex uk-flex-center uk-width-1-1">
+                    <div className="uk-width-1-5">
+                      <label className="uk-form-label">Precio de consulta:</label>
+                    </div>
+                    <div className="uk-form-controls uk-width-4-5">
+                      <input onChange={handleInput} name="price" defaultValue={preferences.base_price} className="uk-input" type="number" />
+                    </div>
+                  </div>
+                
+                  <div className="uk-margin">
+                    <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                      Actualizar Preferencias
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
+                  <p className="uk-text-primary">Validaremos tu(s) cedula(s) profesional(es), por lo que es necesario cargar las imagenes en la plataforma</p>
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Biografia:</label>
+                    <div className="uk-form-controls">
+                      <textarea onChange={handleInput} name="bio" defaultValue={curriculum.bio} className="uk-textarea uk-form-width-large" rows="6" />
+                    </div>
+                  </div>
+      
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Cedula Profesional Medicina General:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="med_license" defaultValue={curriculum.med_license} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Universidad de Formacion en Medicina General:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="university" defaultValue={curriculum.university} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Especialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="specialty" defaultValue={curriculum.specialty} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Cedula Profesional Especialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="specialty_license" defaultValue={curriculum.specialty_license} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Universidad de Formacion en Especialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="specialty_univ" defaultValue={curriculum.specialty_univ} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Subespecialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="subspecialty" defaultValue={curriculum.subspecialty} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Cedula Profesional Subespecialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="subspecialty_license" defaultValue={curriculum.subspecialty_license} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+
+                  <div className="uk-margin-small">
+                    <label className="uk-form-label">Universidad de Formacion en Subespecialidad:</label>
+                    <div className="uk-form-controls">
+                      <input onChange={handleInput} name="subspecialty_univ" defaultValue={curriculum.subspecialty_univ} className="uk-input uk-form-width-large" type="text" />
+                    </div>
+                  </div>
+                
+                  <div className="uk-margin">
+                    <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                      Actualizar Curriculum
+                    </button>
+                  </div>
+                </form>
+              )
+            }   
+        </div>
       </div>
 
     </div>

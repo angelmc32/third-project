@@ -44,7 +44,7 @@ const useForm = () => {
   };
 
   // Return the form state variable and input handling functions
-  return { form, handleInput, handleFileInput };
+  return { form, setForm, handleInput, handleFileInput };
 
 };
 

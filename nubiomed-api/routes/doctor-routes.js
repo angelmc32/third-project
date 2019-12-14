@@ -8,6 +8,7 @@ const { verifyToken } = require('../helpers/auth-helper');
 router.get('/', (req, res, next) => {
 
   Doctor.find()
+  .populate('preference')
   .then( doctors => {
 
     res.status(200).json({ doctors });
@@ -26,6 +27,7 @@ router.get('/:doctorID', (req, res, next) => {
   const { doctorID } = req.params;
 
   Doctor.findOne({ _id: doctorID })
+  .populate('preference')
   .then( doctor => {
 
     res.status(200).json({ doctor });

@@ -57,6 +57,10 @@ const doctorSchema = new Schema(
     isVerified: {
       type: Boolean,
       default: false
+    },
+    preference: {
+      type: Schema.Types.ObjectId,
+      ref: 'Preference'
     }
   },
   { timestamps: true }

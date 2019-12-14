@@ -13,7 +13,7 @@ const curriculumSchema = new Schema(
       default: 'No ha añadido información'
     },
     university: {
-      type: [String],
+      type: String,
       required: true,
       default: 'No ha añadido información'
     },
@@ -23,29 +23,33 @@ const curriculumSchema = new Schema(
       default: 'No ha añadido información'
     },
     specialty: {
-      type: [String],
-      default: ['Sin especialidad']
+      type: String,
+      default: 'Sin especialidad'
     },
     specialty_univ: {
-      type: [String],
-      default: ['Sin especialidad']
+      type: String,
+      default: 'Sin especialidad'
     },
     specialty_license: {
-      type: [String],
-      default: ['Sin especialidad']
+      type: String,
+      default: 'Sin especialidad'
     },
     subspecialty: {
-      type: [String],
-      default: ['Sin subespecialidad']
+      type: String,
+      default: 'Sin subespecialidad'
     },
     subspecialty_univ: {
-      type: [String],
-      default: ['Sin especialidad']
+      type: String,
+      default: 'Sin especialidad'
     },
     subspecialty_license: {
-      type: [String],
-      default: ['Sin subespecialidad']
+      type: String,
+      default: 'Sin subespecialidad'
     },
+    images: {
+      type: [String],
+      minlength: 1
+    }
   },
   { timestamps: true }
 );

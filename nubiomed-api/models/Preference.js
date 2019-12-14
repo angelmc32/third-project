@@ -17,6 +17,11 @@ const preferenceSchema = new Schema(
     zones: {
       type: [String],
       enum: ['Polanco', 'Roma', 'Condesa', 'Reforma', 'Del Valle']
+    },
+    base_price: {
+      type: Number,
+      default: 100,
+      required: true
     }
   },
   { timestamps: true }

@@ -10,7 +10,7 @@ import { getFacilityInfo } from '../../services/facility-services';
 
 const FacilityInfo = ({ facility, edit, showMap, toggleFavorite, favorites = [], isFavorite = false }) => {
 
-  const history = useHistory();              // Destructure push method from useHistory to "redirect" user
+  const history = useHistory();              // declare an instance of useHistory hook to redirect user according to needs
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
   // const { form, handleInput, handleFileInput } = useForm();
