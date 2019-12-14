@@ -89,7 +89,7 @@ router.patch('/', verifyToken, (req, res, next) => {
 router.get('/cv', verifyToken, (req, res, next) => {
 
   const { id, usertype } = req.user;    // Destructure the user id from the request
-  const { doctorID } = req.body;
+  let { doctorID } = req.body;
 
   if ( usertype === 'Doctor' ) doctorID = id;
 
