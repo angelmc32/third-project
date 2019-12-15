@@ -91,9 +91,26 @@ router.get('/cv', verifyToken, (req, res, next) => {
   const { id, usertype } = req.user;    // Destructure the user id from the request
   let { doctorID } = req.body;
 
-  if ( usertype === 'Doctor' ) doctorID = id;
+  Curriculum.findOne({ doctor: id })
+  .then( curriculum => {
 
-  Curriculum.findOne({ doctorID })
+    res.status(200).json({ curriculum });
+    console.log(curriculum);
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+  
+});
+
+router.get('/cv/:doctorID', verifyToken, (req, res, next) => {
+
+  let { doctorID } = req.params;
+
+  Curriculum.findOne({ doctor: doctorID })
   .then( curriculum => {
 
     res.status(200).json({ curriculum });

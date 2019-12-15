@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';     // Import Re
 import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
+import AppLoader from '../common/Loader';                           // Import AppLoader for custom loading spinner
 
 
 // Import API calls for Read and Update
@@ -68,6 +69,7 @@ const Preferences = () => {
       .then( res => {
 
         const { curriculum } = res.data;
+        console.log(curriculum);
         setCurriculum(curriculum);
 
       })
@@ -188,105 +190,111 @@ const Preferences = () => {
         <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-center uk-flex-middle uk-margin-large">
 
             { route === 'preferences' ? (
-                <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
-                  <div className="uk-margin-small uk-flex uk-flex-column">
-                    <label className="uk-form-label">Zonas para dar consulta:</label>
-                    <div className="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex-column uk-flex-top">
-                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Polanco" /> Polanco</label>
-                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Roma" /> Roma</label>
-                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Condesa" /> Condesa</label>
-                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Reforma" /> Reforma</label>
-                      <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Col. del Valle" /> Col. del Valle</label>
+
+                preferences ? (
+                  <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
+                    <div className="uk-margin-small uk-flex uk-flex-column">
+                      <label className="uk-form-label">Zonas para dar consulta:</label>
+                      <div className="uk-margin uk-grid-small uk-child-width-auto uk-grid uk-flex-column uk-flex-top">
+                        <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Polanco" /> Polanco</label>
+                        <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Roma" /> Roma</label>
+                        <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Condesa" /> Condesa</label>
+                        <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Reforma" /> Reforma</label>
+                        <label><input onChange={handleInput} className="uk-checkbox" type="checkbox" name="zones" value="Col. del Valle" /> Col. del Valle</label>
+                      </div>
                     </div>
-                  </div>
-      
-                  <div className="uk-margin-small uk-flex uk-flex-center uk-width-1-1">
-                    <div className="uk-width-1-5">
-                      <label className="uk-form-label">Precio de consulta:</label>
+        
+                    <div className="uk-margin-small uk-flex uk-flex-center uk-width-1-1">
+                      <div className="uk-width-1-5">
+                        <label className="uk-form-label">Precio de consulta:</label>
+                      </div>
+                      <div className="uk-form-controls uk-width-4-5">
+                        <input onChange={handleInput} name="price" defaultValue={preferences.base_price} className="uk-input" type="number" />
+                      </div>
                     </div>
-                    <div className="uk-form-controls uk-width-4-5">
-                      <input onChange={handleInput} name="price" defaultValue={preferences.base_price} className="uk-input" type="number" />
+                  
+                    <div className="uk-margin">
+                      <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                        Actualizar Preferencias
+                      </button>
                     </div>
-                  </div>
-                
-                  <div className="uk-margin">
-                    <button className="uk-button uk-button-danger uk-border-pill" type="submit">
-                      Actualizar Preferencias
-                    </button>
-                  </div>
-                </form>
+                  </form>
+                ) : <AppLoader />
               ) : (
-                <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
-                  <p className="uk-text-primary">Validaremos tu(s) cedula(s) profesional(es), por lo que es necesario cargar las imagenes en la plataforma</p>
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Biografia:</label>
-                    <div className="uk-form-controls">
-                      <textarea onChange={handleInput} name="bio" defaultValue={curriculum.bio} className="uk-textarea uk-form-width-large" rows="6" />
-                    </div>
-                  </div>
-      
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Cedula Profesional Medicina General:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="med_license" defaultValue={curriculum.med_license} className="uk-input uk-form-width-large" type="text" />
-                    </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Universidad de Formacion en Medicina General:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="university" defaultValue={curriculum.university} className="uk-input uk-form-width-large" type="text" />
+                !curriculum ? <AppLoader /> : (
+                  <form className="uk-form-horizontal uk-margin-medium uk-flex uk-flex-column uk-flex-center uk-flex-middle" onSubmit={handleSubmit}>
+                    <p className="uk-text-primary">Validaremos tu(s) cedula(s) profesional(es), por lo que es necesario cargar las imagenes en la plataforma</p>
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Biografia:</label>
+                      <div className="uk-form-controls">
+                        <textarea onChange={handleInput} name="bio" defaultValue={curriculum.bio} className="uk-textarea uk-form-width-large" rows="6" />
+                      </div>
                     </div>
-                  </div>
+        
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Cedula Profesional Medicina General:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="med_license" defaultValue={curriculum.med_license} className="uk-input uk-form-width-large" type="text" />
+                      </div>
+                    </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Especialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="specialty" defaultValue={curriculum.specialty} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Universidad de Formacion en Medicina General:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="university" defaultValue={curriculum.university} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Cedula Profesional Especialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="specialty_license" defaultValue={curriculum.specialty_license} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Especialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="specialty" defaultValue={curriculum.specialty} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Universidad de Formacion en Especialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="specialty_univ" defaultValue={curriculum.specialty_univ} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Cedula Profesional Especialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="specialty_license" defaultValue={curriculum.specialty_license} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Subespecialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="subspecialty" defaultValue={curriculum.subspecialty} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Universidad de Formacion en Especialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="specialty_univ" defaultValue={curriculum.specialty_univ} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Cedula Profesional Subespecialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="subspecialty_license" defaultValue={curriculum.subspecialty_license} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Subespecialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="subspecialty" defaultValue={curriculum.subspecialty} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="uk-margin-small">
-                    <label className="uk-form-label">Universidad de Formacion en Subespecialidad:</label>
-                    <div className="uk-form-controls">
-                      <input onChange={handleInput} name="subspecialty_univ" defaultValue={curriculum.subspecialty_univ} className="uk-input uk-form-width-large" type="text" />
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Cedula Profesional Subespecialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="subspecialty_license" defaultValue={curriculum.subspecialty_license} className="uk-input uk-form-width-large" type="text" />
+                      </div>
                     </div>
-                  </div>
-                
-                  <div className="uk-margin">
-                    <button className="uk-button uk-button-danger uk-border-pill" type="submit">
-                      Actualizar Curriculum
-                    </button>
-                  </div>
-                </form>
+
+                    <div className="uk-margin-small">
+                      <label className="uk-form-label">Universidad de Formacion en Subespecialidad:</label>
+                      <div className="uk-form-controls">
+                        <input onChange={handleInput} name="subspecialty_univ" defaultValue={curriculum.subspecialty_univ} className="uk-input uk-form-width-large" type="text" />
+                      </div>
+                    </div>
+                  
+                    <div className="uk-margin">
+                      <button className="uk-button uk-button-danger uk-border-pill" type="submit">
+                        Actualizar Curriculum
+                      </button>
+                    </div>
+                  </form>
+                )
               )
             }   
         </div>

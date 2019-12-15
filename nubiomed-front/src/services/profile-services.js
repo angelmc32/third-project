@@ -48,12 +48,26 @@ export const editPreferences = (data) => {
 };
 
 // Export get function, which retrieves preferences data from database
-export const getCurriculum = (doctorID = null) => {
+export const getCurriculum = () => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
   // Return a get call to our /preferences route
   return axios.get(`${base_url}/preferences/cv`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};
+
+// Export get function, which retrieves preferences data from database
+export const getDoctorCurriculum = (id) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  // Return a get call to our /preferences route
+  return axios.get(`${base_url}/preferences/cv/${id}`, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }

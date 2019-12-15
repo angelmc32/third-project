@@ -4,7 +4,7 @@ import { AppContext } from '../../AppContext';                      // Import Ap
 import currencyFormatter from "currency-formatter";                 // Import currency formatter for price display
 //import DoctorForm from './DoctorForm';                          // Import FacilityForm react component
 
-import { getCurriculum } from '../../services/profile-services';
+import { getCurriculum, getDoctorCurriculum } from '../../services/profile-services';
 
 //
 const DoctorInfo = ({ doctor, preference }) => {
@@ -21,7 +21,7 @@ const DoctorInfo = ({ doctor, preference }) => {
 
     if ( route === 'curriculum' ) {
 
-      getCurriculum(doctor._id)
+      getDoctorCurriculum(doctor._id)
       .then( res => {
 
         const { curriculum } = res.data;
@@ -95,63 +95,63 @@ const DoctorInfo = ({ doctor, preference }) => {
         <div className="uk-margin-small">
           <label className="uk-form-label">Biografia:</label>
           <div className="uk-form-controls">
-            <textarea name="bio" defaultValue={curriculum.bio} className="uk-textarea uk-form-width-large" rows="6" />
+            <textarea name="bio" defaultValue={curriculum ? curriculum.bio : "Cargando"} className="uk-textarea uk-form-width-large" rows="6" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Cedula Profesional Medicina General:</label>
           <div className="uk-form-controls">
-            <input name="med_license" defaultValue={curriculum.med_license} className="uk-input uk-form-width-large" type="text" />
+            <input name="med_license" defaultValue={curriculum ? curriculum.med_license : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Universidad de Formacion en Medicina General:</label>
           <div className="uk-form-controls">
-            <input name="university" defaultValue={curriculum.university} className="uk-input uk-form-width-large" type="text" />
+            <input name="university" defaultValue={curriculum ? curriculum.university : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Especialidad:</label>
           <div className="uk-form-controls">
-            <input name="specialty" defaultValue={curriculum.specialty} className="uk-input uk-form-width-large" type="text" />
+            <input name="specialty" defaultValue={curriculum ? curriculum.specialty : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Cedula Profesional Especialidad:</label>
           <div className="uk-form-controls">
-            <input name="specialty_license" defaultValue={curriculum.specialty_license} className="uk-input uk-form-width-large" type="text" />
+            <input name="specialty_license" defaultValue={curriculum ? curriculum.specialty_license : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Universidad de Formacion en Especialidad:</label>
           <div className="uk-form-controls">
-            <input name="specialty_univ" defaultValue={curriculum.specialty_univ} className="uk-input uk-form-width-large" type="text" />
+            <input name="specialty_univ" defaultValue={curriculum ? curriculum.specialty_univ : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Subespecialidad:</label>
           <div className="uk-form-controls">
-            <input name="subspecialty" defaultValue={curriculum.subspecialty} className="uk-input uk-form-width-large" type="text" />
+            <input name="subspecialty" defaultValue={curriculum ? curriculum.subspecialty : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Cedula Profesional Subespecialidad:</label>
           <div className="uk-form-controls">
-            <input name="subspecialty_license" defaultValue={curriculum.subspecialty_license} className="uk-input uk-form-width-large" type="text" />
+            <input name="subspecialty_license" defaultValue={curriculum ? curriculum.subspecialty_license : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 
         <div className="uk-margin-small">
           <label className="uk-form-label">Universidad de Formacion en Subespecialidad:</label>
           <div className="uk-form-controls">
-            <input name="subspecialty_univ" defaultValue={curriculum.subspecialty_univ} className="uk-input uk-form-width-large" type="text" />
+            <input name="subspecialty_univ" defaultValue={curriculum ? curriculum.subspecialty_univ : "Cargando"} className="uk-input uk-form-width-large" type="text" />
           </div>
         </div>
 

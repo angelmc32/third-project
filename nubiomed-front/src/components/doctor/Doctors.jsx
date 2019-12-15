@@ -29,6 +29,7 @@ const Doctors = () => {
 
         const { doctors } = res.data;
 
+        console.log(doctors);
         setDoctors(doctors);
 
       });

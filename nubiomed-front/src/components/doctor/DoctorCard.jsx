@@ -1,7 +1,8 @@
 import React from 'react';     // Import React, useEffect, useState and useContext hooks
 import currencyFormatter from "currency-formatter";     // Import currency formatter for price display
+import AppLoader from '../common/Loader';                           // Import AppLoader for custom loading spinner
 
-const DoctorCard = ({ _id, first_name, last_name1, profile_picture, rating, is_verified, preference, showDoctor }) => {
+const DoctorCard = ({ _id, first_name, last_name1, profile_picture, rating, is_verified, preference = {}, showDoctor }) => {
 
   return (
 
@@ -20,7 +21,7 @@ const DoctorCard = ({ _id, first_name, last_name1, profile_picture, rating, is_v
       <div className="uk-card-body">
         <p>Especialidad: </p>
         <p>Zonas de consulta: </p>
-        <p>{preference.zones.map( zone => (`${zone}, `) )} </p>
+        <p>{preference.zones ? preference.zones.map( zone => (`${zone}, `) ) : "Sin informacion"} </p>
       </div>
       <div className="uk-card-footer">
         <div className="uk-flex uk-flex uk-padding-remove uk-flex-around uk-flex-middle">
