@@ -16,6 +16,7 @@ import Patients from './components/doctor/myPatients/Patients'
 import Facility from './components/facility/Facility';
 import Map from './components/common/Mapbox';
 import AppLoader from './components/common/Loader';
+import Calendar from './components/schedule/Calendar';
 
 const Router = () => {
 
@@ -27,6 +28,9 @@ const Router = () => {
     <Switch>
       <Route exact path="/">
         <Landing />
+      </Route>
+      <Route exact path="/calendar">
+        <Calendar />
       </Route>
       <Route exact path="/home">
         { user.usertype === 'Doctor' ? 
