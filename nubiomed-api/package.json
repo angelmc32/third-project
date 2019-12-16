@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "DEBUG=nubiomed-api:* nodemon ./bin/www",
     "dev-windows": "nodemon ./bin/www",
-    "deploy": "cd .. && git subtree push --prefix nubiomed-api heroku develop"
+    "deploy": "cd .. && git subtree push --prefix nubiomed-api heroku master"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

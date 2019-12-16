@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');                 // Import bcryptjs for passw
 const Patient = require('../models/Patient');       // Require the Patient model to create and find users in database
 const Doctor = require('../models/Doctor')          // Require the Doctor model to create and find users in database
 const Preference = require('../models/Preference')  // Require Preference model to create doctor preference when signing up
+const Curriculum = require('../models/Curriculum')
 
 // Import send method from mailer helper to email verification through sendgrid (config in mailer-helper)
 const { send } = require('../helpers/mailer-helper');
@@ -88,20 +89,31 @@ router.post('/signup', (req, res, next) => {
       Preference.create({doctor: user._id})
       .then(
 
-        // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
-        // is app secret (used as key to create a token signature), third is a callback that passes the error or token
-        jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
+        Curriculum.create({doctor: user._id})
+        .then(
 
-          // Delete the password from the user document (returned by mongoose) before sending to front-end
-          delete user._doc.password;
+          // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
+          // is app secret (used as key to create a token signature), third is a callback that passes the error or token
+          jwt.sign({ id: user._id, usertype: user.usertype }, process.env.SECRET, (error, token) => {
 
-          // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-          if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+            // Delete the password from the user document (returned by mongoose) before sending to front-end
+            delete user._doc.password;
 
-          // Respond to the request with a 200 status, the user data and a success message
-          return res.status(200).json({ user, token, msg: 'Signed up and logged in: Doctor and token created successfully' });
+            // If there's an error creating the token, respond to the request with a 500 status, the error and a message
+            if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
 
+            // Respond to the request with a 200 status, the user data and a success message
+            return res.status(200).json({ user, token, msg: 'Signed up and logged in: Doctor and token created successfully' });
+
+          })
+          
+        )
+        .catch( error => {
+          // Respond with 500 status, the error and a message
+          res.status(500).json({ error, msg: 'Error while creating doctor curriculum' });
         })
+
+        
         
       )
       .catch( error => {

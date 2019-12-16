@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';                      // Import us
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
-import moment from 'moment';                                        // Import momentjs for date formatting
+import moment, { HTML5_FMT } from 'moment';                                        // Import momentjs for date formatting
 
 // Import API services (CRUD operations) from services file
 import { getUserFacilities, getAllFacilities, getFacilityInfo, createFacility, updateFacility, deleteFacility } from '../../services/facility-services';
@@ -204,15 +204,21 @@ const Facility = () => {
             <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
               <h3>Mis Consultorios</h3>
               <button onClick={toggleForm} className="uk-button uk-button-danger uk-border-pill">Agregar un nuevo consultorio</button>              
-              <div uk-grid="true" className="uk-margin uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
-                { facilities.map( (facility, index) => ( <FacilityCard key={index} preview={false} showFacility={showFacility} edit={true} {...facility} /> ) ) }
-              </div>
+                { facilities.length > 0 ? (
+                  <div uk-grid="true" className="uk-margin uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
+                    {facilities.map( (facility, index) => ( <FacilityCard key={index} preview={false} showFacility={showFacility} edit={true} {...facility} /> ) )}
+                  </div> ) 
+                : ( <div className="uk-container uk-margin-large uk-flex uk-flex-center">
+                      <h4>No has agregado consultorios</h4>
+                    </div>)
+                 }
+              
             </div>
           ) : ( route === 'createFacility' ? (
               <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} />
               ) : ( 
                 route === 'favorites' ? (
-                  <h3>Your favorite facilities</h3>
+                  <h3>Tus consultorios favoritos</h3>
                 ) : route === 'showFacility' ? (
                   <FacilityInfo facility={facility} edit={false} showMap={false} toggleFavorite={toggleFavorite} favorites={favorites} />
                 ) : route === 'editFacility' ? (

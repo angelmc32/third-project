@@ -15,7 +15,6 @@ router.get('/', verifyToken, (req, res, next) => {
   .then( preferences => {
 
     res.status(200).json({ preferences });
-    console.log(preferences);
 
   })
   .catch( error => {
@@ -53,13 +52,11 @@ router.patch('/', verifyToken, (req, res, next) => {
   if ( key === 'facilities' ) {
 
     const { facilityID } =  req.body;
-    console.log(`adding this facility to favs: ${facilityID}`);
 
     Preference.findOneAndUpdate( id, { $push: {facilities: facilityID}, doctor: id }, { new: true}  )
     .then( preferences => {
 
       res.status(200).json({ preferences });
-      console.log(preferences);
 
     })
     .catch( error => {
@@ -74,7 +71,6 @@ router.patch('/', verifyToken, (req, res, next) => {
     .then( preferences => {
 
       res.status(200).json({ preferences });
-      console.log(preferences);
 
     })
     .catch( error => {
@@ -95,7 +91,6 @@ router.get('/cv', verifyToken, (req, res, next) => {
   .then( curriculum => {
 
     res.status(200).json({ curriculum });
-    console.log(curriculum);
 
   })
   .catch( error => {
@@ -114,7 +109,6 @@ router.get('/cv/:doctorID', verifyToken, (req, res, next) => {
   .then( curriculum => {
 
     res.status(200).json({ curriculum });
-    console.log(curriculum);
 
   })
   .catch( error => {
