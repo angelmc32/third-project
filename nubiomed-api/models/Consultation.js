@@ -11,13 +11,17 @@ const consultationSchema = new Schema (
     patient: {
       type: Schema.Types.ObjectId,
       // required: true,
-      ref: 'User',
+      ref: 'Patient',
       default: null
     },
     date: {
       type: Date,
       default: Date.now,
       required: true
+    },
+    title: {
+      type: String,
+      default: 'Consulta con paciente'
     },
     facility: {
       type: Schema.Types.ObjectId,

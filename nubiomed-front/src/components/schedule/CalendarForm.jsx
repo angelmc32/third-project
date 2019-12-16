@@ -16,6 +16,7 @@ const CalendarForm = ( { submit, handleChange, form, consultation = {} } ) => {
 
       const { patients } = res.data;
       setPatients(patients);
+      console.log(patients);
 
     })
 
@@ -53,30 +54,24 @@ const CalendarForm = ( { submit, handleChange, form, consultation = {} } ) => {
           <div className="uk-width-3-5 uk-margin uk-flex uk-flex-column uk-flex-start uk-flex-around">
 
             <div className="uk-margin">
-            <label className="uk-form-label">Titulo de consulta:</label>
-              <div className="uk-form-controls">
-                <input onChange={handleChange} name="title" value={`Consulta para paciente:`} className="uk-input" type="text" />
-              </div>
-            </div>
-
-            <div className="uk-margin">
               <label className="uk-form-label">Hora seleccionada:</label>
               <div className="uk-form-controls">
-                <input onChange={handleChange} name="title" value={consultation.dateStr ? consultation.dateStr.slice(11,16) : "23:00"} className="uk-input" type="time" />
+                <input onChange={handleChange} name="time" value={consultation.dateStr ? consultation.dateStr.slice(11,16) : "23:00"} className="uk-input" type="time" />
               </div>
             </div>
 
             <div className="uk-margin">
               <label className="uk-form-label">Fecha seleccionada:</label>
               <div className="uk-form-controls">
-                <input onChange={handleChange} name="title" value={consultation.dateStr ? consultation.dateStr.slice(0,10) : "2018-07-22"} className="uk-input" type="date" />
+                <input onChange={handleChange} name="date2" value={consultation.dateStr ? consultation.dateStr.slice(0,10) : "2018-07-22"} className="uk-input" type="date" />
+                <input type="hidden" onChange={handleChange} name="date" value={consultation.dateStr ? consultation.dateStr.slice(0,10) : "2018-07-22"} />
               </div>
             </div>
 
             <div className="uk-margin">
               <label className="uk-form-label">Paciente:</label>
               <div className="uk-form-controls">
-                <textarea onChange={handleChange} name="description" defaultValue="" className="uk-select" />
+                <textarea onChange={handleChange} name="none" defaultValue="" className="uk-select" />
               </div>
             </div>
 
@@ -84,10 +79,23 @@ const CalendarForm = ( { submit, handleChange, form, consultation = {} } ) => {
 
           <div className="uk-width-2-5 uk-margin">
             <p>Todos los pacientes</p>
-              <div id="height30ovfw" className="uk-container">
-                <ul>
+              <div id="height30ovfw" className="uk-container uk-width-5-6">
+                <ul className="uk-list uk-list-striped">
+                      <li key={null}>
+                        <label className="uk-flex uk-flex-around uk-flex-middle">
+                          <input onChange={handleChange} className="uk-radio" type="radio" name="patient" value={0} />
+                            Paciente no registrado
+                        </label>
+                      </li>
                   { patients ? (
-                      patients.map( (patient, index) => <li key={patient._id}>{patient.first_name}</li> )
+                      patients.map( (patient, index) => 
+                      <li key={patient._id}>
+                        <label className="uk-flex uk-flex-around uk-flex-middle">
+                          <input onChange={handleChange} className="uk-radio" type="radio" name="patient" value={patient._id} />
+                            {patient.first_name ? patient.first_name : patient.email}
+                        </label>
+                        <input onChange={handleChange} type="hidden" name="patient" value={patient._id} />
+                      </li> )
                     ) : (
                       <li>Cargando pacientes</li>
                     ) }

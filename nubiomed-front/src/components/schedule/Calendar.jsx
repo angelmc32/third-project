@@ -30,7 +30,7 @@ const Calendar = ({ usertype }) => {
   ];
 
   // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
-  const { form, setForm, handleInput } = useForm();
+  const { form, setForm, handleInput } = useForm({});
   // Destructure user and route state variables, as well as setRoute to update route state variable
   const { user, route, setRoute } = useContext(AppContext);
   // Declare facilities state variable and setFacilities function to update the facilities state variable
@@ -80,6 +80,8 @@ const Calendar = ({ usertype }) => {
 
     event.preventDefault();             // Prevent page reloading after submit action
     console.log('submitting')
+
+    console.log(form)
     
     createDoctorConsultation(form)
     .then( res => {
