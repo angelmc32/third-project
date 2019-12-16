@@ -10,53 +10,52 @@ const consultationSchema = new Schema (
     },
     patient: {
       type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'User'
+      // required: true,
+      ref: 'User',
+      default: null
     },
     date: {
       type: Date,
       default: Date.now,
       required: true
     },
-    medical_facility: {
+    facility: {
       type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'MedicalFacility'
+      // required: true,
+      ref: 'Facility',
+      default: null
     },
     chief_complaint: {
-      type: String,
-      required: true
+      type: String
     },
     systems_chief_complaint: {
-      type: [String],
-      required: true
+      type: [String]
     },
     vital_signs: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'VitalSigns'
     },
     phys_exam: {
       type: String,
-      required: true,
       default: 'Sin observaciones en el examen físico.'
     },
     systems_phys_exam: {
       type: [String],
-      required: true
     },
     diagnosis: {
-      type: String,
-      required: true
+      type: String
     },
     prognosis: {
-      type: String,
-      required: true
+      type: String
     },
     prescription: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'Prescription'
+    },
+    isDone: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   { timestamps: true }

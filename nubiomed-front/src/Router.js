@@ -29,9 +29,6 @@ const Router = () => {
       <Route exact path="/">
         <Landing />
       </Route>
-      <Route exact path="/calendar">
-        <Calendar />
-      </Route>
       <Route exact path="/home">
         { user.usertype === 'Doctor' ? 
           <DoctorHome /> :
@@ -52,6 +49,9 @@ const Router = () => {
       </Route>
       <Route path="/doctor-login">
         <Login usertype="Doctor"/>
+      </Route>
+      <Route path="/schedule">
+        <Calendar usertype={user.usertype}/>
       </Route>
       <Route path="/doctors">
         <Doctors />

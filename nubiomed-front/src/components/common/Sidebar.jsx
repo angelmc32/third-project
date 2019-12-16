@@ -27,8 +27,8 @@ const Sidebar = () => {
             <li className="uk-active">
               <NavLink to="/home">Home</NavLink>
             </li>
-            <li className="uk-active">
-              <NavLink to="/planner">Agenda</NavLink>
+            <li className="uk-active" onClick={event => handleRoute(event, "schedule")}>
+              <NavLink to="/schedule">Agenda</NavLink>
             </li>
             <li className="uk-active">
               <NavLink to="/patients">Mis Pacientes</NavLink>
