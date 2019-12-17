@@ -11,6 +11,7 @@ router.get('/doctor', verifyToken, (req, res, next) => {
   const { id } = req.user;    // Destructure the user id from the request
 
   Consultation.find({ doctor: id })
+  .populate('patient', 'email first_name last_name1 date_of_birth')
   .then( consultations => {
 
     res.status(200).json({ consultations });
@@ -49,6 +50,7 @@ router.get('/patient', verifyToken, (req, res, next) => {
   const { id } = req.user;    // Destructure the user id from the request
 
   Consultation.find({ patient: id })
+  .populate('doctor', 'email first_name last_name1')
   .then( consultations => {
 
     res.status(200).json({ consultations });

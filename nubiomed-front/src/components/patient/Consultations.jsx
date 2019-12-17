@@ -5,48 +5,126 @@ import useForm from '../../hooks/useForm';                          // Import us
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
 
-import { getPatientConsultations } from '../../services/consultation-services'
+import { getDoctorConsultations, getPatientConsultations } from '../../services/consultation-services'
 
 const PatientConsultations = () => {
 
-  const { user } = AppContext;
+  const { user } = useContext(AppContext);
   const [consultations, setConsultations] = useState([]);
 
   useEffect( () => {
 
-    getPatientConsultations()
-    .then( res => {
+    console.log(user)
 
-      const { consultations } = res.data;
-      console.log(consultations)
-      setConsultations(consultations);
+    if ( user.usertype === 'Doctor' ) {
+      
+      getDoctorConsultations()
+      .then( res => {
 
-    })
+        const { consultations } = res.data;
+        console.log(consultations[0]);
+        setConsultations(consultations);
 
-  }, []);
+      })
+
+    } else if ( user.usertype === 'Patient' ) {
+
+      getPatientConsultations()
+      .then( res => {
+
+        const { consultations } = res.data;
+        console.log(consultations[0]);
+        setConsultations(consultations);
+
+      })
+
+    }
+
+  }, [user]);
 
   return (
-    <div className="uk-section">
+    <div className="uk-section uk-padding-small">
 
-      <div className="uk-container">
+      <div className="uk-container uk-width-5-6">
 
-        <ul className="uk-list uk-list-striped">
+        <h3>{user.usertype === 'Doctor' ? "Consultas Anteriores" : "Mis Consultas"}</h3>
 
-          { consultations ? 
-            consultations.map( (consultation, index) => 
-            <li key={consultation._id}>
-              <label className="uk-flex uk-flex-around uk-flex-middle">
-                <input className="uk-radio" type="radio" name="patient" value={consultation._id} />
-                  {consultation.title}
-              </label>
-              
-            </li> 
-            ) : (
-              <h4>Cargando consultas</h4>
-            )
-          }
-          </ul>
-
+        { user.usertype === 'Doctor' ? 
+            <table className="uk-table uk-table-striped uk-table-hover">
+              <thead>
+                <tr>
+                  <th className="uk-text-center">Paciente</th>
+                  <th className="uk-text-center">Motivo de consulta</th>
+                  <th className="uk-text-center">Diagnostico</th>
+                  <th className="uk-text-center">Receta</th>
+                  <th className="uk-text-center">Fecha</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                { consultations ? 
+                    consultations.map( (consultation, index) => 
+                      <tr key={index}>
+                        <td>{`${consultation.patient.first_name} ${consultation.patient.last_name1}`}</td>
+                        <td>{consultation.chief_complaint}</td>
+                        <td>{consultation.diagnosis}</td>
+                        <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
+                        <td>{consultation.date}</td>
+                        <td>
+                          <button className="uk-button uk-button-default uk-button-small">
+                            Ver Consulta
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  : <tr>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                    </tr>
+                }
+              </tbody>
+            </table>
+          : <table className="uk-table uk-table-striped uk-table-hover">
+              <thead>
+                <tr>
+                  <th className="uk-text-center">Motivo de consulta</th>
+                  <th className="uk-text-center">Diagnostico</th>
+                  <th className="uk-text-center">Receta</th>
+                  <th className="uk-text-center">Doctor</th>
+                  <th className="uk-text-center">Fecha</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                { consultations ? 
+                    consultations.map( (consultation, index) => 
+                      <tr key={index}>
+                        <td>{consultation.chief_complaint}</td>
+                        <td>{consultation.diagnosis}</td>
+                        <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
+                        <td>{`Dr. ${consultation.doctor.first_name} ${consultation.doctor.last_name1}`}</td>
+                        <td>{consultation.date}</td>
+                        <td>
+                          <button className="uk-button uk-button-default uk-button-small">
+                            Ver Consulta
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  : <tr>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                    </tr>
+              }
+            </tbody>
+          </table>
+        }
       </div>
 
     </div>
