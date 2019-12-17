@@ -17,6 +17,7 @@ import Facility from './components/facility/Facility';
 import Map from './components/common/Mapbox';
 import AppLoader from './components/common/Loader';
 import Calendar from './components/schedule/Calendar';
+import PatientConsultations from './components/patient/Consultations'
 
 const Router = () => {
 
@@ -61,6 +62,9 @@ const Router = () => {
       </Route>
       <Route path="/patients">
         <Patients />
+      </Route>
+      <Route path="/consultations">
+        <PatientConsultations />
       </Route>
       <Route path="/facilities">
         <Facility />

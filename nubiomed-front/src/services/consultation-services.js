@@ -9,7 +9,7 @@ export const getDoctorConsultations = (doctorID = null) => {
 
   const token = localStorage.getItem('token');  // Get token from localStorage
 
-  if ( ! doctorID ) {
+  if ( !doctorID ) {
 
     return axios.get(`${base_url}/doctor`, {
       headers: {
@@ -19,7 +19,7 @@ export const getDoctorConsultations = (doctorID = null) => {
 
   } else {
 
-    return axios.get(`${base_url}/user/${doctorID}`, {
+    return axios.get(`${base_url}/patient/${doctorID}`, {
       headers: {
         Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
       }
@@ -48,10 +48,34 @@ export const createUserConsultation = (data, doctorID) => {
   const token = localStorage.getItem('token');  // Get token from localStorage
 
   // Return a call to our /new route, while sending the parameters obtained from the form/front-end
-  return axios.post(`${base_url}/user/${doctorID}`, data, {
+  return axios.post(`${base_url}/patient/${doctorID}`, data, {
     headers: {
       Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
     }
   });
 
 };
+
+export const getPatientConsultations = (patientID = null) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  if ( !patientID ) {
+
+    return axios.get(`${base_url}/patient`, {
+      headers: {
+        Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+      }
+    });
+
+  } else {
+
+    return axios.get(`${base_url}/doctor/${patientID}`, {
+      headers: {
+        Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+      }
+    });
+
+  }
+
+}

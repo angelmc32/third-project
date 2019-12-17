@@ -25,7 +25,45 @@ router.get('/doctor', verifyToken, (req, res, next) => {
 });
 
 // Route to get user events
-router.get('/user/:doctorID', verifyToken, (req, res, next) => {
+router.get('/doctor/:patientID', verifyToken, (req, res, next) => {
+
+  const { patientID } = req.params;    // Destructure the user id from the request
+
+  Consultation.find({ patient: patientID })
+  .then( consultations => {
+
+    res.status(200).json({ consultations });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+// Route to get user events
+router.get('/patient', verifyToken, (req, res, next) => {
+
+  const { id } = req.user;    // Destructure the user id from the request
+
+  Consultation.find({ patient: id })
+  .then( consultations => {
+
+    res.status(200).json({ consultations });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+// Route to get user events
+router.get('/patient/:doctorID', verifyToken, (req, res, next) => {
 
   const { doctorID } = req.params;    // Destructure the user id from the request
 
@@ -43,7 +81,7 @@ router.get('/user/:doctorID', verifyToken, (req, res, next) => {
 
 });
 
-router.post('/user/:doctorID', verifyToken, (req, res, next) => {
+router.post('/patient/:doctorID', verifyToken, (req, res, next) => {
 
   //const { id } = req.user;    // Destructure the user id from the request
   const { doctorID } = req.params;    // Destructure the user id from the request
@@ -62,7 +100,7 @@ router.post('/user/:doctorID', verifyToken, (req, res, next) => {
 
   });
 
-})
+});
 
 router.post('/doctor', verifyToken, (req, res, next) => {
 
@@ -82,6 +120,6 @@ router.post('/doctor', verifyToken, (req, res, next) => {
 
   });
 
-})
+});
 
 module.exports = router;
