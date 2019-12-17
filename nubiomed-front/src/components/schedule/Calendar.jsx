@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
+import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -17,19 +18,13 @@ import '@fullcalendar/interaction/main.js';
 
 import CalendarForm from './CalendarForm';
 
-import { getDoctorConsultations, createDoctorConsultation } from '../../services/consultation-services'
+import { getDoctorConsultations, createDoctorConsultation, createUserConsultation } from '../../services/consultation-services'
 
-const Calendar = ({ usertype }) => {
+const Calendar = ({ usertype, doctorID = null }) => {
 
   const calendarPlugins = [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin];
-  const startingEvents = [
-    { title: 'Reunion en Hospital Angeles', date: '2019-12-16' },
-    { title: 'Descansar', date: '2019-12-18' },
-    { title: 'Cena de navidad', date: '2019-12-24' },
-    { title: 'Cena de fin de agno', date: '2019-12-31' }
-  ];
 
-  // Destructure form state variable, handleInput and handleFileInput functions for form state manipulation
+  // Destructure form state variable, handleInput functions for form state manipulation
   const { form, setForm, handleInput } = useForm({});
   // Destructure user and route state variables, as well as setRoute to update route state variable
   const { user, route, setRoute } = useContext(AppContext);
@@ -38,20 +33,36 @@ const Calendar = ({ usertype }) => {
   // Declare single facility state variable and setFacility function to update the single facility state variable
   const [consultation, setConsultation] = useState({});
 
-  let [events, setEvents] = useState(startingEvents);
+  let [events, setEvents] = useState({});
+  let [confirmation, setConfirmation] = useState(false);
+
+  const { push } = useHistory();
 
   useEffect( () => {
 
-    getDoctorConsultations()
-    .then( res => {
+    if ( user.usertype === 'Doctor' ) {
 
-      const { consultations } = res.data;
-      setConsultations(consultations);
-      setEvents(consultations);
+      getDoctorConsultations()
+      .then( res => {
 
-    })
+        const { consultations } = res.data;
+        setConsultations(consultations);
+        setEvents(consultations);
 
-    console.log(events);
+      })
+    
+    } else if ( user.usertype === 'Patient' ) {
+
+      getDoctorConsultations(doctorID)
+      .then( res => {
+
+        const { consultations } = res.data;
+        setConsultations(consultations);
+        setEvents(consultations);
+
+      })
+
+    }
 
   }, [route]);
 
@@ -65,38 +76,61 @@ const Calendar = ({ usertype }) => {
       })
     );
 
-    setRoute('confirmation');
-    setForm({date: arg.date, doctor: user._id})
+    if ( user.usertype === 'Doctor' ) {
 
-    setConsultation(arg);
-    console.log(consultation);
+      setRoute('confirmation');
+      setForm({date: arg.date, doctor: user._id})
 
-    console.log(`Clicking somewhere with an argument`)
-    console.log(arg);
+      setConsultation(arg);
+
+    } else if ( user.usertype === 'Patient' ) {
+
+      setConfirmation(true);
+      setForm({date: arg.date, patient: user._id})
+      setConsultation(arg);
+
+    }
 
   }
 
   const handleSubmit = (event) => {
 
     event.preventDefault();             // Prevent page reloading after submit action
-    console.log('submitting')
 
-    console.log(form)
+    if ( user.usertype === 'Doctor' ) {
+
+      createDoctorConsultation(form)
+      .then( res => {
+
+        const { consultation } = res.data;
+        setRoute('schedule');
+
+      })
+      .catch( error => {
+        
+        console.log(error);
+        
+      })
+
+    } else if ( user.usertype === 'Patient' ) {
+
+      createUserConsultation(form, doctorID)
+      .then( res => {
+
+        const { consultation } = res.data;
+        push('/home');
+        
+
+      })
+      .catch( error => {
+        
+        console.log(error);
+        
+      })
+
+    }
     
-    createDoctorConsultation(form)
-    .then( res => {
-
-      console.log(res);
-      const { consultation } = res.data;
-      console.log(consultation);
-      setRoute('schedule');
-
-    })
-    .catch( error => {
-      
-      console.log(error);
-      
-    })
+    
   }
 
   return (
@@ -130,10 +164,7 @@ const Calendar = ({ usertype }) => {
             ) : (
               <CalendarForm submit={handleSubmit} handleChange={handleInput} form={form} consultation={consultation} />
             )
-          }
-
-          
-          
+          }          
         </div>
         
       </div>
@@ -141,23 +172,33 @@ const Calendar = ({ usertype }) => {
 
         <div className="uk-container">
 
-          {/* <div className="uk-button uk-button-default uk-button-small" onClick={() => console.log(events)}>print calendar state</div> */}
-          <div className="uk-width-1-1">
-            <FullCalendar 
-              defaultView="timeGridWeek" 
-              header={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'timeGridWeek,timeGridDay'
-              }}
-              locale={esLocale}
-              minTime={"06:00:00"} 
-              // maxTime={"19:00:00"} 
-              plugins={ calendarPlugins } 
-              events={events} 
-              dateClick={ handleDateClick }
-            />
-          </div>
+          { route === 'schedule' ? (
+              <div className="uk-width-1-1">
+
+                { !confirmation ? 
+
+                    <FullCalendar 
+                      defaultView="timeGridWeek" 
+                      header={{
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay'
+                      }}
+                      locale={esLocale}
+                      minTime={"06:00:00"} 
+                      // maxTime={"19:00:00"} 
+                      plugins={ calendarPlugins } 
+                      events={events} 
+                      dateClick={ handleDateClick }
+                    />
+                  : <CalendarForm submit={handleSubmit} handleChange={handleInput} form={form} consultation={consultation} />
+                }
+              </div>
+            ) : route === 'confirmation' ? (
+              <h4>Confirmation form</h4>
+            ) : <h4>LOL</h4>
+          }
+          
           
         </div>
         

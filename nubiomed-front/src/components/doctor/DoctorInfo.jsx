@@ -94,9 +94,20 @@ const DoctorInfo = ({ doctor, preference }) => {
       {
         route !== 'curriculum' ? (
 
-          <div className="uk-width-3-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
-            <Calendar usertype={user.usertype} />
-          </div>
+           route === 'schedule' ? (
+            <div className="uk-width-3-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+              <Calendar usertype={user.usertype} doctorID={doctor._id} />
+            </div>
+            ) : (
+            <div className="uk-width-3-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+              <button className="uk-button uk-button-default uk-button-small uk-border-pill uk-margin-small-right" onClick={(event) => setRoute('schedule')}>
+                Cargar Calendario del Doctor
+              </button>
+            </div>
+            )
+          
+
+          
         ) : (
 
           <div className="uk-width-4-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle">

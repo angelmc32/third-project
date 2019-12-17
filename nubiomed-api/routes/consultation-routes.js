@@ -24,6 +24,46 @@ router.get('/doctor', verifyToken, (req, res, next) => {
 
 });
 
+// Route to get user events
+router.get('/user/:doctorID', verifyToken, (req, res, next) => {
+
+  const { doctorID } = req.params;    // Destructure the user id from the request
+
+  Consultation.find({ doctor: doctorID })
+  .then( consultations => {
+
+    res.status(200).json({ consultations });
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+
+  });
+
+});
+
+router.post('/user/:doctorID', verifyToken, (req, res, next) => {
+
+  //const { id } = req.user;    // Destructure the user id from the request
+  const { doctorID } = req.params;    // Destructure the user id from the request
+
+  Consultation.create({ ...req.body, doctor: doctorID })
+  .then( consultation => {
+
+    res.status(200).json({ consultation });
+    console.log(consultation);
+
+  })
+  .catch( error => {
+
+    res.status(500).json({ error, msg: 'Unable to create consultation' }); // Respond 500 status, error and message
+    console.log(error);
+
+  });
+
+})
+
 router.post('/doctor', verifyToken, (req, res, next) => {
 
   const { id } = req.user;    // Destructure the user id from the request

@@ -15,6 +15,7 @@ router.get('/', verifyToken, (req, res, next) => {
   .then( preferences => {
 
     res.status(200).json({ preferences });
+    console.log(preferences)
 
   })
   .catch( error => {
