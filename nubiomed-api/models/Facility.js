@@ -54,4 +54,12 @@ const facilitySchema = new Schema(
   { timestamps: true }
 );
 
+
+facilitySchema.static.getFreeFacilities = (date) => (
+  this.aggregate([
+    { $lookup: { from: 'consultations', localField: '_id', foreignField: 'facility', as: 'consultations' } },
+    
+  ])
+)
+
 module.exports = model('Facility', facilitySchema);

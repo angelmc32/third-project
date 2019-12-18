@@ -5,6 +5,8 @@ import useForm from '../../hooks/useForm';                          // Import us
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
 
+import '../../../node_modules/moment/locale/es.js'
+
 import { getDoctorConsultations, getPatientConsultations } from '../../services/consultation-services'
 
 const PatientConsultations = () => {
@@ -69,7 +71,7 @@ const PatientConsultations = () => {
                         <td>{consultation.chief_complaint}</td>
                         <td>{consultation.diagnosis}</td>
                         <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
-                        <td>{consultation.date}</td>
+                        <td>{moment(consultation.date).locale('es').format('LL')}</td>
                         <td>
                           <button className="uk-button uk-button-default uk-button-small">
                             Ver Consulta
@@ -106,11 +108,16 @@ const PatientConsultations = () => {
                         <td>{consultation.diagnosis}</td>
                         <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
                         <td>{`Dr. ${consultation.doctor.first_name} ${consultation.doctor.last_name1}`}</td>
-                        <td>{consultation.date}</td>
+                        <td>{moment(consultation.date).locale('es').format('LL')}</td>
                         <td>
-                          <button className="uk-button uk-button-default uk-button-small">
-                            Ver Consulta
-                          </button>
+                          { consultation.isDone ? 
+                              <button className="uk-button uk-button-default uk-button-small">
+                                Ver Consulta
+                              </button>
+                            :
+                              "Consulta por realizar"
+                          }
+                          
                         </td>
                       </tr>
                     )
