@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c61b78b8.chunk.css",
+    "main.js": "/static/js/main.2d6db740.chunk.js",
+    "main.js.map": "/static/js/main.2d6db740.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.7ed08f94.js",
+    "runtime-main.js.map": "/static/js/runtime-main.7ed08f94.js.map",
+    "static/css/2.cdb51ba0.chunk.css": "/static/css/2.cdb51ba0.chunk.css",
+    "static/js/2.ef1d46ab.chunk.js": "/static/js/2.ef1d46ab.chunk.js",
+    "static/js/2.ef1d46ab.chunk.js.map": "/static/js/2.ef1d46ab.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.f3a4ca9985da0ddd75745ac9675c914e.js": "/precache-manifest.f3a4ca9985da0ddd75745ac9675c914e.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.cdb51ba0.chunk.css.map": "/static/css/2.cdb51ba0.chunk.css.map",
+    "static/css/main.c61b78b8.chunk.css.map": "/static/css/main.c61b78b8.chunk.css.map",
+    "static/media/App.css": "/static/media/center-logo.a441e8e5.bin",
+    "static/media/doctor.svg": "/static/media/doctor.5d20e5df.svg",
+    "static/media/first-aid-kit.svg": "/static/media/first-aid-kit.45349799.svg",
+    "static/media/homemarker.svg": "/static/media/homemarker.23c7fe29.svg",
+    "static/media/hospital.svg": "/static/media/hospital.e291746c.svg",
+    "static/media/medical-file.svg": "/static/media/medical-file.7e695e52.svg",
+    "static/media/prescription.svg": "/static/media/prescription.02aa910e.svg",
+    "static/media/stethoscope.svg": "/static/media/stethoscope.89aba8cb.svg",
+    "static/media/user-avatar.png": "/static/media/user-avatar.e27c8735.png",
+    "static/media/vademecum.svg": "/static/media/vademecum.dd128559.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7ed08f94.js",
+    "static/css/2.cdb51ba0.chunk.css",
+    "static/js/2.ef1d46ab.chunk.js",
+    "static/css/main.c61b78b8.chunk.css",
+    "static/js/main.2d6db740.chunk.js"
+  ]
+}
