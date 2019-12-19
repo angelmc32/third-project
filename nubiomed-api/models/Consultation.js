@@ -34,7 +34,7 @@ const consultationSchema = new Schema (
       default: 'Consulta por realizar'
     },
     systems_chief_complaint: {
-      type: [String]
+      type: String
     },
     vital_signs: {
       type: Schema.Types.ObjectId,
@@ -42,10 +42,7 @@ const consultationSchema = new Schema (
     },
     phys_exam: {
       type: String,
-      default: 'Consulta por realizar'
-    },
-    systems_phys_exam: {
-      type: [String],
+      default: 'Sin observaciones en el examen fisico'
     },
     diagnosis: {
       type: String,

@@ -14,10 +14,11 @@ import DoctorHome from './components/doctor/DoctorHome';
 import PatientHome from './components/patient/PatientHome';
 import Patients from './components/doctor/myPatients/Patients'
 import Facility from './components/facility/Facility';
+import Consultation from './components/consultation/Consultation';
+import Prescription from './components/prescription/Prescription';
 import Map from './components/common/Mapbox';
 import AppLoader from './components/common/Loader';
 import Calendar from './components/schedule/Calendar';
-import PatientConsultations from './components/patient/Consultations'
 
 const Router = () => {
 
@@ -64,7 +65,10 @@ const Router = () => {
         <Patients />
       </Route>
       <Route path="/consultations">
-        <PatientConsultations />
+        <Consultation />
+      </Route>
+      <Route path="/prescriptions">
+        <Prescription />
       </Route>
       <Route path="/facilities">
         <Facility />

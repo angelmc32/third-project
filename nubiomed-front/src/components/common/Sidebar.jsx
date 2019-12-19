@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';                // Import React and useContext hook
-import { NavLink } from 'react-router-dom';               // Import NavLink for "navigation"
+import { NavLink, Link } from 'react-router-dom';               // Import NavLink for "navigation"
 //import { useHistory } from 'react-router-dom';            // Import useHistory for "redirection"
 import { AppContext }  from '../../AppContext';           // Import AppContext to use created context
 
@@ -39,10 +39,10 @@ const Sidebar = () => {
             <li className="uk-parent uk-active">
               <NavLink to="/consultations">Consultas</NavLink>
               <ul className="uk-nav-sub">
-                <li>
-                  <NavLink to="/consultations">Nueva Consulta</NavLink>
+                <li onClick={event => handleRoute(event, "newConsultation")} >
+                  <Link to="/consultations">Nueva Consulta</Link>
                 </li>
-                <li>
+                <li onClick={event => handleRoute(event, "myConsultations")} >
                   <NavLink to="/consultations">Consultas Anteriores</NavLink>
                 </li>
               </ul>
@@ -50,10 +50,10 @@ const Sidebar = () => {
             <li className="uk-parent uk-active">
               <a href="#">Recetas</a>
               <ul className="uk-nav-sub">
-                <li>
-                  <NavLink to="/prescriptions/new">Nueva Receta</NavLink>
+                <li onClick={event => handleRoute(event, "newPrescription")} >
+                  <NavLink to="/prescriptions">Nueva Receta</NavLink>
                 </li>
-                <li>
+                <li onClick={event => handleRoute(event, "myPrescriptions")} >
                   <NavLink to="/prescriptions">Recetas Anteriores</NavLink>
                 </li>
               </ul>
@@ -86,7 +86,7 @@ const Sidebar = () => {
           <li className="uk-active">
             <NavLink to="/journal">Mi Diario</NavLink>
           </li>
-          <li className="uk-active" onClick={event => handleRoute(event, "doctors")}>
+          <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
             <NavLink to="/doctors">Doctores</NavLink>
           </li>
           <li className="uk-active">
@@ -95,7 +95,7 @@ const Sidebar = () => {
           <li className="uk-active">
             <NavLink to="/messages">Mensajes</NavLink>
           </li>
-          <li className="uk-active">
+          <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
             <NavLink to="/consultations">Mis Consultas</NavLink>
           </li>
           <li className="uk-active">

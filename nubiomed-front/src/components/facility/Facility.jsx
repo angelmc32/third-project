@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';                      // Import us
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
-import moment, { HTML5_FMT } from 'moment';                                        // Import momentjs for date formatting
 
 // Import API services (CRUD operations) from services file
 import { getUserFacilities, getAllFacilities, getFacilityInfo, createFacility, updateFacility, deleteFacility } from '../../services/facility-services';

@@ -13,6 +13,13 @@ const facilitySchema = new Schema(
       required: true,
       enum: ['Patient', 'Doctor']
     },
+    consultations: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Consultation'
+    },
+    dates: {
+      type: [Date]
+    },
     title: {
       type: String,
       required: true
@@ -55,11 +62,12 @@ const facilitySchema = new Schema(
 );
 
 
-facilitySchema.static.getFreeFacilities = (date) => (
-  this.aggregate([
+facilitySchema.statics.getAvailableFacilities = function() {
+  return this.aggregate([
     { $lookup: { from: 'consultations', localField: '_id', foreignField: 'facility', as: 'consultations' } },
-    
+    // { $match: { 'date': { $ne: date } } },
+    { $group: {_id: '$_id' } }
   ])
-)
+};
 
 module.exports = model('Facility', facilitySchema);

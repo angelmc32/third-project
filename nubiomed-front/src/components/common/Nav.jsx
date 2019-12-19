@@ -74,8 +74,8 @@ const Nav = () => {
               ) : (
                 user.usertype === 'Doctor' ? (
                   <li>
-                    <Link to="/consultations/new">
-                      <button className="uk-button uk-button-primary uk-border-pill" >Nueva Consulta</button>
+                    <Link to="/consultations">
+                      <button className="uk-button uk-button-primary uk-border-pill" onClick={event => setRoute("newConsultation")} >Nueva Consulta</button>
                     </Link>
                   </li>
                 ) : (

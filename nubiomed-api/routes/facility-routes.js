@@ -21,6 +21,7 @@ router.get('/', verifyToken, (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
+    console.log(error);
 
   });
 
@@ -32,6 +33,17 @@ router.get('/all', (req, res, next) => {
   .populate()
   .then( facilities => {
 
+    Facility.getAvailableFacilities('2019-12-18T23:00:00.000+00:00')
+    .then( availableFacilities => {
+
+      console.log(`son estas wey:`);
+      console.log(availableFacilities);
+
+    });
+
+    Facility.find({ dates: { $ne: 'Wed Dec 18 2019 23:00:00 GMT-0600 (Central Standard Time)' } })
+    .then(frees => console.log(frees.length))
+    
     res.status(200).json({ facilities });
 
   })

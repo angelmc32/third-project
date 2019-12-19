@@ -78,4 +78,28 @@ export const getPatientConsultations = (patientID = null) => {
 
   }
 
+};
+
+export const getConsultationInfo = (consultationID) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.get(`${base_url}/${consultationID}`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
+};
+
+export const editConsultation = (consultationID, data) => {
+
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.patch(`${base_url}/${consultationID}`, data, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
+
 }

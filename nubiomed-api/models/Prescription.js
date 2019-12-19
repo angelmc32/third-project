@@ -8,36 +8,28 @@ const prescriptionSchema = new Schema (
       required: true,
       ref: 'Consultation'
     },
+    doctor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Doctor'
+    },
+    patient: {
+      type: Schema.Types.ObjectId,
+      ref: 'Patient'
+    },
     brand_name: {
-      type: [String],
-      default: ''
+      type: String
     },
     generic_name: {
-      type: [String],
-      required: true
+      type: String
     },
     dose: {
-      type: [String],
-      required: true
+      type: String
     },
     dosage_form: {
-      type: [String],
-      required: true
-    },
-    quantity: {
-      type: [Number],
-      required: true
-    },
-    frequency: {
-      type: [String],
-      required: true
-    },
-    duration: {
-      type: [String],
-      required: true
+      type: String
     },
     directions: {
-      type: [String]
+      type: String
     }
   },
   { timestamps: true }

@@ -16,6 +16,8 @@ import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/timegrid/main.js';
 import '@fullcalendar/interaction/main.js';
 
+import moment from 'moment';                                        // Import momentjs for date formatting
+
 import CalendarForm from './CalendarForm';
 
 import { getDoctorConsultations, createDoctorConsultation, createUserConsultation } from '../../services/consultation-services'
@@ -79,14 +81,14 @@ const Calendar = ({ usertype, doctorID = null }) => {
     if ( user.usertype === 'Doctor' ) {
 
       setRoute('confirmation');
-      setForm({date: arg.date, doctor: user._id})
+      setForm({date: moment(arg.date).local(), doctor: user._id})
 
       setConsultation(arg);
 
     } else if ( user.usertype === 'Patient' ) {
 
       setConfirmation(true);
-      setForm({date: arg.date, patient: user._id})
+      setForm({date: moment(arg.date).local(), patient: user._id})
       setConsultation(arg);
 
     }

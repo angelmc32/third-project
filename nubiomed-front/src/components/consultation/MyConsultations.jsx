@@ -5,18 +5,16 @@ import useForm from '../../hooks/useForm';                          // Import us
 import UIkit from 'uikit';                                          // Import UIkit for notifications
 import moment from 'moment';                                        // Import momentjs for date formatting
 
-import '../../../node_modules/moment/locale/es.js'
+import 'moment/locale/es'
 
 import { getDoctorConsultations, getPatientConsultations } from '../../services/consultation-services'
 
-const PatientConsultations = () => {
+const MyConsultations = ({ consultation, setConsultation }) => {
 
-  const { user } = useContext(AppContext);
+  const { user, setRoute } = useContext(AppContext);
   const [consultations, setConsultations] = useState([]);
 
   useEffect( () => {
-
-    console.log(user)
 
     if ( user.usertype === 'Doctor' ) {
       
@@ -24,7 +22,6 @@ const PatientConsultations = () => {
       .then( res => {
 
         const { consultations } = res.data;
-        console.log(consultations[0]);
         setConsultations(consultations);
 
       })
@@ -35,7 +32,6 @@ const PatientConsultations = () => {
       .then( res => {
 
         const { consultations } = res.data;
-        console.log(consultations[0]);
         setConsultations(consultations);
 
       })
@@ -44,10 +40,17 @@ const PatientConsultations = () => {
 
   }, [user]);
 
-  return (
-    <div className="uk-section uk-padding-small">
+  const handleButtonClick = (consultationID, newRoute) => {
 
-      <div className="uk-container uk-width-5-6">
+    consultation = consultationID;
+    setConsultation(consultationID);
+    setRoute(newRoute);
+
+  }
+
+  return (
+
+      <div className="uk-container uk-padding">
 
         <h3>{user.usertype === 'Doctor' ? "Consultas Anteriores" : "Mis Consultas"}</h3>
 
@@ -73,9 +76,15 @@ const PatientConsultations = () => {
                         <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
                         <td>{moment(consultation.date).locale('es').format('LL')}</td>
                         <td>
-                          <button className="uk-button uk-button-default uk-button-small">
-                            Ver Consulta
-                          </button>
+                          { consultation.isDone ? 
+                              <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(consultation._id, 'showConsultation')} >
+                                Ver Consulta
+                              </button>
+                            :
+                              <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(consultation._id, 'finishConsultation')} >
+                                Realizar Consulta
+                              </button>
+                          }
                         </td>
                       </tr>
                     )
@@ -111,13 +120,12 @@ const PatientConsultations = () => {
                         <td>{moment(consultation.date).locale('es').format('LL')}</td>
                         <td>
                           { consultation.isDone ? 
-                              <button className="uk-button uk-button-default uk-button-small">
+                              <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(consultation._id, 'showConsultation')} >
                                 Ver Consulta
                               </button>
                             :
                               "Consulta por realizar"
-                          }
-                          
+                          }  
                         </td>
                       </tr>
                     )
@@ -134,8 +142,7 @@ const PatientConsultations = () => {
         }
       </div>
 
-    </div>
   )
 };
 
-export default PatientConsultations;
+export default MyConsultations;
