@@ -12,6 +12,7 @@ import { getPreferences, editPreferences } from '../../services/profile-services
 import FacilityForm from './FacilityForm';                          // Import FacilityForm react component
 import FacilityCard from './FacilityCard';                          // Import FacilityCard react component
 import FacilityInfo from './FacilityInfo';                          // Import FacilityInfo react component
+import FacilityInfoSpecial from './FacilityInfoSpecial';                          // Import FacilityInfo react component
 
 // Declare Facility functional component
 const Facility = () => {
@@ -20,7 +21,7 @@ const Facility = () => {
   const { form, handleInput, handleFileInput } = useForm();
   
   // Destructure user and route state variables, as well as setRoute to update route state variable
-  const { user, route, setRoute } = useContext(AppContext);
+  const { user, route, setRoute, special } = useContext(AppContext);
   // Declare facilities state variable and setFacilities function to update the facilities state variable
   const [facilities, setFacilities] = useState([]);
   // Declare single facility state variable and setFacility function to update the single facility state variable
@@ -42,7 +43,9 @@ const Facility = () => {
 
       });
 
-    } if ( route === 'showFacility' || route === 'editFacility' ) {
+    } if ( route === 'showFacility' || route === 'editFacility' || route === 'specialFacility' ) {
+
+      if ( route === 'specialFacility' ) setFacility(special);
 
       getFacilityInfo(facility)             // Fetch facility from database
       .then( res => {
@@ -222,16 +225,19 @@ const Facility = () => {
                   <FacilityInfo facility={facility} edit={false} showMap={false} toggleFavorite={toggleFavorite} favorites={favorites} />
                 ) : route === 'editFacility' ? (
                   <FacilityForm handleChange={handleInput} handleFileInput={handleFileInput} form={form} submit={handleSubmit} edit={true} facility={facility} preview={true} />
-                  ) : (
+                  ) : route === 'specialFacility' ? (
+                    <FacilityInfoSpecial facility={facility} edit={false} showMap={false} toggleFavorite={toggleFavorite} favorites={favorites} />
+                    ) : (
                     <div className="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle">
                       <h3>Busca consultorios</h3>
                       <div uk-grid="true" className="uk-width-4-5 uk-child-width-1-3 uk-grid-match uk-grid-medium">
                         { facilities.map( (facility, index) => ( <FacilityCard key={index} preview={false} showFacility={showFacility} edit={false} {...facility} show /> ) ) }
                       </div>
                     </div>
+                  )
                 )
               )
-            )
+            
           
         }
 

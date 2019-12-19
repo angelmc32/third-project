@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';     // Import React, useEffect, useState and useContext hooks
-import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
+import { useHistory, NavLink } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 import useForm from '../../hooks/useForm';                          // Import useForm custom hook
 import UIkit from 'uikit';                                          // Import UIkit for notifications
@@ -11,7 +11,7 @@ import { getDoctorConsultations, getPatientConsultations } from '../../services/
 
 const MyConsultations = ({ consultation, setConsultation }) => {
 
-  const { user, setRoute } = useContext(AppContext);
+  const { user, setRoute, setSpecial } = useContext(AppContext);
   const [consultations, setConsultations] = useState([]);
 
   useEffect( () => {
@@ -48,6 +48,15 @@ const MyConsultations = ({ consultation, setConsultation }) => {
 
   }
 
+  const handleSpecialRedirection = (specialID, newRoute, consultation) => {
+
+    console.log(specialID)
+    console.log(consultation)
+    setSpecial(specialID);
+    setRoute(newRoute);
+
+  }
+
   return (
 
       <div className="uk-container uk-padding">
@@ -73,16 +82,22 @@ const MyConsultations = ({ consultation, setConsultation }) => {
                         <td>{`${consultation.patient.first_name} ${consultation.patient.last_name1}`}</td>
                         <td>{consultation.chief_complaint}</td>
                         <td>{consultation.diagnosis}</td>
-                        <td>{consultation.prescription ? consultation.prescription : "Sin receta"}</td>
+                        <td>
+                          <NavLink to='/facilities'>
+                            <button className="uk-button uk-button-default uk-border-pill"  >
+                              {consultation.facility ? `Ver consultorio` : "Sin informacion"}
+                            </button>
+                          </NavLink>
+                        </td>
                         <td>{moment(consultation.date).locale('es').format('LL')}</td>
                         <td>
                           { consultation.isDone ? 
-                              <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(consultation._id, 'showConsultation')} >
-                                Ver Consulta
+                              <button className="uk-button uk-button-default uk-border-pill" onClick={(event) => handleButtonClick(consultation._id, 'showConsultation')} >
+                                Ver
                               </button>
                             :
-                              <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(consultation._id, 'finishConsultation')} >
-                                Realizar Consulta
+                              <button className="uk-button uk-button-danger uk-border-pill" onClick={(event) => handleButtonClick(consultation._id, 'finishConsultation')} >
+                                Realizar
                               </button>
                           }
                         </td>

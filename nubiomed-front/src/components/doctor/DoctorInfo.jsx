@@ -76,7 +76,7 @@ const DoctorInfo = ({ doctor, preference }) => {
         <div className="uk-margin-small">
           <label className="uk-form-label">Zonas de consulta:</label>
           <div id="geocoder-container" className="uk-form-controls">
-            <h4>{preference.zones ? preference.zones.map( zone => (`${zone}, `) ) : 'Cargando'} </h4>
+            <h4>{preference ?  (preference.zones ? preference.zones.map( zone => (`${zone}, `) ) : 'Cargando') : 'Sin informacion'} </h4>
           </div>
         </div>
 
@@ -84,7 +84,7 @@ const DoctorInfo = ({ doctor, preference }) => {
           <label className="uk-form-label">Precio por consulta:</label>
           <div className="uk-form-controls">      
             <h4>
-              {currencyFormatter.format(preference.base_price, { code: "MXN" })}
+              {preference ? currencyFormatter.format(preference.base_price, { code: "MXN" }) : "Cargando"}
             </h4>
           </div>
         </div>

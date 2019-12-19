@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';     // Import React, useEffect, useState and useContext hooks
+import React, { useEffect, useState, useContext, useRef } from 'react';     // Import React, useEffect, useState and useContext hooks
 import { useHistory } from 'react-router-dom';                      // Import useHistory for "redirection"
 import { AppContext } from '../../AppContext';                      // Import AppContext to use created context
 
@@ -16,9 +16,8 @@ const CalendarForm = ( { submit, handleChange, form, consultation = {} } ) => {
 
       const { patients } = res.data;
       setPatients(patients);
-      console.log(patients);
 
-    })
+    });
 
   }, [consultation]);
 

@@ -22,7 +22,6 @@ router.get('/doctor', verifyToken, (req, res, next) => {
   .catch( error => {
 
     res.status(500).json({ error, msg: 'Unable to retrieve data' }); // Respond 500 status, error and message
-    console.log(error)
 
   });
 

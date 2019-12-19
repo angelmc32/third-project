@@ -24,17 +24,8 @@ const Sidebar = () => {
      user.usertype === 'Doctor' ? (
       <div className="sidebar uk-flex uk-flex-column uk-flex-center uk-flex-top">
           <ul className="uk-nav-default uk-nav-parent-icon uk-height-large uk-width-4-5 uk-text-left uk-margin-left" uk-nav="true">
-            <li className="uk-active">
-              <NavLink to="/home">Home</NavLink>
-            </li>
             <li className="uk-active" onClick={event => handleRoute(event, "schedule")}>
               <NavLink to="/schedule">Agenda</NavLink>
-            </li>
-            <li className="uk-active">
-              <NavLink to="/patients">Mis Pacientes</NavLink>
-            </li>
-            <li className="uk-active">
-              <NavLink to="/messages">Mensajes</NavLink>
             </li>
             <li className="uk-parent uk-active">
               <NavLink to="/consultations">Consultas</NavLink>
@@ -43,7 +34,7 @@ const Sidebar = () => {
                   <Link to="/consultations">Nueva Consulta</Link>
                 </li>
                 <li onClick={event => handleRoute(event, "myConsultations")} >
-                  <NavLink to="/consultations">Consultas Anteriores</NavLink>
+                  <NavLink to="/consultations">Mis Consultas</NavLink>
                 </li>
               </ul>
             </li>
@@ -64,9 +55,6 @@ const Sidebar = () => {
                 <li onClick={event => handleRoute(event, "search")}>
                   <NavLink to="/facilities">Buscar</NavLink>
                 </li>
-                <li onClick={event => handleRoute(event, "favorites")}>
-                  <NavLink to="/facilities">Mis Favoritos</NavLink>
-                </li>
                 <li onClick={event => handleRoute(event, "myFacilities")}>
                   <NavLink to="/facilities">Mis Consultorios</NavLink>
                 </li>
@@ -80,26 +68,14 @@ const Sidebar = () => {
       ) : (
         <div className="sidebar uk-flex uk-flex-column uk-flex-center uk-flex-top">
         <ul className="uk-nav-default uk-nav-parent-icon uk-height-large uk-width-4-5 uk-text-left uk-margin-left" uk-nav="true">
-          <li className="uk-active">
-            <NavLink to="/home">Home</NavLink>
-          </li>
-          <li className="uk-active">
-            <NavLink to="/journal">Mi Diario</NavLink>
-          </li>
-          <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
-            <NavLink to="/doctors">Doctores</NavLink>
-          </li>
-          <li className="uk-active">
-            <NavLink to="/reminders">Recordatorios</NavLink>
-          </li>
-          <li className="uk-active">
-            <NavLink to="/messages">Mensajes</NavLink>
-          </li>
-          <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
+        <li className="uk-active" onClick={event => handleRoute(event, "myConsultations")} >
             <NavLink to="/consultations">Mis Consultas</NavLink>
           </li>
           <li className="uk-active">
-            <NavLink to="/messages">Mis Recetas</NavLink>
+            <NavLink to="/prescriptions">Mis Recetas</NavLink>
+          </li>
+          <li className="uk-active" onClick={event => handleRoute(event, "doctors")} >
+            <NavLink to="/doctors">Doctores</NavLink>
           </li>
           <li className="uk-parent uk-active">
             <a href="#">Consultorios</a>

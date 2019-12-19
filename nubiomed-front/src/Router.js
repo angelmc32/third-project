@@ -29,12 +29,12 @@ const Router = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Landing />
+        <DoctorLanding />
       </Route>
       <Route exact path="/home">
         { user.usertype === 'Doctor' ? 
-          <DoctorHome /> :
-          <PatientHome />
+          <Calendar usertype={user.usertype}/> :
+          <Consultation />
         }
       </Route>
       <Route exact path="/doctor-landing">

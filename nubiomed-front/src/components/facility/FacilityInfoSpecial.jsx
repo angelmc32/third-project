@@ -26,17 +26,6 @@ const FacilityInfo = ({ facility, edit, showMap, toggleFavorite, favorites = [],
     edit ? setRoute('myFacilities') : setRoute('search');
   }
 
-  for (let i = 0; i < favorites.length; i++ ) {
-
-    if ( favorites[i] === facility._id ) {
-      
-      isFavorite = true;
-      i = favorites.length;
-
-     } else isFavorite = false;
-
-  }
-
   const toggleMap = () => {
     
     showMap = !showMap;

@@ -10,7 +10,7 @@ import UIkit from 'uikit';                              // Import UIkit for noti
 const Login = ( { usertype } ) => {
 
   const { form, handleInput } = useForm();      // Destructure form state variable and handleInput function
-  const { setUser } = useContext(AppContext);   // Destructure setUser function for user state manipulation
+  const { setUser, setRoute } = useContext(AppContext);   // Destructure setUser function for user state manipulation
   const { push } = useHistory();                // Destructure push method from useHistory to "redirect" user
 
   // Declare function for form submit event
@@ -29,6 +29,7 @@ const Login = ( { usertype } ) => {
       localStorage.setItem('token', token);
 
       setUser(user);    // Modify user state variable, setting the user data in the state
+      setRoute('schedule');
       push('/home');    // "Redirect" user to home
 
     })

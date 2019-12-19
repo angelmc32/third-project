@@ -53,32 +53,59 @@ const MyPrescriptions = ({ prescriptions = [], setPrescription }) => {
 
         <h3>{user.usertype === 'Doctor' ? "Recetas Anteriores" : "Mis Recetas"}</h3>
 
-
+        { user.usertype === 'Doctor' ? (
+            <table className="uk-table uk-table-striped uk-table-hover">
+              <thead>
+                <tr>
+                  <th className="uk-text-center">Paciente</th>
+                  <th className="uk-text-center">Medicamento</th>
+                  <th className="uk-text-center">Diagnostico</th>
+                  <th className="uk-text-center">Consulta</th>
+                  <th className="uk-text-center">Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                { prescriptions ? 
+                    prescriptions.map( (prescription, index) => 
+                      <tr key={index}>
+                        
+                        <td>{prescription.patient.first_name.length > 1 ? `${prescription.patient.first_name} ${prescription.patient.last_name1}` : "Paciente"}</td>
+                        <td>{prescription.generic_name}</td>
+                        <td>{prescription.consultation ? prescription.consultation.diagnosis : "Sin consulta asociada"}</td>
+                        <td>{prescription.consultation ? prescription.consultation : "Sin consulta asociada"}</td>
+                        <td>{moment(prescription.date).locale('es').format('LL')}</td>
+                      </tr>
+                    )
+                  : <tr>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                      <td>Cargando</td>
+                    </tr>
+                }
+              </tbody>
+            </table>
+        ) : (
           <table className="uk-table uk-table-striped uk-table-hover">
             <thead>
               <tr>
-                <th className="uk-text-center">Paciente</th>
                 <th className="uk-text-center">Medicamento</th>
                 <th className="uk-text-center">Diagnostico</th>
                 <th className="uk-text-center">Consulta</th>
+                <th className="uk-text-center">Doctor</th>
                 <th className="uk-text-center">Fecha</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               { prescriptions ? 
                   prescriptions.map( (prescription, index) => 
                     <tr key={index}>
-                      <td>{`${prescription.patient.first_name} ${prescription.patient.last_name1}`}</td>
                       <td>{prescription.generic_name}</td>
-                      <td>{prescription.consultation.diagnosis}</td>
-                      <td>{prescription.consultation ? prescription.consultation : "Sin receta"}</td>
+                      <td>{prescription.consultation ? prescription.consultation.diagnosis : "Sin consulta asociada"}</td>
+                      <td>{prescription.consultation ? prescription.consultation : "Sin consulta asociada"}</td>
+                      <td>{prescription.doctor.first_name.length > 1 ? `Dr. ${prescription.doctor.first_name} ${prescription.doctor.last_name1}` : "Doctor"}</td>
                       <td>{moment(prescription.date).locale('es').format('LL')}</td>
-                      <td>
-                        <button className="uk-button uk-button-default uk-button-small" onClick={(event) => handleButtonClick(prescription._id, 'showPrescription')} >
-                          Ver Receta
-                        </button>
-                      </td>
                     </tr>
                   )
                 : <tr>
@@ -91,6 +118,10 @@ const MyPrescriptions = ({ prescriptions = [], setPrescription }) => {
               }
             </tbody>
           </table>
+        )
+      }
+
+          
         
       </div>
 

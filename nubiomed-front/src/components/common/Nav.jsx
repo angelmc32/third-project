@@ -21,11 +21,6 @@ const Nav = () => {
 
   };
 
-  const printUserContext = () => {
-    console.log(user);
-    console.log(route);
-  }
-
   return (
     <nav className="uk-navbar-container" uk-navbar="true">
         <div className="uk-navbar-left uk-margin-left">
@@ -40,42 +35,43 @@ const Nav = () => {
                 </div>
               </NavLink>
             </li>
-            <li>
-              <button className="uk-button uk-button-small" onClick={printUserContext}>print user context</button>
-            </li>
           </ul>
         </div>
         <div className="uk-navbar-right uk-margin-right">
           <ul className="uk-navbar-nav">
-            <li className="uk-active">
-              <NavLink to="#how-it-works">
-                Como funciona
-              </NavLink>
-            </li>
             <li className="uk-active uk-margin-right">
-              <NavLink to="/services">
+              <NavLink to="#services">
                 Servicios
               </NavLink>
               <div className="uk-navbar-dropdown uk-margin-remove">
                 <ul className="uk-nav uk-navbar-dropdown-nav">
-                  <li >Encuentra un Doctor</li>
-                  <li>Renta Consultorio</li>
-                  <li>Expediente Clinico Electronico</li>
+                  <li onClick={(event) => setRoute('doctors')} >
+                    <NavLink to="/doctors">Encuentra un Doctor
+                    </NavLink>
+                  </li>
+                  <li onClick={(event) => setRoute('doctors')} >
+                    <NavLink to="/facilities">Renta Consultorio
+                    </NavLink>
+                  </li>
+                  <li >
+                    <NavLink to="/map">Consultorios cerca de mi
+                    </NavLink>
+                  </li>
                 </ul>
               </div>
             </li>
 
             { !user._id ? (
                 <li className="uk-active">
-                  <NavLink to="/doctor-landing">
+                  <NavLink to="/doctor-login">
                     <button className="uk-button uk-button-default uk-button-small">¿Es usted doctor?</button>
                   </NavLink>
                 </li>
               ) : (
                 user.usertype === 'Doctor' ? (
                   <li>
-                    <Link to="/consultations">
-                      <button className="uk-button uk-button-primary uk-border-pill" onClick={event => setRoute("newConsultation")} >Nueva Consulta</button>
+                    <Link to="/schedule">
+                      <button className="uk-button uk-button-primary uk-border-pill" onClick={event => setRoute("schedule")} >Nueva Consulta</button>
                     </Link>
                   </li>
                 ) : (

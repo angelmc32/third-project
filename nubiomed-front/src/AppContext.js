@@ -12,6 +12,7 @@ const AppProvider = ({ children }) => {
   // Declare user state variable and setUser function to update the user state variable
   const [user, setUser] = useState(initialUserState);
   const [route, setRoute] = useState("none");
+  const [special, setSpecial] = useState();
   
   // Declare resetUserContext function that will allow us to reset the user context
   const resetUserContext = () => {
@@ -22,7 +23,7 @@ const AppProvider = ({ children }) => {
   };
 
   // Create the context objects to be passed as props in the Provider, with our created state and functions
-  const userContext = { user, setUser, route, setRoute, resetUserContext };
+  const userContext = { user, setUser, route, setRoute, special, setSpecial, resetUserContext };
 
   // Return a context Provider component, sending the userContext as value prop
   return (

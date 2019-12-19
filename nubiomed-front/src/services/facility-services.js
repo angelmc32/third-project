@@ -27,7 +27,13 @@ export const getAllFacilities = () => {
 // Export get function to retrieve information of a particular facility
 export const getFacilityInfo = (id) => {
 
-  return axios.get(`${base_url}/${id}`);
+  const token = localStorage.getItem('token');  // Get token from localStorage
+
+  return axios.get(`${base_url}/${id}`, {
+    headers: {
+      Authorization: token,                     // Send token in request headers (check api/helpers/auth-helper)
+    }
+  });
   
 }
 

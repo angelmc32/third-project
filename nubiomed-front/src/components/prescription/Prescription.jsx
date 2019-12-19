@@ -37,7 +37,6 @@ const Prescription = ({ prescriptionID = {} }) => {
 
         const { prescription } = res.data;
         setPrescription(prescription);
-        console.log(prescription)
 
       });
 
@@ -94,9 +93,9 @@ const Prescription = ({ prescriptionID = {} }) => {
             <PrescriptionInfo prescription={prescription} />
           </div>
         ) : (
-          route === 'createPrescription' ? (
+          route === 'newPrescription' ? (
             <div className="uk-container">
-              <h3>Consulta para {prescription.patient ? prescription.patient.first_name.length > 1 ? prescription.patient.first_name : prescription.patient.email : "Paciente"}</h3>
+              <h3>Receta para {prescription.patient ? prescription.patient.first_name.length > 1 ? prescription.patient.first_name : prescription.patient.email : "Paciente"}</h3>
               <PrescriptionForm handleSubmit={handleSubmit} handleInput={handleInput} form={form} prescription={prescription} />
             </div>
           ) : 

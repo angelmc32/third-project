@@ -140,10 +140,6 @@ const Calendar = ({ usertype, doctorID = null }) => {
 
       <div className="uk-section uk-padding-small">
 
-        <div className="uk-margin">
-          <button className="uk-button uk-button-default uk-button-small" onClick={() => console.log(events)}>print calendar state</button>
-        </div>    
-
         <div className="uk-container">
 
           { route === 'schedule' ? (

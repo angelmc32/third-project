@@ -5,12 +5,15 @@ const prescriptionSchema = new Schema (
   {
     consultation: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'Consultation'
     },
     doctor: {
       type: Schema.Types.ObjectId,
       ref: 'Doctor'
+    },
+    date: {
+      type: Date,
+      default: Date.now
     },
     patient: {
       type: Schema.Types.ObjectId,

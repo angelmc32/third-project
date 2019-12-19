@@ -70,6 +70,7 @@ const preferenceRoutes = require('./routes/preference-routes');
 const doctorRoutes = require('./routes/doctor-routes');
 const patientRoutes = require('./routes/patient-routes');
 const consultationRoutes = require('./routes/consultation-routes');
+const prescriptionRoutes = require('./routes/prescription-routes');
 
 app.use('/api', authRoutes);
 app.use('/api/profile', profileRoutes);
@@ -78,6 +79,7 @@ app.use('/api/preferences', preferenceRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/consultations', consultationRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
 
 
 module.exports = app;
