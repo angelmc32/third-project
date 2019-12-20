@@ -19,7 +19,7 @@ router.post('/signup', (req, res, next) => {
   const { password, usertype } = req.body;
   
   // Password length validation, min length 8, if not, respond with a 500 status and error message
-  if ( password.length < 8 ) return res.status(500).json({ error, msg: "Password is too short" });
+  if ( password.length < 8 ) return res.status(500).json({ msg: "Password debe tener al menos 8 caracteres" });
 
   // Use bcryptjs methods to generate salt and hash password, for storage with an extra level of security
   const salt = bcrypt.genSaltSync(10);
@@ -52,7 +52,7 @@ router.post('/signup', (req, res, next) => {
         delete user._doc.password;
 
         // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+        if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
 
         // Respond to the request with a 200 status, the user data and a success message
         res.status(200).json({ user, token, msg: 'Signed up and logged in: Patient and token created successfully' });
@@ -111,6 +111,7 @@ router.post('/signup', (req, res, next) => {
         .catch( error => {
           // Respond with 500 status, the error and a message
           res.status(500).json({ error, msg: 'Error while creating doctor curriculum' });
+          console.log('curriculum');
         })
 
         
@@ -119,6 +120,7 @@ router.post('/signup', (req, res, next) => {
       .catch( error => {
         // Respond with 500 status, the error and a message
         res.status(500).json({ error, msg: 'Error while creating doctor preferences' });
+        console.log('preferencias');
       })
       
     })
@@ -127,7 +129,7 @@ router.post('/signup', (req, res, next) => {
       // Respond with 500 status, the error and a message
       res.status(500).json({ error, msg: 'Error while creating doctor' });
     
-      console.log(error);
+      console.log('doctor');
     });
 
   };
@@ -150,7 +152,7 @@ router.post('/login', (req, res, next) => {
       // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
       const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-      if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
+      if (!isPasswordValid) return res.status(401).json({ msg: 'Contraseña incorrecta' });
 
       // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
       // is app secret (used as key to create a token signature), third is a callback that passes the error or token
@@ -160,10 +162,11 @@ router.post('/login', (req, res, next) => {
         delete user._doc.password;
 
         // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+        if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
 
         // Respond to the request with a 200 status, the user data and a success message
         res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
+        console.log('aqui')
 
       });
 
@@ -171,7 +174,8 @@ router.post('/login', (req, res, next) => {
     .catch( error => {
 
       // Respond with 404 status, the error and a message
-      res.status(404).json({ error, msg: 'Email not found in database' });
+      res.status(404).json({ error, msg: 'Email o contraseña incorrecta' });
+      console.log('aqui')
 
     });
   } else {
@@ -183,7 +187,7 @@ router.post('/login', (req, res, next) => {
       // Verify if password sent is correct, true. If password is incorrect, false and send 401 status
       const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-      if (!isPasswordValid) return res.status(401).json({ error, msg: 'Invalid password' });
+      if (!isPasswordValid) return res.status(401).json({ msg: 'Contraseña incorrecta' });
 
       // Create a token with jwt: first parameter is data to be serialized into the token, second parameter
       // is app secret (used as key to create a token signature), third is a callback that passes the error or token
@@ -193,7 +197,7 @@ router.post('/login', (req, res, next) => {
         delete user._doc.password;
 
         // If there's an error creating the token, respond to the request with a 500 status, the error and a message
-        if ( error ) return res.status(500).json({ error, msg: 'Error while creating token with jwt' });
+        if ( error ) return res.status(500).json({ error, msg: 'Error creando el token' });
 
         // Respond to the request with a 200 status, the user data and a success message
         res.status(200).json({ user, token, msg: 'Login: Token created successfully' });
@@ -204,7 +208,7 @@ router.post('/login', (req, res, next) => {
     .catch( error => {
 
       // Respond with 404 status, the error and a message
-      res.status(404).json({ error, msg: 'Email not found in database' });
+      res.status(404).json({ error, msg: 'Email o contraseña incorrecta' });
 
     });
   }

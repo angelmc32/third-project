@@ -17,7 +17,7 @@ const Signup = ( { usertype } ) => {
   const handleSubmit = (event) => {
 
     event.preventDefault();                     // Prevent page reloading after submit action
-    console.log(form)
+    
     // Call signup service with form state variable as parameter, which includes form data for e-mail and password
     signup(form)
     .then( res => {
@@ -39,13 +39,13 @@ const Signup = ( { usertype } ) => {
       });
 
     })
-    .catch( error => {
+    .catch( res => {
 
-      console.log(error);
-
+      const { msg } = res.response.data;
+      
       // Send UIkit error notification
       UIkit.notification({
-        message: `<span uk-icon='close'></span> ${error}`,
+        message: `<span uk-icon='close'></span> ${msg}`,
         pos: 'bottom-center',
         status: 'danger'
       });
