@@ -2,7 +2,7 @@ import axios from 'axios';                      // Import axios to enable API ca
 
 // Set URL according to environment
 const isProduction = process.env.NODE_ENV === 'production';
-const base_url = isProduction ? 'https://nubiomed-ih.herokuapp.com/api/facilities' : 'http://localhost:3000/api/facilities';
+const base_url = isProduction ? 'https://nubiomed-iron.herokuapp.com/api/facilities' : 'http://localhost:3000/api/facilities';
 
 // Export get function to retrieve all facilities owned by the current logged in user
 export const getUserFacilities = () => {
